@@ -16,6 +16,11 @@
 <p>File —-查看文件信息</p>
 <p>Man 命令 —帮助手册</p>
 <p>Du —–查看目录信息</p>
+<p>服务</p>
+<p>systemctl –type=service  ——查看所有服务状态</p>
+<p>service xxx start  ——-启动服务</p>
+<p>ss -antpl                   —–查看端口</p>
+<p>systemctl stop firewalld.service  —–关闭防火墙</p>
 <p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210826155402.png" alt="操作系统文件类型"></p>
 <p>文件类型</p>
 <p>蓝色–目录</p>
@@ -329,6 +334,81 @@
       <tags>
         <tag>网络</tag>
         <tag>tcp/ip</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>WEB服务配置</title>
+    <url>/2021/08/29/WEB%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>WEB服务配置</p>
+<p>2021年8月29日</p>
+<p>9:26</p>
+<h2 id="LAMP"><a href="#LAMP" class="headerlink" title="LAMP"></a><strong>LAMP</strong></h2><span id="more"></span>
+
+<h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a><strong>基本配置</strong></h3><h4 id="安装apache"><a href="#安装apache" class="headerlink" title="安装apache"></a><em><strong>安装apache</strong></em></h4><ul>
+<li>安装httpd(apache) yum install httpd</li>
+<li>打开httpd 服务 service start httpd</li>
+<li>关闭防火墙 </li>
+</ul>
+<p>systemctl status firewalld.service</p>
+<p>主页位置/var/www/html</p>
+<p>主页配置文件 /etc/httpd/conf/httpd.conf</p>
+<p>程序文件</p>
+<p><code>         </code>监听端口</p>
+<p><code>         </code>启动用户启动组 </p>
+<p>User apache</p>
+<p>Group apache</p>
+<p><code>         </code>服务目录</p>
+<p><code>                  </code>DocumentRoot “/var/www/html”</p>
+<p><code>         </code>运行目录浏览</p>
+<p><code>                 </code>Options Indexes FollowSymLinks</p>
+<h3 id="访问控制设定"><a href="#访问控制设定" class="headerlink" title="访问控制设定"></a><strong>访问控制设定</strong></h3><p><code>        </code>Order allow,deny</p>
+<p><code>                </code>Allow from 192.168.1.2 白名单</p>
+<p>对页面进行加密，输入用户名密码才可进入</p>
+<p><code>        </code>htpasswd -c /etc/httpd/conf/httpuser tom 建立用户tom</p>
+<p><code>        </code>配置文件</p>
+<p><code>        </code>authtype basic</p>
+<p><code>        </code>authname “input username and password”</p>
+<p><code>        </code>authuserfile /etc/httpd/conf/httpuser</p>
+<p><code>        </code>require valid-user</p>
+<h4 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a><em><strong>安装mysql</strong></em></h4><p>yum install mysql-server</p>
+<p>启动</p>
+<p><code> </code>service mysqld start</p>
+<p>配置密码</p>
+<p><code>        </code>mysqladmin -u root -p password “123.com”</p>
+<p>进入</p>
+<p><code>        </code>mysql -u root -p</p>
+<h4 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a><em><strong>安装php</strong></em></h4><p>yum install php</p>
+<p>yum install php-mysql 连接数据库插件</p>
+<p>yum install php-mbstring</p>
+<p>umount /dev/cdrom                卸下当前光盘</p>
+<h5 id="配置php配置文件"><a href="#配置php配置文件" class="headerlink" title="配置php配置文件"></a><strong>配置php配置文件</strong></h5><p>目录 /etc/php.ini </p>
+<p>开启短标签 short_open_tag = On</p>
+<h2 id="LNMP"><a href="#LNMP" class="headerlink" title="LNMP"></a><strong>LNMP</strong></h2><h2 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a><strong>Nginx安装</strong></h2><p>yum install nginx</p>
+<p>网站目录</p>
+<p>/usr/share/nginx/html</p>
+<p>配置文件</p>
+<p><code> </code>/etc/nginx/nginx.conf)</p>
+<p>关闭</p>
+<p>nginx -s stop</p>
+<h3 id="Nginx配置文件"><a href="#Nginx配置文件" class="headerlink" title="Nginx配置文件"></a><strong>Nginx配置文件</strong></h3><p>全局配置</p>
+<p>user nginx;          //运行用户</p>
+<p>worker_processes auto;     //工作进程(根据cpu核心)</p>
+<p>error_log /var/log/nginx/error.log;   // (错误文件)</p>
+<p>pid /run/nginx.pid;                               //pid文件位置</p>
+<p>I/O事件配置</p>
+<p>events {</p>
+<p><code>    </code>worker_connections 1024;     //每个进程处理连接数</p>
+<p>}</p>
+<p>HTTP配置</p>
+<p>http{</p>
+<p>***</p>
+<p>}</p>
+]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
       </tags>
   </entry>
 </search>
