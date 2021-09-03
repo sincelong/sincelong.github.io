@@ -726,4 +726,33 @@
         <tag>JS</tag>
       </tags>
   </entry>
+  <entry>
+    <title>TCP的引入</title>
+    <url>/2021/09/03/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.2TCP%E7%9A%84%E5%BC%95%E5%85%A5/</url>
+    <content><![CDATA[<p>12.2 TCP的引入</p>
+<span id="more"></span>
+
+<p>2021年9月3日</p>
+<p>21:05</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210903213842.png" alt="TCP头部在数据包中封装"></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210903213934.png" alt="TCP头部信息"></p>
+<ul>
+<li>TCP头部包含源端口和目标端口。端口和IP唯一标识了每个TCP连接，端口IP的组合有时被称为socket。   4字节</li>
+<li>序列号标记了这一段信息中第一个字节的编号 4字节</li>
+<li>ACK(确认号)为最后接收到的字节的序列号+1.  4字节</li>
+<li>头部长度以32位字(4字节)为单位确定4位标识位，TCP头部最多带60字节头部.   头部长度加上保留 共 1字节</li>
+<li>8种状态位     1字节</li>
+<li>窗口大小      2字节</li>
+<li>TCP校验      2字节</li>
+<li>紧急指针      2字节 //仅在URG字段设置时有效</li>
+</ul>
+]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>网络</tag>
+        <tag>tcp/ip</tag>
+      </tags>
+  </entry>
 </search>
