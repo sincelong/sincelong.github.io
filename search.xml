@@ -755,4 +755,98 @@
         <tag>tcp/ip</tag>
       </tags>
   </entry>
+  <entry>
+    <title>PHP核心配置</title>
+    <url>/2021/09/04/PHP%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>PHP核心配置</p>
+<span id="more"></span>
+
+<p>2021年7月13日</p>
+<p>10:58</p>
+<ul>
+<li>配置的可修改范围</li>
+</ul>
+<p>PHP_INI_USER        可在用户脚本（例如 ini_set()）或 Windows 注册表（自 PHP 5.3 起）以及 .user.ini 中设定 </p>
+<p>PHP_INI_PERDIR        可在 php.ini，.htaccess 或 httpd.conf 中设定</p>
+<p>PHP_INI_SYSTEM        可在 php.ini 或 httpd.conf 中设定</p>
+<p>PHP_INI_ALL        可在任何地方设定</p>
+<p>php.ini only    仅在php.ini中设置</p>
+<ul>
+<li>核心配置选项<ul>
+<li>register_globals</li>
+</ul>
+</li>
+</ul>
+<p>说明:该选项在on情况下，会将用户GET,POST提交上的参数自动注册为全局变量，并且初始化为对应的值。</p>
+<p>版本变换:PHP &lt;= 4.2.3范围为PHP_INI_ALL, 在PHP5.3.0开始默认关闭 ， PHP 5.4.0移除该选项。</p>
+<p>例子:</p>
+<?php
+
+if($user=admin)
+
+echo 123;
+
+?>
+
+<p>xx.php?user=admin运行时会输出123</p>
+<ul>
+<li>allow_url_include</li>
+</ul>
+<p>说明:开启情况下，运行包含远程文件.</p>
+<p>版本变化: PHP 5.2.0后默认关闭</p>
+<ul>
+<li>magic_quotes_gpc</li>
+</ul>
+<p>说明:开启后会在GET , POST, COOKIE 变量中 ‘ “  \ null 字符前加入,但是并不会过滤$_SERVER变量。</p>
+<p>版本变化:PHP 5.3后默认关闭 , 5.4之后取消 ， 在&lt;=4.2.3时,配置范围为 PHP_INI_ALL</p>
+<ul>
+<li>magic_quotes_runtime</li>
+</ul>
+<p>说明:与_gpc相同，只不过只对文件和数据库中获取的数据转义。</p>
+<p>版本变化:5.4后取消</p>
+<p>特点:只有部分函数受影响</p>
+<ul>
+<li>magic_quotes_sybase</li>
+</ul>
+<p>说明:会将GET,POST, Cookie的传递的单引号(‘)变为(“)，并转义null字符.</p>
+<p>配置范围: PHP_INI_ALL</p>
+<p>版本: 5.4.0后移除</p>
+<p>特点:当开启后会覆盖_gpc = on;</p>
+<ul>
+<li>safe_mode(安全模式)</li>
+</ul>
+<p>配置范围:PHP_INI_SYSTEM</p>
+<p>版本: 5.4.0之后被取消</p>
+<p>说明:</p>
+<ul>
+<li><p>所有文件操作会受限制</p>
+</li>
+<li><p>popen(), system(), exec()等命令执行函数会受限制</p>
+</li>
+<li><p>open_basedir</p>
+</li>
+</ul>
+<p>说明:限制PHP可以访问的目录</p>
+<p>配置范围:&lt;2.2.3 PHP_INI_SYSTEM ，  &gt;= 5.2.3 PHP_INI_ALL</p>
+<p>特点:对于目录要以/闭合，如 open_basedir = www/a,那么可以访问www/a 和www/b。</p>
+<p>因此合理的写法为www/a/</p>
+<ul>
+<li>diable_functions</li>
+</ul>
+<p>说明:禁止php函数应用</p>
+<p>范围:php.ini</p>
+<ul>
+<li>display_errors  , error_reporting</li>
+</ul>
+<p>说明:关闭 _errors关闭会取消错误显示，当开启时配合_reporting可以控制错误显示级别.</p>
+<p>配置范围:PHP_INI_ALL</p>
+]]></content>
+      <categories>
+        <category>代码审计</category>
+      </categories>
+      <tags>
+        <tag>PHP</tag>
+        <tag>代码审计</tag>
+      </tags>
+  </entry>
 </search>
