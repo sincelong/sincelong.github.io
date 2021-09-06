@@ -81,7 +81,7 @@
 
 <meta property="og:type" content="website">
 <meta property="og:title" content="Recoder">
-<meta property="og:url" content="http://example.com/tags/tcp-ip/index.html">
+<meta property="og:url" content="http://example.com/page/2/index.html">
 <meta property="og:site_name" content="Recoder">
 <meta property="og:locale">
 <meta property="article:author" content="Laplace">
@@ -115,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/tags/tcp-ip/"/>
+  <link rel="canonical" href="http://example.com/page/2/"/>
 
 
 
 
 
-  <title>标签: tcp/ip | Recoder</title>
+  <title>Recoder</title>
   
 
 
@@ -140,7 +140,8 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left 
+  page-home">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -267,111 +268,166 @@
         <div class="content-wrap">
           <div id="content" class="content">
             
+  <section id="posts" class="posts-expand">
+    
+      
+
+  
 
   
   
   
-  <div class="post-block tag">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>tcp/ip<small>标签</small>
-        </h1>
-      </div>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/23/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.1%E8%A7%A3%E5%86%B3%E4%BC%A0%E8%BE%93%E9%94%99%E8%AF%AF/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2021/08/23/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.1%E8%A7%A3%E5%86%B3%E4%BC%A0%E8%BE%93%E9%94%99%E8%AF%AF/" itemprop="url">Tcp_ip协议 12.1解决传输错误</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-23T21:45:45+08:00">
+                2021-08-23
+              </time>
+            
+
+			
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E7%BD%91%E7%BB%9C/" itemprop="url" rel="index">
+                    <span itemprop="name">网络</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
 
       
         
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/09/06/Tcp_ip%E5%8D%8F%E8%AE%AE%2013.2%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E7%BB%88%E6%AD%A2/" itemprop="url">
-              
-                <span itemprop="name">Tcp_ip协议 13.2连接的建立和终止</span>
-              
+          <p>12.1解决传输错误</p>
+<p>2021年7月25日</p>
+<p>21:57</p>
+<h2 id="大纲"><a href="#大纲" class="headerlink" title="大纲"></a>大纲</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210824133311.png" alt="大纲"></p>
+<ul>
+<li>问题提出与解决方案：</li>
+</ul>
+<p>在IP在路由中多级传输的过程时，我们会遇到诸如分组丢失，或者信息错误的问题。为了解决问题，可以使用数学上的通过冗余纠错。或者直接简单的尝试重复传递指定接收方到正确为止。这种方法称为ARQ(Automatic Repeat Request)</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2021/08/23/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.1%E8%A7%A3%E5%86%B3%E4%BC%A0%E8%BE%93%E9%94%99%E8%AF%AF/#more" rel="contents">
+              阅读全文 &raquo;
             </a>
+          </div>
+          <!--/noindex-->
         
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2021-09-06T22:13:31+08:00"
-              content="2021-09-06" >
-          09-06
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/09/03/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.2TCP%E7%9A%84%E5%BC%95%E5%85%A5/" itemprop="url">
-              
-                <span itemprop="name">Tcp_ip协议 12.2TCP的引入</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2021-09-03T21:36:57+08:00"
-              content="2021-09-03" >
-          09-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-      
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/08/23/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.1%E8%A7%A3%E5%86%B3%E4%BC%A0%E8%BE%93%E9%94%99%E8%AF%AF/" itemprop="url">
-              
-                <span itemprop="name">Tcp_ip协议 12.1解决传输错误</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2021-08-23T21:45:45+08:00"
-              content="2021-08-23" >
-          08-23
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
   </div>
   
   
   
+  </article>
+
+
+    
+  </section>
 
   
+  <nav class="pagination">
+    <a class="extend prev" rel="prev" href="/">&lt;i class&#x3D;&quot;fa fa-angle-left&quot;&gt;&lt;&#x2F;i&gt;</a><a class="page-number" href="/">1</a><span class="page-number current">2</span>
+  </nav>
+
 
 
           </div>

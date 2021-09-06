@@ -727,7 +727,7 @@
       </tags>
   </entry>
   <entry>
-    <title>TCP的引入</title>
+    <title>Tcp_ip协议 12.2TCP的引入</title>
     <url>/2021/09/03/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.2TCP%E7%9A%84%E5%BC%95%E5%85%A5/</url>
     <content><![CDATA[<p>12.2 TCP的引入</p>
 <span id="more"></span>
@@ -847,6 +847,40 @@ echo 123;
       <tags>
         <tag>PHP</tag>
         <tag>代码审计</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Tcp_ip协议 13.2连接的建立和终止</title>
+    <url>/2021/09/06/Tcp_ip%E5%8D%8F%E8%AE%AE%2013.2%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E7%BB%88%E6%AD%A2/</url>
+    <content><![CDATA[<h1 id="13-2-TCP-IP连接的建立和终止"><a href="#13-2-TCP-IP连接的建立和终止" class="headerlink" title="13.2 TCP_IP连接的建立和终止"></a>13.2 TCP_IP连接的建立和终止</h1><span id="more"></span>
+
+<h2 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906220930.png" alt="建立连接"></p>
+<ol>
+<li>主动开启者发送报文，包含初始序列号ISN_c,SYN位表示想要建立TCP连接</li>
+<li>服务器SYN报文seq = $INS_x$, ACK=$INS_c$+1，表示服务器确认建立连接。此时<strong>服务器</strong>知道<strong>服务器接受</strong>功能无问题、<strong>客户端发送</strong>无问题</li>
+<li>客户端发送ACK报文，seq = $INS_c+1$, ACK = $INS_x+1$。当客户端接受到2号报文时，<strong>客户端</strong>确认<strong>双方发送接受</strong>均无问题。当<strong>服务端</strong>接受到报文3时确认<strong>服务端发送客户端接受</strong>无问题。</li>
+</ol>
+<h2 id="连接关闭"><a href="#连接关闭" class="headerlink" title="连接关闭"></a>连接关闭</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221028.png" alt="连接关闭"></p>
+<ol>
+<li>主动开启者发送    Fin段以及$Seq = k, ACK = L$。表示想要关闭连接。</li>
+<li>被动开启者发送 $Seq = L, ACK = k+1$，表示接收到关闭帧。</li>
+<li>如果有数据还需要发送，进行剩余的数据发送</li>
+<li>被动开启者发送$Fin Seq = L , ACK = k+1$，表示关闭连接。</li>
+<li>主动开启者发送$Seq = k+1，  ACK = L+1 $，接收到被动方的连接关闭。</li>
+</ol>
+<h2 id="TCP半关闭"><a href="#TCP半关闭" class="headerlink" title="TCP半关闭"></a>TCP半关闭</h2><p>含义：半关闭表示为一方发送Fin连接表示我已经发送了所有我应该发送的数据，但是我仍然希望接收对方发送的数据直到对方发送Fin连接。表示对方数据同样发送完毕。</p>
+<p>整体流程与TCP关闭相同不过在第三步会发送更多的数据。</p>
+<h2 id="同时打开与同时关闭"><a href="#同时打开与同时关闭" class="headerlink" title="同时打开与同时关闭"></a>同时打开与同时关闭</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221113.png"></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221145.png"></p>
+<p>当双方同时向对方发送清求连接或者请求关闭连接时，会发生这种情况。此时无论建立连接或者关闭连接都会发送4个报文。</p>
+<h2 id="连接建立超时"><a href="#连接建立超时" class="headerlink" title="连接建立超时"></a>连接建立超时</h2><p>当向无法回复的服务器请求建立连接时，客户端会不断向服务器发送SYN报文。时间上采取<strong>指数回退</strong>。第二次发送报文3秒后，第三次在上一个报文发送6秒后，第四次在上一次发送12秒后。以此类推，同时可以控制尝试发送SYN连接报文的最多次数。</p>
+]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>网络</tag>
+        <tag>tcp/ip</tag>
       </tags>
   </entry>
 </search>
