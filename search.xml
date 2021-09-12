@@ -442,7 +442,7 @@
 <ul>
 <li>前端</li>
 </ul>
-<p>#表单</p>
+<p># 表单</p>
 <p>method属性:</p>
 <p>get</p>
 <p>url中显示数据</p>
@@ -482,7 +482,7 @@
 <p>&lt;/select&gt; </p>
 <p>文本域</p>
 <p>&lt;textarea&gt; &lt;/textarea&gt;</p>
-<p>#iframe标签</p>
+<p># iframe标签</p>
 <p>属性</p>
 <p>src iframe引用</p>
 <ul>
