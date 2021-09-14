@@ -746,6 +746,10 @@
 <li>TCP校验      2字节</li>
 <li>紧急指针      2字节 //仅在URG字段设置时有效</li>
 </ul>
+<ol>
+<li>SYN状态位，在建立连接时使用</li>
+<li>FIN状态位, 当关闭连接时使用</li>
+</ol>
 ]]></content>
       <categories>
         <category>网络</category>
