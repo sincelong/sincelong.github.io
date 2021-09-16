@@ -887,4 +887,45 @@ echo 123;
         <tag>tcp/ip</tag>
       </tags>
   </entry>
+  <entry>
+    <title>msyql宽字节注入</title>
+    <url>/2021/09/16/msyql%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="mysql宽字节注入"><a href="#mysql宽字节注入" class="headerlink" title="mysql宽字节注入"></a>mysql宽字节注入</h1><span id="more"></span>
+
+<p>  #宽字节注入</p>
+<p>  在注入过程中，如果采用magic_quot_gpc 或者 addslashes()。如果采用’注入会产生&#39;。导致无法绕过’’。当采用客户端采用 SET names = GBK 或者 mysqli_set_charset($conn, ‘gbk’)时，相当于设置 </p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary</span><br></pre></td></tr></table></figure>
+
+<p>此时转义字符\被URL编码解析为 %5c 如果我们手动输入 %df’。经过浏览器编码和转义后会成为 %df%5c%27。在[[msyql数据编码]]的设置下,%df%5c 连接在一起会被解析为GBK双字节编码,此时%df\会变为一个汉字。因此我们便绕过了\转义符,实现了在mysql语句中直接插入’的目的。在绕过的过程中%df不固定，只要可以与%5c一起构成GBK编码都可以绕过\转义符。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//echo 12341234;</span><br><span class="line"></span><br><span class="line">	function unicode($res)</span><br><span class="line">	&#123;</span><br><span class="line">		//echo 1234;</span><br><span class="line">		 //print&quot;12421&quot;;</span><br><span class="line">			 while($val=mysqli_fetch_row($res))&#123;</span><br><span class="line">   			 print&quot;&#123;$val[0]&#125; = &#123;$val[1]&#125;&quot;;</span><br><span class="line">   			  print(&quot;&lt;br&gt;&quot;);</span><br><span class="line">			 &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//echo 1234555;</span><br><span class="line">	header(&quot;Content-Type:text/html;charset=gbk&quot;); //为了显示，将页面默认为gbk</span><br><span class="line">	$name=$_GET[&#x27;name&#x27;];</span><br><span class="line">		echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	$conn = mysqli_connect(&#x27;127.0.0.1&#x27;,&#x27;root&#x27;,&#x27;root&#x27;);  </span><br><span class="line">	mysqli_select_db($conn,&#x27;xnfh&#x27;);</span><br><span class="line">	</span><br><span class="line">	print&quot;****************&lt;br&gt;AT Start &lt;br&gt;&quot;;</span><br><span class="line">	</span><br><span class="line">	$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//mysqli_set_charset($conn, &#x27;gbk&#x27;);</span><br><span class="line">	//mysqli_query($conn,&quot;set names &#x27;gbk&#x27;&quot;);</span><br><span class="line">	mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</span><br><span class="line">	print&quot;*********************** &lt;br&gt;charset gbk &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">		mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary&quot;);</span><br><span class="line">		print&quot;*********************** &lt;br&gt;charset gbk and protect &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//$name = mysqli_real_escape_string($conn, $name);</span><br><span class="line">	$name =addslashes($name);</span><br><span class="line">	//echo 1234;</span><br><span class="line">	//mysqli_query($conn,&quot;character_set_client=binary&quot;);</span><br><span class="line">	</span><br><span class="line">	//mysqli_query($conn,&quot;SET character_set_connection=gbk,character_set_client=binary&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//mysqli_query($conn,&quot;SET NAMES &#x27;gbk&#x27;&quot;);</span><br><span class="line">	if($conn==null)&#123;exit(&quot;connect error !&lt;br&gt;&quot;);&#125;</span><br><span class="line">	$sql=&quot;select * from users where id=&#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">	$result2=mysqli_query($conn,$sql);</span><br><span class="line">	unicode($result2);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	echo $sql;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//echo 1234;</span><br><span class="line">	unicode($result);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过实验代码我们发现，直接设置 SET NAMES gbk 与  mysqli_set_charset 在直接结果上都是相同的 ,都只改变3项为gbk.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AT Start</span><br><span class="line"></span><br><span class="line">character_set_client = utf8</span><br><span class="line">character_set_connection = utf8</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = utf8</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br><span class="line">***********************</span><br><span class="line">After charset gbk</span><br><span class="line"></span><br><span class="line">character_set_client = gbk		//改变</span><br><span class="line">character_set_connection = gbk	//改变</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = gbk	//改变</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br></pre></td></tr></table></figure>
+
+<p>防御方法 </p>
+<ol>
+<li><p>通过mysqli_set_charset 与 mysql_real_escape_string()转义达到效果，放弃add….()函数。</p>
+<pre><code>通过mysqli_set_charse设置字符集之后，使用real_escape()函数会根据对应设置的字符集进行相应的转义，虽然字符集设计没有改变，但是无法绕过\转义符.
+</code></pre>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">mysqli_set_charset(<span class="variable">$conn</span>, <span class="string">&#x27;gbk&#x27;</span>);</span><br><span class="line"><span class="variable">$name</span> = mysqli_real_escape_string(<span class="variable">$conn</span>, <span class="variable">$name</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>通过设置 character_set_client = binary改变字符集编码，连接时不使用GBK编码，从而无法绕过\。</p>
+<pre><code>我试了一下发现单单使用character_set_client = binary，无法防御注入同时查询当前的数据库编码也没有任何的改变，至少要使用 set_client 与 set_connection 两项才可以保护。具体原理以后再说吧,
+</code></pre>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;SET character_set_connection=gbk, ,character_set_client=binary</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在最后我发现只要使用<code>mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</code>就会导致宽字节注入，具体的原理还是等弄懂[[msyql数据编码]]以后在说。</p>
+]]></content>
+      <categories>
+        <category>注入</category>
+      </categories>
+      <tags>
+        <tag>宽字节注入</tag>
+        <tag>mysql</tag>
+        <tag>编码</tag>
+      </tags>
+  </entry>
 </search>

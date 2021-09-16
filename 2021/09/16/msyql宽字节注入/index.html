@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="宽字节注入,mysql,编码," />
 
 
 
@@ -79,12 +79,19 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Recoder">
-<meta property="og:url" content="http://example.com/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/index.html">
+<meta name="description" content="mysql宽字节注入">
+<meta property="og:type" content="article">
+<meta property="og:title" content="msyql宽字节注入">
+<meta property="og:url" content="http://example.com/2021/09/16/msyql%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="mysql宽字节注入">
 <meta property="og:locale">
+<meta property="article:published_time" content="2021-09-16T12:46:34.000Z">
+<meta property="article:modified_time" content="2021-09-16T12:46:34.000Z">
 <meta property="article:author" content="Laplace">
+<meta property="article:tag" content="宽字节注入">
+<meta property="article:tag" content="mysql">
+<meta property="article:tag" content="编码">
 <meta name="twitter:card" content="summary">
 
 
@@ -115,13 +122,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/categories/代码审计/"/>
+  <link rel="canonical" href="http://example.com/2021/09/16/msyql宽字节注入/"/>
 
 
 
 
 
-  <title>分类: 代码审计 | Recoder</title>
+  <title>msyql宽字节注入 | Recoder</title>
   
 
 
@@ -140,7 +147,7 @@
     
   
 
-  <div class="container sidebar-position-left ">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,83 +275,198 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block category">
+  <div id="posts" class="posts-expand">
+    
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>代码审计<small>分类</small>
-        </h1>
-      </div>
+  
 
-      
-        
+  
+  
+  
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/16/msyql%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/">
 
-      <h2 class="post-title">
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
         
-            <a class="post-title-link" href="/2021/09/04/PHP%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE/" itemprop="url">
-              
-                <span itemprop="name">PHP核心配置</span>
-              
-            </a>
         
-      </h2>
+          <h1 class="post-title" itemprop="name headline">msyql宽字节注入</h1>
+        
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2021-09-04T16:12:11+08:00"
-              content="2021-09-04" >
-          09-04
-        </time>
-      </div>
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-16T20:46:34+08:00">
+                2021-09-16
+              </time>
+            
 
-    </header>
-  </article>
+			
+          </span>
 
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B3%A8%E5%85%A5/" itemprop="url" rel="index">
+                    <span itemprop="name">注入</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-        
+      
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+      
+        <h1 id="mysql宽字节注入"><a href="#mysql宽字节注入" class="headerlink" title="mysql宽字节注入"></a>mysql宽字节注入</h1><span id="more"></span>
 
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2021/09/03/%E5%89%8D%E5%90%8E%E7%AB%AF%E5%9F%BA%E7%A1%80/" itemprop="url">
-              
-                <span itemprop="name">前后端基础</span>
-              
-            </a>
-        
-      </h2>
+<p>  #宽字节注入</p>
+<p>  在注入过程中，如果采用magic_quot_gpc 或者 addslashes()。如果采用’注入会产生&#39;。导致无法绕过’’。当采用客户端采用 SET names = GBK 或者 mysqli_set_charset($conn, ‘gbk’)时，相当于设置 </p>
+  <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary</span><br></pre></td></tr></table></figure>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2021-09-03T16:41:09+08:00"
-              content="2021-09-03" >
-          09-03
-        </time>
-      </div>
+<p>此时转义字符\被URL编码解析为 %5c 如果我们手动输入 %df’。经过浏览器编码和转义后会成为 %df%5c%27。在[[msyql数据编码]]的设置下,%df%5c 连接在一起会被解析为GBK双字节编码,此时%df\会变为一个汉字。因此我们便绕过了\转义符,实现了在mysql语句中直接插入’的目的。在绕过的过程中%df不固定，只要可以与%5c一起构成GBK编码都可以绕过\转义符。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br></pre></td><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//echo 12341234;</span><br><span class="line"></span><br><span class="line">	function unicode($res)</span><br><span class="line">	&#123;</span><br><span class="line">		//echo 1234;</span><br><span class="line">		 //print&quot;12421&quot;;</span><br><span class="line">			 while($val=mysqli_fetch_row($res))&#123;</span><br><span class="line">   			 print&quot;&#123;$val[0]&#125; = &#123;$val[1]&#125;&quot;;</span><br><span class="line">   			  print(&quot;&lt;br&gt;&quot;);</span><br><span class="line">			 &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//echo 1234555;</span><br><span class="line">	header(&quot;Content-Type:text/html;charset=gbk&quot;); //为了显示，将页面默认为gbk</span><br><span class="line">	$name=$_GET[&#x27;name&#x27;];</span><br><span class="line">		echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	$conn = mysqli_connect(&#x27;127.0.0.1&#x27;,&#x27;root&#x27;,&#x27;root&#x27;);  </span><br><span class="line">	mysqli_select_db($conn,&#x27;xnfh&#x27;);</span><br><span class="line">	</span><br><span class="line">	print&quot;****************&lt;br&gt;AT Start &lt;br&gt;&quot;;</span><br><span class="line">	</span><br><span class="line">	$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//mysqli_set_charset($conn, &#x27;gbk&#x27;);</span><br><span class="line">	//mysqli_query($conn,&quot;set names &#x27;gbk&#x27;&quot;);</span><br><span class="line">	mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</span><br><span class="line">	print&quot;*********************** &lt;br&gt;charset gbk &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">		mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary&quot;);</span><br><span class="line">		print&quot;*********************** &lt;br&gt;charset gbk and protect &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//$name = mysqli_real_escape_string($conn, $name);</span><br><span class="line">	$name =addslashes($name);</span><br><span class="line">	//echo 1234;</span><br><span class="line">	//mysqli_query($conn,&quot;character_set_client=binary&quot;);</span><br><span class="line">	</span><br><span class="line">	//mysqli_query($conn,&quot;SET character_set_connection=gbk,character_set_client=binary&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//mysqli_query($conn,&quot;SET NAMES &#x27;gbk&#x27;&quot;);</span><br><span class="line">	if($conn==null)&#123;exit(&quot;connect error !&lt;br&gt;&quot;);&#125;</span><br><span class="line">	$sql=&quot;select * from users where id=&#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">	$result2=mysqli_query($conn,$sql);</span><br><span class="line">	unicode($result2);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	echo $sql;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//echo 1234;</span><br><span class="line">	unicode($result);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
 
-    </header>
-  </article>
 
+
+<p>经过实验代码我们发现，直接设置 SET NAMES gbk 与  mysqli_set_charset 在直接结果上都是相同的 ,都只改变3项为gbk.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">AT Start</span><br><span class="line"></span><br><span class="line">character_set_client = utf8</span><br><span class="line">character_set_connection = utf8</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = utf8</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br><span class="line">***********************</span><br><span class="line">After charset gbk</span><br><span class="line"></span><br><span class="line">character_set_client = gbk		//改变</span><br><span class="line">character_set_connection = gbk	//改变</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = gbk	//改变</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br></pre></td></tr></table></figure>
+
+<p>防御方法 </p>
+<ol>
+<li><p>通过mysqli_set_charset 与 mysql_real_escape_string()转义达到效果，放弃add….()函数。</p>
+<pre><code>通过mysqli_set_charse设置字符集之后，使用real_escape()函数会根据对应设置的字符集进行相应的转义，虽然字符集设计没有改变，但是无法绕过\转义符.
+</code></pre>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">mysqli_set_charset(<span class="variable">$conn</span>, <span class="string">&#x27;gbk&#x27;</span>);</span><br><span class="line"><span class="variable">$name</span> = mysqli_real_escape_string(<span class="variable">$conn</span>, <span class="variable">$name</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>通过设置 character_set_client = binary改变字符集编码，连接时不使用GBK编码，从而无法绕过\。</p>
+<pre><code>我试了一下发现单单使用character_set_client = binary，无法防御注入同时查询当前的数据库编码也没有任何的改变，至少要使用 set_client 与 set_connection 两项才可以保护。具体原理以后再说吧,
+</code></pre>
+<figure class="highlight php"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;SET character_set_connection=gbk, ,character_set_client=binary</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在最后我发现只要使用<code>mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</code>就会导致宽字节注入，具体的原理还是等弄懂[[msyql数据编码]]以后在说。</p>
 
       
     </div>
+    
+    
+    
 
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/" rel="tag"># 宽字节注入</a>
+          
+            <a href="/tags/mysql/" rel="tag"># mysql</a>
+          
+            <a href="/tags/%E7%BC%96%E7%A0%81/" rel="tag"># 编码</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/09/06/Tcp_ip%E5%8D%8F%E8%AE%AE%2013.2%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E7%BB%88%E6%AD%A2/" rel="next" title="Tcp_ip协议 13.2连接的建立和终止">
+                <i class="fa fa-chevron-left"></i> Tcp_ip协议 13.2连接的建立和终止
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
+  </article>
 
-  
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -352,6 +474,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -372,8 +498,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -433,6 +568,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#mysql%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5"><span class="nav-number">1.</span> <span class="nav-text">mysql宽字节注入</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -577,6 +728,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
