@@ -928,4 +928,42 @@ echo 123;
         <tag>编码</tag>
       </tags>
   </entry>
+  <entry>
+    <title>NARAK靶机</title>
+    <url>/2021/12/12/NARAK%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h1><p>靶机地址：<a href="https://www.vulnhub.com/entry/ha-narak,569/">NARAK</a><br>目标:user.txt , root.txt</p>
+<span id="more"></span>
+
+
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>使用namp 扫描10.1.1.0/24网段，发现靶机地址为10.1.1.129。<br>开放22端口和80端口。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211212160132.png" alt="靶机扫描"><br>进入网页后发现，都是图片没有什么有用的信息。<br>使用dirb扫描靶机后发现存在三个目录<br><code>dirb http://10.1.1.129</code></p>
+<ul>
+<li>/index.html</li>
+<li>/server-startus</li>
+<li>/webdav</li>
+</ul>
+<p>index为主页，server-startus没有足够的权限，webdav需要帐号密码才能够查看。目前来看唯一可行的只有通过webdav进入。<br>使用cewl 对index网页进行爬虫，得到可能的密码字典，然后使用hydra进行爆破尝试.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cewl -w password.txt http://10.1.1.129</span><br><span class="line">hydra -L password.txt -P password.txt 10.1.1.129 http-get /webdav</span><br></pre></td></tr></table></figure>
+
+<p>得到 yamdoot:Swarg账户。尝试之后无法使用ssh登录。使用cadaver 连接webdav,然后put一个webshell进去。反弹shell后，使用<code>python3 -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code>得到一个交互式bash窗口。  </p>
+<p>但是我们只有www-data权限，到home后我们得到了 inferno narak yamdoot 三个用户，试试用之前的密码连接全部失败了.又尝试进入mnt中发现有一个hell.sh文件，其中的内容为<br>    echo”Highway to Hell”;<br>    –[—–&gt;+&lt;]&gt;—.+++++.+.+++++++++++.–.+++[-&gt;+++&lt;]&gt;++.++++++.–[—&gt;+&lt;]&gt;–.—–.++++.</p>
+<p>其中的信息使用了brainfuck进行加密，到<a href="https://www.splitbrain.org/services/ook">https://www.splitbrain.org/services/ook</a> 进解码后，得到了 <strong>chitragupt</strong> 。<br>再次尝试使用三个帐号登录，这一次inferno帐号登录成功我们在home中得到了user.txt.很明显root.txt需要提权后得到。<br>使用motc提权</p>
+<ol>
+<li>进入文件夹 /etc/update-motd.d/</li>
+<li>修改文件 echo “echo ‘root:admin2’|sudo chpasswd” &gt;&gt; 00-header</li>
+<li>重新登录</li>
+<li>su root 密码为admin</li>
+</ol>
+<p>其中00-header文件的执行权限为root，但是我们可以对它进行修改意味着当文件执行时可以用root权限运行。00-header文件相当于登录的欢迎文件，当我们重新登录时 附加进的 echo ‘root:admin’|sudo chpasswd相当于使用root权限进行 chpasswd命令，而 | 前的相当于指令的输入，因此root的密码被修改为admin。从而获得root权限<br>在root文件夹中获得root.txt。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Vulnhub</tag>
+        <tag>Linux提权</tag>
+        <tag>爬虫字典</tag>
+      </tags>
+  </entry>
 </search>
