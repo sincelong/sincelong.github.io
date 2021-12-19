@@ -391,7 +391,7 @@
 <ol>
 <li>进入wordpress/wp-admin，尝试使用mysql帐号密码进入</li>
 <li>在Appearance中的editor修改404页面，写入shell<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211214100216.png" alt="修改404页面"></li>
-<li> 进入404页面 /wordpress/wp-content/themes/twentyfifteen/404.php，获得shell</li>
+<li> 进入404页面 /wordpress/wp-content/themes/twentyfifteen/404.php，获得shell.其中<code>twentyfifteen</code>需要随着版本改变，具体查看这个连接修改的是哪一个版本。</li>
 </ol>
 <p>反弹shell后，进入home页面发现用户togie，使用share$中的密码12345登录成功。sudo -L查看权限，用户拥有all:all权限，使用sudo su获得root权限。</p>
 
@@ -517,7 +517,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-count">17</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -539,7 +539,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-count">18</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
