@@ -1103,4 +1103,32 @@ echo 123;
         <tag>脏牛提权</tag>
       </tags>
   </entry>
+  <entry>
+    <title>mr-Robot靶机</title>
+    <url>/2021/12/21/mr-Robot%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="MR-ROBOT-1靶机"><a href="#MR-ROBOT-1靶机" class="headerlink" title="MR-ROBOT: 1靶机"></a>MR-ROBOT: 1靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/mr-robot-1,151/">下载地址</a><br>目标: 找到三个flag</p>
+<span id="more"></span>
+
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>nmap扫描结果<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221121525.png" alt="扫描结果"><br>开放 80  , 443端口。进入80端口，web页面是一个仿bash的页面。没有什么信息，先用dirb扫描。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221133226.png" alt="dirb扫描结果"><br>进入/0页面和/login页面发现是一个wordpress博客。进入rotbos爬虫页面发现禁止爬取 fsocity.dic, key-1-of-3.txt<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221133428.png"><br>进入/key-1-of-3.txt获得第一个flag。在fsocity.dic中是一个字典文件<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221133601.png"><br>将字典文件保存，使用<code>sort -u fsocity.dic &gt; dic.txt</code>将字典去重排序。同时使用BrupSuit的intruder模块将用户名单独作为paylaod进行爆破。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221134022.png"><br>可以通过Response长度发现对于<code>elliot</code>用户名，系统返回值为该用户名密码不正确，由此可以得到 博客用户名为<code>Elliot</code>。同理将<code>Elliot</code>作为用户名将密码作为payload进行爆破。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221134150.png"><br>通过长度和状态码可以得到密码为<code>ER28-0652</code>。通过登录后台修改404页面为shell，同时反弹shell。可以获得靶机的用户作为<code>daemon</code>的权限。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221134447.png"><br>home中有用户robot，robot中含有文件key-2-of-3.txt和password.raw-md5。尝试查看 key文件提示权限不足，但是passwod.md5文件可以查看。于是通过将md5文件解密得到密码为<code>abcdefghijklmnopqrstuvwxyz</code>。使用robot用户获得第2个flag.  接着使用SUID进行提权<br>SUID是指具有root执行权限的程序.</p>
+<ol>
+<li><code>find / -user root -perm -4000 -print 2&gt;/dev/null</code>  查找具有suid的可执行文件   </li>
+<li>已知可提权的程序有 Nmap , Vim, find ,bash , More ,Less , Nano, cp</li>
+<li>通过搜索发现有namap，nmap 在 2.02 -5.21版本可以提权<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221135536.png"></li>
+<li><code>nmap --interactive</code>进入nmap 交互模式</li>
+<li><code>!sh</code> 使用root权限进入shell   </li>
+</ol>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221135800.png"><br>在root目录中找到第三个flag.<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211221135849.png"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Linux提权</tag>
+        <tag>wordpress</tag>
+        <tag>SUID提权</tag>
+        <tag>nmap提权</tag>
+        <tag>Vlunhub</tag>
+      </tags>
+  </entry>
 </search>
