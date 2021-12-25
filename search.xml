@@ -1185,4 +1185,21 @@ echo 123;
         <tag>信息收集</tag>
       </tags>
   </entry>
+  <entry>
+    <title>DC-1靶机</title>
+    <url>/2021/12/25/DC-1%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="DC-1靶机"><a href="#DC-1靶机" class="headerlink" title="DC-1靶机"></a>DC-1靶机</h1><h2 id="信息简介"><a href="#信息简介" class="headerlink" title="信息简介"></a>信息简介</h2><p><a href="https://www.vulnhub.com/entry/dc-1,292/">下载地址</a><br>目标:获得root目录下的flag</p>
+<span id="more"></span>
+
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>nmap扫描结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091333.png"><br>80端口上是使用Drupal建立的博客<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091512.png"><br>直接跑msfconsole获得www-data权限的shell。<br>寻找具有suid的可执行程序。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225092049.png"><br>发现可以使用Find，进行提权。<code> find / -name flag1.txt -exec &quot;/bin/sh&quot; \</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225092952.png">  </p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Linux提权</tag>
+        <tag>Find提权</tag>
+      </tags>
+  </entry>
 </search>
