@@ -1167,7 +1167,7 @@ echo 123;
 <h3 id="贴吧"><a href="#贴吧" class="headerlink" title="贴吧"></a>贴吧</h3><p>学号<br>身份证号</p>
 <h3 id="弱爆破"><a href="#弱爆破" class="headerlink" title="弱爆破"></a>弱爆破</h3><p>1.弱口令用户名如admin,test,ceshi等<br>2.员工姓名全拼，员工姓名简拼<br>3.公司特征+员工工号/员工姓名<br>4.员工工号+姓名简拼<br>5.员工姓名全拼+员工工号<br>6.员工姓名全拼+重复次数，如zhangsan和zhangsan01<br>7.其他</p>
 <h3 id="qq新生群"><a href="#qq新生群" class="headerlink" title="qq新生群"></a>qq新生群</h3><p>学号<br>身份证号</p>
-<p>手册<br>名单<br>教师手册<br>VPN<br>学号<br>人才培养<br>奖学金</p>
+<p>手册<br>名单<br>教师手册<br>VPN<br>学号<br>人才培养<br>奖学金<br>校园卡</p>
 <h3 id="VPN"><a href="#VPN" class="headerlink" title="VPN"></a>VPN</h3><p>C段B段扫描<br>监控<br>门禁<br>管理系统</p>
 <h2 id="APP脱壳"><a href="#APP脱壳" class="headerlink" title="APP脱壳"></a>APP脱壳</h2><h2 id="github"><a href="#github" class="headerlink" title="github"></a>github</h2><h3 id="基本语法"><a href="#基本语法" class="headerlink" title="基本语法"></a>基本语法</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">in:descripton test 			#仓库描述搜索含有关键字</span><br><span class="line">in:readme test  			 #Readme文件搜素含有关键字</span><br><span class="line">stars:&gt;3000 test 			#stars数量大于3000的搜索关键字</span><br><span class="line">stars:1000..3000 test	 #stars数量大于1000小于3000的搜索关键字</span><br><span class="line">forks:&gt;1000 test 			#forks数量大于1000的搜索关键字</span><br><span class="line">forks:1000..3000 test 	#forks数量大于1000小于3000的搜索关键字</span><br><span class="line">size:&gt;=5000 test 				#指定仓库大于5000k(5M)的搜索关键字</span><br><span class="line">pushed:&gt;2019-02-12 test #发布时间大于2019-02-12的搜索关键字</span><br><span class="line">created:&gt;2019-02-12 test #创建时间大于2019-02-12的搜索关键字</span><br><span class="line">user:test 								#用户名搜素</span><br><span class="line">license:apache-2.0 test	 #明确仓库的 LICENSE 搜索关键字</span><br><span class="line">language:java test 				#在java语言的代码中搜索关键字</span><br><span class="line">user:test in:name test		 #组合搜索,用户</span><br></pre></td></tr></table></figure>
 
@@ -1227,6 +1227,27 @@ echo 123;
         <tag>wordpress</tag>
         <tag>Git提权</tag>
         <tag>rbash绕过</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC-3靶机</title>
+    <url>/2022/01/18/DC-3%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="DC-3靶机"><a href="#DC-3靶机" class="headerlink" title="DC-3靶机"></a>DC-3靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/dc-32,312/">下载地址</a><br>目标:获得root flag</p>
+<span id="more"></span>
+
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>nmap扫描结果显示，只开放了80端口。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118195840.png"><br>访问80页面后发现是一个博客，对目录进行扫描发现后台登录页面，同时该博客使用Joomla系统。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118200326.png">  </p>
+<p>使用joomscan扫描网页，可以发现网站版本为3.7.0<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118210554.png">  </p>
+<p>使用searchsploit离线搜索Exploit-DB漏洞数据，可以发现存在两个结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118210751.png"><br>使用<code>searchsploit -p 42033</code>快速获得绝对路径<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118211023.png"><br>文件中含有关于Sql注入漏洞和Sqlmap的使用方法。通过sqlmap获得帐号admin , 和密码hash.<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118212702.png"><br>通过john得到 帐号:admin 密码:snoopy<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118213317.png"><br>使用管理员登录后，如图进入模板页面。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118214115.png"><br>选择一个模板后,新建或者修改一个php文件为shell文件。之后在<code>http://10.1.1.138/templates/beez3/abcde.php</code>访问该shell文件。<br>反弹shell后权限为www-data，查看linux系统版本可以使用脏牛提权。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118215731.png"><br>通过php大马后上传脏牛到靶机使用后提权获得root权限。查看root-flag文件。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220118215815.png"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>脏牛提权</tag>
+        <tag>Vulhub</tag>
+        <tag>joomla</tag>
+        <tag>searchsploit</tag>
       </tags>
   </entry>
 </search>
