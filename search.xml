@@ -1250,4 +1250,48 @@ echo 123;
         <tag>searchsploit</tag>
       </tags>
   </entry>
+  <entry>
+    <title>CscmsV4.2漏洞复现与审计</title>
+    <url>/2022/01/20/CscmsV4-2%E6%BC%8F%E6%B4%9E%E5%A4%8D%E7%8E%B0%E4%B8%8E%E5%AE%A1%E8%AE%A1/</url>
+    <content><![CDATA[<h1 id="CScmsV4-2"><a href="#CScmsV4-2" class="headerlink" title="CScmsV4.2"></a>CScmsV4.2</h1><h2 id="漏洞复现"><a href="#漏洞复现" class="headerlink" title="漏洞复现"></a>漏洞复现</h2><h3 id="后台歌曲删除页面SQL注入漏洞"><a href="#后台歌曲删除页面SQL注入漏洞" class="headerlink" title="后台歌曲删除页面SQL注入漏洞"></a>后台歌曲删除页面SQL注入漏洞</h3><span id="more"></span>
+
+<p>进入网站后台，在歌曲管理页面添加歌曲后，将歌曲删除。歌曲进入回收站，    在回收站页面点击删除，此处存在SQL注入。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120211233.png"><br>抓包后修改POST数据<code>id=4)and(sleep(3))--+</code><br>对应的代码在\plugin\dance\admin\Dance.php:del()中<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120211420.png"><br>进入cscms/app/core/CS_Input.php中get_post(‘id’)方法，同时没有传递$xss_clean 和 $sql_clean的参数为空<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120211650.png"><br>再进入$this-&gt;post(‘id’, null, null)<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120212112.png"><br>进入_fetch_from_array($_POST, ‘id’, null, null)方法<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120212503.png"><br>判断传递的XSS_clean是否为Bool，如果不为Bool值则Xss_clean为本地设置的默认值false。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120212958.png"><br>在最后进行过滤，如果xss_clean为false ，则同时sql注入的过滤不被经过。可以发现传递的xss_clean的值默认为false所以。最后得到的$ids没有被过滤    <code>$ids = id=4)and(sleep(3))--+</code>  </p>
+<p>之后进入yid==3判断，直接拼接在sql语句中<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120213526.png"><br>进入cscms/system/database/DB_driver.php:query($sql)<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120213834.png"><br>在query()中经过前期的判读后，进入simple_query($sql)<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120213927.png"><br>再simple_query()判断连接的合法性之后，进入__execte($sql)   __</p>
+<p>_<br>在cscms/system/database/drivers/mysqli/mysqli_driver.php:_excute($sql)中，对SQL语句进行_preq_query($sql)后直接进行mysqli::query()进行查询。 </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120214352.png">  </p>
+<p>_preq_query()函数在匹配到存在delete语句时起作用，对我们没有影响。最后得到的结果是对sql语句的直接查询，导致sql注入。<br>在最开始获得数据的 $this-&gt;input-&gt;get_post()没有传递xss_clean参数，导致使用默认的xss_clean=false参数，也同时不进行sql注入的过滤。<br>同时使用的$this-&gt;db-&gt;query()整个过程都没有sql语句进行二次过滤，或者使用预编译导致直接拼接sql语句进行查询导致注入。 </p>
+]]></content>
+      <categories>
+        <category>代码审计</category>
+      </categories>
+      <tags>
+        <tag>代码审计</tag>
+        <tag>CMS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC-4靶机</title>
+    <url>/2022/01/20/DC-4%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="DC-4靶机"><a href="#DC-4靶机" class="headerlink" title="DC-4靶机"></a>DC-4靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2>]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>Vulnhub</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Xdebug配合Phpstorm使用</title>
+    <url>/2022/01/20/Xdebug%E9%85%8D%E5%90%88Phpstorm%E4%BD%BF%E7%94%A8/</url>
+    <content><![CDATA[<h1 id="Xdebug的配置"><a href="#Xdebug的配置" class="headerlink" title="Xdebug的配置"></a>Xdebug的配置</h1><h3 id="所有流量在phpstorm调试"><a href="#所有流量在phpstorm调试" class="headerlink" title="所有流量在phpstorm调试"></a>所有流量在phpstorm调试</h3><p>在php.ini中添加<code>xdebug.remote_autostart=1</code>可以使所有的流量不需要浏览器安装Xdebug插件，就在phpStorm中调试。这样就可以配合BurpSuite使用。</p>
+]]></content>
+      <categories>
+        <category>代码审计</category>
+      </categories>
+      <tags>
+        <tag>phpstorm</tag>
+        <tag>Xdebug</tag>
+      </tags>
+  </entry>
 </search>
