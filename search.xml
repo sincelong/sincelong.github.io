@@ -1272,7 +1272,17 @@ echo 123;
   <entry>
     <title>DC-4靶机</title>
     <url>/2022/01/20/DC-4%E9%9D%B6%E6%9C%BA/</url>
-    <content><![CDATA[<h1 id="DC-4靶机"><a href="#DC-4靶机" class="headerlink" title="DC-4靶机"></a>DC-4靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2>]]></content>
+    <content><![CDATA[<h1 id="DC-4靶机"><a href="#DC-4靶机" class="headerlink" title="DC-4靶机"></a>DC-4靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/dc-4,313/">下载地址</a><br>目标:获得唯一一个FLAG  </p>
+<span id="more"></span>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描发现有22 和 80端口<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121093552.png">  </p>
+<p>80端口直接是一个登录页面，没有有效信息。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121095349.png">  </p>
+<p>上BurpSuite进行密码爆破，先尝试帐号为admin，得到密码为happy<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121095437.png"><br>登录后，发现存在三个选项。点击抓包后发现存在,命令执行漏洞。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121095920.png">  </p>
+<p>查看home目录发现存在三个用户。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121102756.png">  </p>
+<p>在jim的目录中发现了备份密码的文件夹。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121103106.png">  </p>
+<p>保存后使用hydra对ssh进行爆破。获得可用的帐号密码。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121103156.png"><br>登录后查看mbox。发现是关于邮件的信息。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121103837.png"><br>进入/var/mail 查看邮件详情，发现了charles的密码.<br><code>帐号:charles 密码:^xHhA&amp;hvim0y</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121103935.png"><br>通过<code>sudo -l</code>发现可以使用teehee。teehee是一个往文件内写内容的程序。我们往passwd中写入一个不需要密码的root用户。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">sudo teehee -a /etc/passwd</span><br><span class="line">test::0:0::/bin/bash</span><br></pre></td></tr></table></figure>
+<p>切换用户后获得root权限，获得flag。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121105441.png"></p>
+]]></content>
       <categories>
         <category>靶场</category>
       </categories>
