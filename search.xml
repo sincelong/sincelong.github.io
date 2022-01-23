@@ -1354,4 +1354,50 @@ echo 123;
         <tag>screen提权</tag>
       </tags>
   </entry>
+  <entry>
+    <title>DC-6靶机</title>
+    <url>/2022/01/23/DC-6%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="DC-6靶机"><a href="#DC-6靶机" class="headerlink" title="DC-6靶机"></a>DC-6靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/dc-6,315/">下载地址</a><br>目标:获得root权限并拿到flag<br>特点:<br>sudo 反弹其他用户shell</p>
+<span id="more"></span>
+
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123114122.png">  </p>
+<p>尝试访问80端口，但是显示无法访问，安照提示在host中加入<code>192.168.0.142 wordy</code>即可成功访问。<br>访问80端口后发现是一个wordpress博客 ，用户为<code>wordy</code>  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123114521.png">  </p>
+<p>进入管理员登录页面尝试爆破存在的帐号。<br>帐号存在</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">admin</span><br><span class="line">sarah</span><br><span class="line">graham</span><br><span class="line">mark</span><br><span class="line">jens</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123121726.png">  </p>
+<p>接着使用BurpSuite开始进行密码爆破。我使用的字典都没有跑出结果，这时候想到在下载页面作者提示。<br><code>cat /usr/share/wordlists/rockyou.txt | grep k01 &gt; passwords.txt That should save you a few years. ;-) 跑到kali下面把passwords.txt文件弄出来继续跑密码爆破。 爆破结果</code>mark:helpdesk01`可以登录<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123122904.png">  </p>
+<p>登录后发现存在Activity Montitor 插件   </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123154416.png">  </p>
+<p>搜索发现存在漏洞<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123154514.png">  </p>
+<p>查看相关信息可以发现，找到在wordpress中的对应位置。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123155145.png">  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123155158.png">  </p>
+<p>抓包后数据进行反弹shell<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123155415.png"><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123155430.png">  </p>
+<p>在/home/mark/stuff中发现<code>graha</code>帐号密码<br><code>graham - GSo7isUM1D4</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123160002.png">  </p>
+<p>登录后发现 /home/jens中存在一个备份的backup.sh文件，jens用户和devs组都具有完全的权限。<br>同时我们使用<code>sudo -l</code> 发现graham可以执行该文件，且graham属于devs用户组，可以修改backup.sh文件。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123162244.png">  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123162256.png">  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123162311.png">  </p>
+<p>我们往文件中写入反弹shell。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123162352.png">  </p>
+<p>用sudo 执行获得反弹jens的shell。 </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123162806.png">  </p>
+<p>查看后发现，jens可以用root运行namp  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123162928.png"></p>
+<p>使用sudo提权，获得root权限。</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">SHELL=$(mktemp)</span><br><span class="line">echo &#x27;os.execute(&quot;/bin/sh&quot;)&#x27; &gt; $SHELL</span><br><span class="line">sudo nmap --script=$SHELL</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123164217.png">  </p>
+<p>查看flag<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220123164242.png"></p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>Vulhub</tag>
+        <tag>靶机</tag>
+      </tags>
+  </entry>
 </search>
