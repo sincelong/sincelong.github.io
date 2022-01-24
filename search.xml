@@ -1400,4 +1400,51 @@ echo 123;
         <tag>靶机</tag>
       </tags>
   </entry>
+  <entry>
+    <title>DC-7靶机</title>
+    <url>/2022/01/24/DC-7%E9%9D%B6%E6%9C%BA/</url>
+    <content><![CDATA[<h1 id="DC-7靶机"><a href="#DC-7靶机" class="headerlink" title="DC-7靶机"></a>DC-7靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a href="https://www.vulnhub.com/entry/dc-7,356/">下载地址</a><br>目标:获得root权限并拿到flag<br>提示:暴破和目录扫描没有，想办法<code>&quot;outside&quot; of the box</code><br>特点: Drush修改密码 , Linux计划任务,github查看信息</p>
+<span id="more"></span>
+
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>扫描结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124095830.png">  </p>
+<p>80端口上是一个Drupal博客  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124095956.png">  </p>
+<p>进行目录扫描，在<code>/core/install.php</code>页面发现版本为8.7.6  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124100650.png">  </p>
+<p>搜索漏洞库，并没有发现有用的漏洞。目录扫描也没有什么有效的信息。去网上看了一下教材，发现是搜索博客中下方的版权信息<code>@DC7USER</code>.<br> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124102633.png">  </p>
+<p> 搜索之后可以发现dc7user有一个github，里面存在一个项目stuffdb，在其中的config.php中含有数据库连接帐号密码。<code>dc7user:MdR3xOgB7#dW</code>。 </p>
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124102759.png">  </p>
+<p> 尝试使用该帐号登录Drupal但是无果。换个思路去试一试ssh，成功登录。  </p>
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124102911.png">  </p>
+<p> 在dc7user的home中存在mbox，于是去<code>/var/mail</code>中看看有没有邮件信息。发现存在一个邮件信息说数据库存在<code>/home/dc7user/backups/website.sql</code>中。 </p>
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124103244.png">  </p>
+<p> 同时存在一个脚本在<code>/opt/scripts/backups.sh</code>  </p>
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124104126.png">  </p>
+<p> 查看该脚本内容<br> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124104209.png">  </p>
+<p> 查看脚本我们可以发现，脚本的创建者为root，用户组为www-data。他们有完全的权限。同时该脚本会计划任务中以root权限运行。可以想到需要从网站获得SHELL，然后修改脚本获得ROOT权限。</p>
+<p>在脚本内容中dursh这条指令，并不是很熟悉。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124123243.png">  </p>
+<p>上网查询后发现，这条指令可以修改用户密码。尝试修改admin密码<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124123342.png">  </p>
+<p>登录网站后需要安装php模块反弹shell  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124123656.png">  </p>
+<p>在<a href="https://www.drupal.org/project/php">https://www.drupal.org/project/php</a> 网站下载php模块后选择安装</p>
+<p>安装之后允许php模块运行  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124123820.png"></p>
+<p>在Content页面修改基本页面</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124124125.png">  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124124152.png">  </p>
+<p>成功反弹shell后修改脚本文件  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124125155.png">  </p>
+<p>等待一会，脚本反弹成功。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124130131.png">  </p>
+<p> <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220124130158.png"></p>
+<p>查看了一下每15分钟执行一次计划任务</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>Vulhub</tag>
+        <tag>靶机</tag>
+      </tags>
+  </entry>
 </search>
