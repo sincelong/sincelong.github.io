@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="sql注入,sqlmap," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="sqlmap start()函数参考https:&#x2F;&#x2F;www.cnblogs.com&#x2F;hongfei&#x2F;p&#x2F;sqlmap-start.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sqlmap_start()">
+<meta property="og:url" content="http://example.com/2022/02/13/sqlmap-start/index.html">
+<meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="sqlmap start()函数参考https:&#x2F;&#x2F;www.cnblogs.com&#x2F;hongfei&#x2F;p&#x2F;sqlmap-start.html">
+<meta property="og:locale">
+<meta property="article:published_time" content="2022-02-13T06:39:07.000Z">
+<meta property="article:modified_time" content="2022-02-13T06:39:07.000Z">
+<meta property="article:author" content="Laplace">
+<meta property="article:tag" content="sql注入">
+<meta property="article:tag" content="sqlmap">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2022/02/13/sqlmap-start/"/>
+
+
+
+
+
+  <title>sqlmap_start() | Recoder</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Recoder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/13/sqlmap-start/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">sqlmap_start()</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-13T14:39:07+08:00">
+                2022-02-13
+              </time>
+            
+
+			
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/sqlmap%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index">
+                    <span itemprop="name">sqlmap源码阅读</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="sqlmap-start-函数"><a href="#sqlmap-start-函数" class="headerlink" title="sqlmap start()函数"></a>sqlmap start()函数</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/hongfei/p/sqlmap-start.html">https://www.cnblogs.com/hongfei/p/sqlmap-start.html</a></p>
+<span id="more"></span>
+
+<h2 id="初始参数设置及目标的设置"><a href="#初始参数设置及目标的设置" class="headerlink" title="初始参数设置及目标的设置"></a>初始参数设置及目标的设置</h2><h3 id="hash破解-选项"><a href="#hash破解-选项" class="headerlink" title="hash破解(选项)"></a>hash破解(选项)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.hashFile:</span><br><span class="line">    crackHashFile(conf.hashFile)</span><br></pre></td></tr></table></figure>
+<p>conf.hashFile是命令行参数 <code>--crack</code>指定的。<br>是一个独立的实验中参数，未在用户手册中出现。<br>大概猜测是破解用户hash </p>
+<h3 id="直接连接数据库-选项"><a href="#直接连接数据库-选项" class="headerlink" title="直接连接数据库(选项)"></a>直接连接数据库(选项)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.direct:</span><br><span class="line">    initTargetEnv()</span><br><span class="line">    setupTargetEnv()</span><br><span class="line">    action()</span><br><span class="line">    <span class="keyword">return</span> <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>conf.direct通过命令行参数<code>-d</code>指定。<br>通过参数<code>-d</code>指定直杰连接的数据库<br><code>eg: -d &quot;mysql://admin:admin@192.168.21.17:3306/testdb&quot;</code>  </p>
+<h3 id="添加目标参数到kb-targets"><a href="#添加目标参数到kb-targets" class="headerlink" title="添加目标参数到kb.targets"></a>添加目标参数到kb.targets</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.url <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">any</span>((conf.forms, conf.crawlDepth)):</span><br><span class="line">	kb.targets.add((conf.url, conf.method, conf.data, conf.cookie, <span class="literal">None</span>))</span><br></pre></td></tr></table></figure>
+<p>如果不需要进行爬虫，则将目标url及对应参数直接加入kb.targets</p>
+<p>conf.foms 通过参数<code>--forms</code>指定。<br>设置该参数会爬取该页面的所有表单，进行sql注入测试</p>
+<p>conf.crawlDepth通过参数<code>--crawl=CRAWLDEPTH</code>设置<br>该参数会设置通过目标url进行爬虫的深度</p>
+<h3 id="判断configFile是否设置正确"><a href="#判断configFile是否设置正确" class="headerlink" title="判断configFile是否设置正确"></a>判断configFile是否设置正确</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.configFile <span class="keyword">and</span> <span class="keyword">not</span> kb.targets:</span><br><span class="line">	errMsg = <span class="string">&quot;you did not edit the configuration file properly, set &quot;</span></span><br><span class="line">	errMsg += <span class="string">&quot;the target URL, list of targets or google dork&quot;</span></span><br><span class="line">	logger.error(errMsg)</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>如果自己设置安装config文件如<code>sqlmap.conf</code>进行配置，但是不存在kb.targes。报错参数设置错误</p>
+<p>conf.configFile通过参数 <code>-c</code>设置，如果在命令行中同样提供参数，命令行参数会覆盖configFile中参数。</p>
+<h3 id="判断存在几个目标"><a href="#判断存在几个目标" class="headerlink" title="判断存在几个目标"></a>判断存在几个目标</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> kb.targets <span class="keyword">and</span> isListLike(kb.targets) <span class="keyword">and</span> <span class="built_in">len</span>(kb.targets) &gt; <span class="number">1</span>:</span><br><span class="line">    infoMsg = <span class="string">&quot;found a total of %d targets&quot;</span> % <span class="built_in">len</span>(kb.targets)</span><br><span class="line">    logger.info(infoMsg)</span><br></pre></td></tr></table></figure>
+
+<p>如果目标存在多个，在logger.info中记录</p>
+<h3 id="设置初始HTTP-Headers信息"><a href="#设置初始HTTP-Headers信息" class="headerlink" title="设置初始HTTP-Headers信息"></a>设置初始HTTP-Headers信息</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">targetCount = <span class="number">0</span></span><br><span class="line">initialHeaders = <span class="built_in">list</span>(conf.httpHeaders)</span><br></pre></td></tr></table></figure>
+<p>设置目标数量为0，同时将conf.httpHeaders设置给初始Header。<br>默认会带有sql-map标志    </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Cache-Control: no-cache</span><br><span class="line">User-Aget: sqlmap/1.6.1.7#dev (https://sqlmap.org)</span><br></pre></td></tr></table></figure>
+
+<h2 id="主要运行程序，对所有kb-targets进行sql注入判断"><a href="#主要运行程序，对所有kb-targets进行sql注入判断" class="headerlink" title="主要运行程序，对所有kb.targets进行sql注入判断"></a>主要运行程序，对所有kb.targets进行sql注入判断</h2><h3 id="目标数量加1"><a href="#目标数量加1" class="headerlink" title="目标数量加1"></a>目标数量加1</h3><p><code>targetCount+=1</code></p>
+<h3 id="判断当前网络联通性-选项"><a href="#判断当前网络联通性-选项" class="headerlink" title="判断当前网络联通性(选项)"></a>判断当前网络联通性(选项)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.checkInternet</span><br><span class="line">*****</span><br><span class="line">*****</span><br></pre></td></tr></table></figure>
+<p>conf.checkInternet参数通过<code>--check-internet</code>设置<br>该参数会在对目标url测试前，判断基本网络联通性。<br>目标为”<a target="_blank" rel="noopener" href="http://ipinfo.io/json&quot;">http://ipinfo.io/json&quot;</a></p>
+<h3 id="设置conf信息为当前循环kb-targets信息"><a href="#设置conf信息为当前循环kb-targets信息" class="headerlink" title="设置conf信息为当前循环kb.targets信息"></a>设置conf信息为当前循环kb.targets信息</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">conf.url = targetUrl</span><br><span class="line">conf.method = targetMethod.upper().strip() <span class="keyword">if</span> targetMethod <span class="keyword">else</span> targetMethod</span><br><span class="line">conf.data = targetData</span><br><span class="line">conf.cookie = targetCookie</span><br><span class="line">conf.httpHeaders = <span class="built_in">list</span>(initialHeaders)</span><br><span class="line">conf.httpHeaders.extend(targetHeaders <span class="keyword">or</span> [])</span><br></pre></td></tr></table></figure>
+<p>设置conf信息为当前循环的url信息，注意初始Headers信息会加入conf，当前循环的Headers信息会添加在<code>initialHeaders</code>后，而不是覆盖。因此默认情况下sql-map的标志信息还是会存在。</p>
+<h3 id="设置重复UA-选项"><a href="#设置重复UA-选项" class="headerlink" title="设置重复UA(选项)"></a>设置重复UA(选项)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.randomAgent <span class="keyword">or</span> conf.mobile:</span><br><span class="line">	<span class="keyword">for</span> header, value <span class="keyword">in</span> initialHeaders:</span><br><span class="line">		<span class="keyword">if</span> header.upper() == HTTP_HEADER.USER_AGENT.upper():</span><br><span class="line">			conf.httpHeaders.append((header, value))</span><br><span class="line">			<span class="keyword">break</span></span><br></pre></td></tr></table></figure>
+<p>设置重复UA当存在conf.randomAgent或者conf.mobile</p>
+<h3 id="编码post数据"><a href="#编码post数据" class="headerlink" title="编码post数据"></a>编码post数据</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.data:</span><br><span class="line">	<span class="comment"># Note: explicitly URL encode __ ASP(.NET) parameters (e.g. to avoid problems with Base64 encoded &#x27;+&#x27; character) - standard procedure in web browsers</span></span><br><span class="line">	conf.data = re.sub(<span class="string">r&quot;\b(__\w+)=([^&amp;]+)&quot;</span>, <span class="keyword">lambda</span> match: <span class="string">&quot;%s=%s&quot;</span> % (match.group(<span class="number">1</span>), urlencode(match.group(<span class="number">2</span>), safe=<span class="string">&#x27;%&#x27;</span>)), conf.data)</span><br></pre></td></tr></table></figure>
+<p>编码post数据</p>
+<h3 id="初始化目标环境"><a href="#初始化目标环境" class="headerlink" title="初始化目标环境"></a>初始化目标环境</h3><p><code>initTargetEnv()</code></p>
+<h3 id="解析目标url"><a href="#解析目标url" class="headerlink" title="解析目标url"></a>解析目标url</h3><p><code>parseTargetUrl()</code> </p>
+<h3 id="判断目标是否已经检测过"><a href="#判断目标是否已经检测过" class="headerlink" title="判断目标是否已经检测过"></a>判断目标是否已经检测过</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> PLACE.GET <span class="keyword">in</span> conf.parameters <span class="keyword">and</span> <span class="keyword">not</span> <span class="built_in">any</span>((conf.data, conf.testParameter)):</span><br><span class="line">	<span class="keyword">for</span> parameter <span class="keyword">in</span> re.findall(<span class="string">r&quot;([^=]+)=([^%s]+%s?|\Z)&quot;</span> % (re.escape(conf.paramDel <span class="keyword">or</span> <span class="string">&quot;&quot;</span>) <span class="keyword">or</span> DEFAULT_GET_POST_DELIMITER, re.escape(conf.paramDel <span class="keyword">or</span> <span class="string">&quot;&quot;</span>) <span class="keyword">or</span> DEFAULT_GET_POST_DELIMITER), conf.parameters[PLACE.GET]):</span><br><span class="line">		paramKey = (conf.hostname, conf.path, PLACE.GET, parameter[<span class="number">0</span>])</span><br><span class="line">		<span class="keyword">if</span> paramKey <span class="keyword">not</span> <span class="keyword">in</span> kb.testedParams:</span><br><span class="line">			testSqlInj = <span class="literal">True</span></span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">	paramKey = (conf.hostname, conf.path, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">	<span class="keyword">if</span> paramKey <span class="keyword">not</span> <span class="keyword">in</span> kb.testedParams:</span><br><span class="line">		testSqlInj = <span class="literal">True</span></span><br></pre></td></tr></table></figure>
+<p>测试过的url参数信息会保存到kb.testedParams中，所以在进行test之前，会先判断当前的url是否已经test过。<br>取出主机名， 路径名 ， ‘GET’, GET参数，与<code>kb.testedParams</code>比较。判断是否检测过，如果检测过，<code>testSqlInj</code>保持默认值<code>false</code>。在下一个判断如果<code>testSqlInj=false</code>会continue，到下一个url。</p>
+<h3 id="判断是否进行本次注入检测"><a href="#判断是否进行本次注入检测" class="headerlink" title="判断是否进行本次注入检测"></a>判断是否进行本次注入检测</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> testSqlInj:</span><br><span class="line">	infoMsg = <span class="string">&quot;skipping &#x27;%s&#x27;&quot;</span> % targetUrl</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line">	<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+<p>如果<code>testSqlInj=false</code>跳过本次注入检测。</p>
+<h3 id="如果存在多个目标"><a href="#如果存在多个目标" class="headerlink" title="如果存在多个目标"></a>如果存在多个目标</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.multipleTargets:</span><br><span class="line">	<span class="keyword">if</span> conf.forms <span class="keyword">and</span> conf.method:</span><br><span class="line">		message = <span class="string">&quot;[%d/%s] Form:\n%s %s&quot;</span> % (targetCount, <span class="built_in">len</span>(kb.targets) <span class="keyword">if</span> isListLike(kb.targets) <span class="keyword">else</span> <span class="string">&#x27;?&#x27;</span>, conf.method, targetUrl)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		message = <span class="string">&quot;[%d/%s] URL:\n%s %s&quot;</span> % (targetCount, <span class="built_in">len</span>(kb.targets) <span class="keyword">if</span> isListLike(kb.targets) <span class="keyword">else</span> <span class="string">&#x27;?&#x27;</span>, HTTPMETHOD.GET, targetUrl)</span><br><span class="line">*******</span><br></pre></td></tr></table></figure>
+
+<p>如果判断存在多个目标进行额外操作。</p>
+<h3 id="setupTargetEnv"><a href="#setupTargetEnv" class="headerlink" title="setupTargetEnv()"></a>setupTargetEnv()</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">setupTargetEnv</span>():</span></span><br><span class="line">    _createTargetDirs()</span><br><span class="line">    _setRequestParams()</span><br><span class="line">    _setHashDB()</span><br><span class="line">    _resumeHashDBValues()</span><br><span class="line">    _setResultsFile()</span><br><span class="line">    _setAuthCred()</span><br><span class="line">    _setAuxOptions()</span><br></pre></td></tr></table></figure>
+<p>主要为创建结果文件，检测GET , POST 参数结果保存在<code>conf.paramDict</code>中，进行查询的中断恢复。 </p>
+<p>_createTargetDirs()会创建输出目录<br>_setRequestParams()检测并设置参数，同时如果存在POST数据，检测POST数据。结果保存在<code>conf.paramDict</code>中<br>_setHashDB()设置HashDb SQLite 文件，为了恢复查询。<br>_resumeHashDBValues()从HashDB中恢复文件<br>_setResultsFile()在<code>conf.multipleTargets</code>条件下创建输出结果文件<br>_setAuthCred()为当前的连接目标设置认证信息<br>_setAuxOptions()设置辅助 选项</p>
+<h3 id="判断目标url是否连通"><a href="#判断目标url是否连通" class="headerlink" title="判断目标url是否连通"></a>判断目标url是否连通</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> checkConnection(suppressOutput=conf.forms):</span><br><span class="line">	<span class="keyword">continue</span></span><br></pre></td></tr></table></figure>
+
+<p>如果对目标url无法连接，跳过当前目标。 </p>
+<h3 id="设置参数的随机值-选项"><a href="#设置参数的随机值-选项" class="headerlink" title="设置参数的随机值(选项)"></a>设置参数的随机值(选项)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.rParam <span class="keyword">and</span> kb.originalPage:</span><br><span class="line">	kb.randomPool = <span class="built_in">dict</span>([_ <span class="keyword">for</span> _ <span class="keyword">in</span> kb.randomPool.items() <span class="keyword">if</span> <span class="built_in">isinstance</span>(_[<span class="number">1</span>], <span class="built_in">list</span>)])</span><br><span class="line"></span><br><span class="line">	<span class="keyword">for</span> match <span class="keyword">in</span> re.finditer(<span class="string">r&quot;(?si)&lt;select[^&gt;]+\bname\s*=\s*[\&quot;&#x27;]([^\&quot;&#x27;]+)(.+?)&lt;/select&gt;&quot;</span>, kb.originalPage):</span><br><span class="line">		name, _ = match.groups()</span><br><span class="line">		options = <span class="built_in">tuple</span>(re.findall(<span class="string">r&quot;&lt;option[^&gt;]+\bvalue\s*=\s*[\&quot;&#x27;]([^\&quot;&#x27;]+)&quot;</span>, _))</span><br><span class="line">		<span class="keyword">if</span> options:</span><br><span class="line">			kb.randomPool[name] = options</span><br></pre></td></tr></table></figure>
+
+<p>conf.rParam参数通过命令行<code>--randomize=RPARAM</code>设置。<br>通过该参数，可以随机改变对应参数的值。</p>
+<h3 id="判断waf"><a href="#判断waf" class="headerlink" title="判断waf"></a>判断waf</h3><p><code>checkWaf()</code></p>
+<p>判断目标是否存在Waf。<br>参考文章为<a target="_blank" rel="noopener" href="https://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse">https://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse</a></p>
+<p>大概看了一下，是通过发送一系列脏数据然后判断页面是否存在不同来判断是否存在WA。</p>
+<h3 id="nullConnection-选项"><a href="#nullConnection-选项" class="headerlink" title="nullConnection(选项)"></a>nullConnection(选项)</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> conf.nullConnection:</span><br><span class="line">	checkNullConnection()</span><br></pre></td></tr></table></figure>
+
+<p>conf.nullConnection通过命令行<code>--null-connection</code>设置。<br>通过该参数可以从没有实际的HTTP响应体中检索页面长度</p>
+<h3 id="判断页面稳定性"><a href="#判断页面稳定性" class="headerlink" title="判断页面稳定性"></a>判断页面稳定性</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> (<span class="built_in">len</span>(kb.injections) == <span class="number">0</span> <span class="keyword">or</span> (<span class="built_in">len</span>(kb.injections) == <span class="number">1</span> <span class="keyword">and</span> kb.injections[<span class="number">0</span>].place <span class="keyword">is</span> <span class="literal">None</span>)) <span class="keyword">and</span> (kb.injection.place <span class="keyword">is</span> <span class="literal">None</span> <span class="keyword">or</span> kb.injection.parameter <span class="keyword">is</span> <span class="literal">None</span>):</span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> <span class="built_in">any</span>((conf.string, conf.notString, conf.regexp)) <span class="keyword">and</span> PAYLOAD.TECHNIQUE.BOOLEAN <span class="keyword">in</span> conf.technique:</span><br><span class="line">		<span class="comment"># <span class="doctag">NOTE:</span> this is not needed anymore, leaving only to display</span></span><br><span class="line">		<span class="comment"># a warning message to the user in case the page is not stable</span></span><br><span class="line">		checkStability()</span><br></pre></td></tr></table></figure>
+
+<p>先后发送同样的两个请求。通过判断返回页面是否相同判断页面是否稳定。  </p>
+<h3 id="重排conf-conf-parameters"><a href="#重排conf-conf-parameters" class="headerlink" title="重排conf.conf.parameters"></a>重排conf.conf.parameters</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># Do a little prioritization reorder of a testable parameter list</span></span><br><span class="line">parameters = <span class="built_in">list</span>(conf.parameters.keys())</span><br><span class="line"></span><br><span class="line"><span class="comment"># Order of testing list (first to last)</span></span><br><span class="line">orderList = (PLACE.CUSTOM_POST, PLACE.CUSTOM_HEADER, PLACE.URI, PLACE.POST, PLACE.GET)</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> place <span class="keyword">in</span> orderList[::-<span class="number">1</span>]:</span><br><span class="line">	<span class="keyword">if</span> place <span class="keyword">in</span> parameters:</span><br><span class="line">		parameters.remove(place)</span><br><span class="line">		parameters.insert(<span class="number">0</span>, place)</span><br></pre></td></tr></table></figure>
+
+<p>重排<code>conf.parameters</code>到<code>parameters</code>中</p>
+<h3 id="对当前目标所有位置进行注入判断"><a href="#对当前目标所有位置进行注入判断" class="headerlink" title="对当前目标所有位置进行注入判断"></a>对当前目标所有位置进行注入判断</h3><h4 id="当前注入位置是否应该跳过"><a href="#当前注入位置是否应该跳过" class="headerlink" title="当前注入位置是否应该跳过"></a>当前注入位置是否应该跳过</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> place <span class="keyword">in</span> parameters:</span><br><span class="line">		<span class="comment"># Test User-Agent and Referer headers only if</span></span><br><span class="line">		<span class="comment"># --level &gt;= 3</span></span><br><span class="line">		skip = (place == PLACE.USER_AGENT <span class="keyword">and</span> (kb.testOnlyCustom <span class="keyword">or</span> conf.level &lt; <span class="number">3</span>))</span><br><span class="line">		skip |= (place == PLACE.REFERER <span class="keyword">and</span> (kb.testOnlyCustom <span class="keyword">or</span> conf.level &lt; <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line">		<span class="comment"># --param-filter</span></span><br><span class="line">		skip |= (<span class="built_in">len</span>(conf.paramFilter) &gt; <span class="number">0</span> <span class="keyword">and</span> place.upper() <span class="keyword">not</span> <span class="keyword">in</span> conf.paramFilter)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># Test Host header only if</span></span><br><span class="line">		<span class="comment"># --level &gt;= 5</span></span><br><span class="line">		skip |= (place == PLACE.HOST <span class="keyword">and</span> (kb.testOnlyCustom <span class="keyword">or</span> conf.level &lt; <span class="number">5</span>))</span><br><span class="line">..........</span><br></pre></td></tr></table></figure>
+<p>注入位置总共有9处</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">GET = <span class="string">&quot;GET&quot;</span></span><br><span class="line">POST = <span class="string">&quot;POST&quot;</span></span><br><span class="line">URI = <span class="string">&quot;URI&quot;</span></span><br><span class="line">COOKIE = <span class="string">&quot;Cookie&quot;</span></span><br><span class="line">USER_AGENT = <span class="string">&quot;User-Agent&quot;</span></span><br><span class="line">REFERER = <span class="string">&quot;Referer&quot;</span></span><br><span class="line">HOST = <span class="string">&quot;Host&quot;</span></span><br><span class="line">CUSTOM_POST = <span class="string">&quot;(custom) POST&quot;</span></span><br><span class="line">CUSTOM_HEADER = <span class="string">&quot;(custom) HEADER&quot;</span></span><br></pre></td></tr></table></figure>
+<p>通过设置的level判断当前是否跳过当前注入方式。<br>conf.level通过命令行<code>--level=LEVEL</code>设置，默认为1<br>通过该参数设置注入的复杂程度 </p>
+<h4 id="判断当前注入位置，该参数是否跳过"><a href="#判断当前注入位置，该参数是否跳过" class="headerlink" title="判断当前注入位置，该参数是否跳过"></a>判断当前注入位置，该参数是否跳过</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> paramKey <span class="keyword">in</span> kb.testedParams:</span><br><span class="line">	testSqlInj = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	infoMsg = <span class="string">&quot;skipping previously processed %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> <span class="built_in">any</span>(_ <span class="keyword">in</span> conf.testParameter <span class="keyword">for</span> _ <span class="keyword">in</span> (parameter, removePostHintPrefix(parameter))):</span><br><span class="line">	<span class="keyword">pass</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> parameter <span class="keyword">in</span> conf.rParam:</span><br><span class="line">	testSqlInj = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	infoMsg = <span class="string">&quot;skipping randomizing %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> parameter <span class="keyword">in</span> conf.skip <span class="keyword">or</span> kb.postHint <span class="keyword">and</span> parameter.split(<span class="string">&#x27; &#x27;</span>)[-<span class="number">1</span>] <span class="keyword">in</span> conf.skip:</span><br><span class="line">	testSqlInj = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	infoMsg = <span class="string">&quot;skipping %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> conf.paramExclude <span class="keyword">and</span> (re.search(conf.paramExclude, parameter, re.I) <span class="keyword">or</span> kb.postHint <span class="keyword">and</span> re.search(conf.paramExclude, parameter.split(<span class="string">&#x27; &#x27;</span>)[-<span class="number">1</span>], re.I)):</span><br><span class="line">	testSqlInj = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	infoMsg = <span class="string">&quot;skipping %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> conf.csrfToken <span class="keyword">and</span> re.search(conf.csrfToken, parameter, re.I):</span><br><span class="line">	testSqlInj = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	infoMsg = <span class="string">&quot;skipping anti-CSRF token parameter &#x27;%s&#x27;&quot;</span> % parameter</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Ignore session-like parameters for --level &lt; 4</span></span><br><span class="line"><span class="keyword">elif</span> conf.level &lt; <span class="number">4</span> <span class="keyword">and</span> (parameter.upper() <span class="keyword">in</span> IGNORE_PARAMETERS <span class="keyword">or</span> <span class="built_in">any</span>(_ <span class="keyword">in</span> parameter.lower() <span class="keyword">for</span> _ <span class="keyword">in</span> CSRF_TOKEN_PARAMETER_INFIXES) <span class="keyword">or</span> parameter.upper().startswith(GOOGLE_ANALYTICS_COOKIE_PREFIX)):</span><br><span class="line">	testSqlInj = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line">	infoMsg = <span class="string">&quot;ignoring %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">	logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="keyword">elif</span> PAYLOAD.TECHNIQUE.BOOLEAN <span class="keyword">in</span> conf.technique <span class="keyword">or</span> conf.skipStatic:</span><br><span class="line">	check = checkDynParam(place, parameter, value)</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> <span class="keyword">not</span> check:</span><br><span class="line">		warnMsg = <span class="string">&quot;%sparameter &#x27;%s&#x27; does not appear to be dynamic&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">		logger.warn(warnMsg)</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> conf.skipStatic:</span><br><span class="line">			infoMsg = <span class="string">&quot;skipping static %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">			logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line">			testSqlInj = <span class="literal">False</span></span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		infoMsg = <span class="string">&quot;%sparameter &#x27;%s&#x27; appears to be dynamic&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">		logger.info(infoMsg)</span><br></pre></td></tr></table></figure>
+
+<p>判断当前位置该参数是否应该被跳过。</p>
+<h4 id="当前参数设置为已被测试"><a href="#当前参数设置为已被测试" class="headerlink" title="当前参数设置为已被测试"></a>当前参数设置为已被测试</h4><p><code>kb.testedParams.add(paramKey)</code></p>
+<h4 id="测试sql注入"><a href="#测试sql注入" class="headerlink" title="测试sql注入"></a>测试sql注入</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> place == PLACE.COOKIE:</span><br><span class="line">	pushValue(kb.mergeCookies)</span><br><span class="line">	kb.mergeCookies = <span class="literal">False</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment"># sql启发式注入测试函数</span></span><br><span class="line">check = heuristicCheckSqlInjection(place, parameter)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> check != HEURISTIC_TEST.POSITIVE:</span><br><span class="line">	<span class="keyword">if</span> conf.smart <span class="keyword">or</span> (kb.ignoreCasted <span class="keyword">and</span> check == HEURISTIC_TEST.CASTED):</span><br><span class="line">		infoMsg = <span class="string">&quot;skipping %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">		logger.info(infoMsg)</span><br><span class="line">		<span class="keyword">continue</span></span><br><span class="line"></span><br><span class="line">infoMsg = <span class="string">&quot;testing for SQL injection on %sparameter &#x27;%s&#x27;&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">logger.info(infoMsg)</span><br><span class="line"></span><br><span class="line"><span class="comment"># sql注入测试函数</span></span><br><span class="line">injection = checkSqlInjection(place, parameter, value)</span><br><span class="line">proceed = <span class="keyword">not</span> kb.endDetection</span><br><span class="line">injectable = <span class="literal">False</span></span><br></pre></td></tr></table></figure>
+<p>测试该点是否存在sql注入</p>
+<h4 id="保存sql注入结果"><a href="#保存sql注入结果" class="headerlink" title="保存sql注入结果"></a>保存sql注入结果</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> <span class="built_in">getattr</span>(injection, <span class="string">&quot;place&quot;</span>, <span class="literal">None</span>) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="keyword">if</span> NOTE.FALSE_POSITIVE_OR_UNEXPLOITABLE <span class="keyword">in</span> injection.notes:</span><br><span class="line">		kb.falsePositives.append(injection)</span><br><span class="line">	<span class="keyword">else</span>:</span><br><span class="line">		injectable = <span class="literal">True</span></span><br><span class="line"></span><br><span class="line">		kb.injections.append(injection)</span><br><span class="line"></span><br><span class="line">		<span class="comment"># In case when user wants to end detection phase (Ctrl+C)</span></span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> proceed:</span><br><span class="line">			<span class="keyword">break</span></span><br><span class="line"></span><br><span class="line">		msg = <span class="string">&quot;%sparameter &#x27;%s&#x27; &quot;</span> % (<span class="string">&quot;%s &quot;</span> % injection.place <span class="keyword">if</span> injection.place != injection.parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, injection.parameter)</span><br><span class="line">		msg += <span class="string">&quot;is vulnerable. Do you want to keep testing the others (if any)? [y/N] &quot;</span></span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> <span class="keyword">not</span> readInput(msg, default=<span class="string">&#x27;N&#x27;</span>, boolean=<span class="literal">True</span>):</span><br><span class="line">			proceed = <span class="literal">False</span></span><br><span class="line">			paramKey = (conf.hostname, conf.path, <span class="literal">None</span>, <span class="literal">None</span>)</span><br><span class="line">			kb.testedParams.add(paramKey)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> injectable:</span><br><span class="line">	warnMsg = <span class="string">&quot;%sparameter &#x27;%s&#x27; does not seem to be injectable&quot;</span> % (<span class="string">&quot;%s &quot;</span> % paramType <span class="keyword">if</span> paramType != parameter <span class="keyword">else</span> <span class="string">&quot;&quot;</span>, parameter)</span><br><span class="line">	logger.warn(warnMsg)</span><br></pre></td></tr></table></figure>
+
+<p>保存sql注入结果到<code>kb.injections</code>中 </p>
+<h3 id="不存在注入点显示提示信息"><a href="#不存在注入点显示提示信息" class="headerlink" title="不存在注入点显示提示信息"></a>不存在注入点显示提示信息</h3><p>显示不存在注入点的进一步提示</p>
+<h3 id="存在注入点，保存结果并显示结果"><a href="#存在注入点，保存结果并显示结果" class="headerlink" title="存在注入点，保存结果并显示结果"></a>存在注入点，保存结果并显示结果</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">_saveToResultsFile()</span><br><span class="line">_saveToHashDB()</span><br><span class="line">_showInjections()</span><br><span class="line">_selectInjection()</span><br></pre></td></tr></table></figure>
+
+<p>保存并在控制台显示注入检测结果</p>
+<h3 id="action"><a href="#action" class="headerlink" title="action()"></a>action()</h3><p><code>action()</code><br>在action()函数中，如果用户设置了进一步操作。<br>则进行之后的操作</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/sql%E6%B3%A8%E5%85%A5/" rel="tag"># sql注入</a>
+          
+            <a href="/tags/sqlmap/" rel="tag"># sqlmap</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/01/24/DC-7%E9%9D%B6%E6%9C%BA/" rel="next" title="DC-7靶机">
+                <i class="fa fa-chevron-left"></i> DC-7靶机
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Laplace</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">31</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">38</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqlmap-start-%E5%87%BD%E6%95%B0"><span class="nav-text">sqlmap start()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%E5%8F%8A%E7%9B%AE%E6%A0%87%E7%9A%84%E8%AE%BE%E7%BD%AE"><span class="nav-text">初始参数设置及目标的设置</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#hash%E7%A0%B4%E8%A7%A3-%E9%80%89%E9%A1%B9"><span class="nav-text">hash破解(选项)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%B4%E6%8E%A5%E8%BF%9E%E6%8E%A5%E6%95%B0%E6%8D%AE%E5%BA%93-%E9%80%89%E9%A1%B9"><span class="nav-text">直接连接数据库(选项)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B7%BB%E5%8A%A0%E7%9B%AE%E6%A0%87%E5%8F%82%E6%95%B0%E5%88%B0kb-targets"><span class="nav-text">添加目标参数到kb.targets</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%ADconfigFile%E6%98%AF%E5%90%A6%E8%AE%BE%E7%BD%AE%E6%AD%A3%E7%A1%AE"><span class="nav-text">判断configFile是否设置正确</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%AD%98%E5%9C%A8%E5%87%A0%E4%B8%AA%E7%9B%AE%E6%A0%87"><span class="nav-text">判断存在几个目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%88%9D%E5%A7%8BHTTP-Headers%E4%BF%A1%E6%81%AF"><span class="nav-text">设置初始HTTP-Headers信息</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%BB%E8%A6%81%E8%BF%90%E8%A1%8C%E7%A8%8B%E5%BA%8F%EF%BC%8C%E5%AF%B9%E6%89%80%E6%9C%89kb-targets%E8%BF%9B%E8%A1%8Csql%E6%B3%A8%E5%85%A5%E5%88%A4%E6%96%AD"><span class="nav-text">主要运行程序，对所有kb.targets进行sql注入判断</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%AE%E6%A0%87%E6%95%B0%E9%87%8F%E5%8A%A01"><span class="nav-text">目标数量加1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E7%BD%91%E7%BB%9C%E8%81%94%E9%80%9A%E6%80%A7-%E9%80%89%E9%A1%B9"><span class="nav-text">判断当前网络联通性(选项)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEconf%E4%BF%A1%E6%81%AF%E4%B8%BA%E5%BD%93%E5%89%8D%E5%BE%AA%E7%8E%AFkb-targets%E4%BF%A1%E6%81%AF"><span class="nav-text">设置conf信息为当前循环kb.targets信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E9%87%8D%E5%A4%8DUA-%E9%80%89%E9%A1%B9"><span class="nav-text">设置重复UA(选项)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%BC%96%E7%A0%81post%E6%95%B0%E6%8D%AE"><span class="nav-text">编码post数据</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E7%9B%AE%E6%A0%87%E7%8E%AF%E5%A2%83"><span class="nav-text">初始化目标环境</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%A7%A3%E6%9E%90%E7%9B%AE%E6%A0%87url"><span class="nav-text">解析目标url</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E7%9B%AE%E6%A0%87%E6%98%AF%E5%90%A6%E5%B7%B2%E7%BB%8F%E6%A3%80%E6%B5%8B%E8%BF%87"><span class="nav-text">判断目标是否已经检测过</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%BF%9B%E8%A1%8C%E6%9C%AC%E6%AC%A1%E6%B3%A8%E5%85%A5%E6%A3%80%E6%B5%8B"><span class="nav-text">判断是否进行本次注入检测</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%A6%82%E6%9E%9C%E5%AD%98%E5%9C%A8%E5%A4%9A%E4%B8%AA%E7%9B%AE%E6%A0%87"><span class="nav-text">如果存在多个目标</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#setupTargetEnv"><span class="nav-text">setupTargetEnv()</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E7%9B%AE%E6%A0%87url%E6%98%AF%E5%90%A6%E8%BF%9E%E9%80%9A"><span class="nav-text">判断目标url是否连通</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AE%E5%8F%82%E6%95%B0%E7%9A%84%E9%9A%8F%E6%9C%BA%E5%80%BC-%E9%80%89%E9%A1%B9"><span class="nav-text">设置参数的随机值(选项)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%ADwaf"><span class="nav-text">判断waf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#nullConnection-%E9%80%89%E9%A1%B9"><span class="nav-text">nullConnection(选项)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E9%A1%B5%E9%9D%A2%E7%A8%B3%E5%AE%9A%E6%80%A7"><span class="nav-text">判断页面稳定性</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%87%8D%E6%8E%92conf-conf-parameters"><span class="nav-text">重排conf.conf.parameters</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%B9%E5%BD%93%E5%89%8D%E7%9B%AE%E6%A0%87%E6%89%80%E6%9C%89%E4%BD%8D%E7%BD%AE%E8%BF%9B%E8%A1%8C%E6%B3%A8%E5%85%A5%E5%88%A4%E6%96%AD"><span class="nav-text">对当前目标所有位置进行注入判断</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E6%B3%A8%E5%85%A5%E4%BD%8D%E7%BD%AE%E6%98%AF%E5%90%A6%E5%BA%94%E8%AF%A5%E8%B7%B3%E8%BF%87"><span class="nav-text">当前注入位置是否应该跳过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E6%B3%A8%E5%85%A5%E4%BD%8D%E7%BD%AE%EF%BC%8C%E8%AF%A5%E5%8F%82%E6%95%B0%E6%98%AF%E5%90%A6%E8%B7%B3%E8%BF%87"><span class="nav-text">判断当前注入位置，该参数是否跳过</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%BD%93%E5%89%8D%E5%8F%82%E6%95%B0%E8%AE%BE%E7%BD%AE%E4%B8%BA%E5%B7%B2%E8%A2%AB%E6%B5%8B%E8%AF%95"><span class="nav-text">当前参数设置为已被测试</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95sql%E6%B3%A8%E5%85%A5"><span class="nav-text">测试sql注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BF%9D%E5%AD%98sql%E6%B3%A8%E5%85%A5%E7%BB%93%E6%9E%9C"><span class="nav-text">保存sql注入结果</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%8D%E5%AD%98%E5%9C%A8%E6%B3%A8%E5%85%A5%E7%82%B9%E6%98%BE%E7%A4%BA%E6%8F%90%E7%A4%BA%E4%BF%A1%E6%81%AF"><span class="nav-text">不存在注入点显示提示信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AD%98%E5%9C%A8%E6%B3%A8%E5%85%A5%E7%82%B9%EF%BC%8C%E4%BF%9D%E5%AD%98%E7%BB%93%E6%9E%9C%E5%B9%B6%E6%98%BE%E7%A4%BA%E7%BB%93%E6%9E%9C"><span class="nav-text">存在注入点，保存结果并显示结果</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#action"><span class="nav-text">action()</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Laplace</span>
+
+  
+</div>
+
+<!--
+隐藏下标强力驱动
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+-->
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
