@@ -1448,8 +1448,36 @@ echo 123;
       </tags>
   </entry>
   <entry>
+    <title>sqlmap-checkwaf()函数</title>
+    <url>/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="sqlmap-checkwaf-函数"><a href="#sqlmap-checkwaf-函数" class="headerlink" title="sqlmap checkwaf()函数"></a>sqlmap checkwaf()函数</h1><span id="more"></span>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="判断是否跳过检测waf"><a href="#判断是否跳过检测waf" class="headerlink" title="判断是否跳过检测waf"></a>判断是否跳过检测waf</h3><p>代码</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line"><span class="comment"># 是否存在参数跳过checkwaf()</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">any</span>((conf.string, conf.notString, conf.regexp, conf.dummy, conf.offline, conf.skipWaf)):</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment">#判断页面是否联通</span></span><br><span class="line"><span class="keyword">if</span> kb.originalCode == _http_client.NOT_FOUND:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment"># 该位置是否已经检测存在waf</span></span><br><span class="line">_ = hashDBRetrieve(HASHDB_KEYS.CHECK_WAF_RESULT, <span class="literal">True</span>)</span><br><span class="line"><span class="keyword">if</span> _ <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="keyword">if</span> _:</span><br><span class="line">		warnMsg = <span class="string">&quot;previous heuristics detected that the target &quot;</span></span><br><span class="line">		warnMsg += <span class="string">&quot;is protected by some kind of WAF/IPS&quot;</span></span><br><span class="line">		logger.critical(warnMsg)</span><br><span class="line">	<span class="keyword">return</span> _</span><br><span class="line"><span class="comment"># 是否获得网站页面</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> kb.originalPage:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>通过一系列判断，决定是否要检测waf的存在。<br>分别有:</p>
+<ol>
+<li>存在需要跳过waf的参数</li>
+<li>网站页面为404</li>
+<li>该网站已经检测过存在waf</li>
+<li>网站页面为空  </li>
+</ol>
+<h3 id="设置payload"><a href="#设置payload" class="headerlink" title="设置payload"></a>设置payload</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">payload = <span class="string">&quot;%d %s&quot;</span> % (randomInt(), IPS_WAF_CHECK_PAYLOAD)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> PLACE.URI <span class="keyword">in</span> conf.parameters:</span><br><span class="line">    place = PLACE.POST</span><br><span class="line">    value = <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    place = PLACE.GET</span><br><span class="line">    value = <span class="string">&quot;&quot;</span> <span class="keyword">if</span> <span class="keyword">not</span> conf.parameters.get(PLACE.GET) <span class="keyword">else</span> conf.parameters[PLACE.GET] + DEFAULT_GET_POST_DELIMITER</span><br><span class="line">    value += <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"></span><br><span class="line">pushValue(kb.choices.redirect)</span><br><span class="line">pushValue(kb.resendPostOnRedirect)</span><br><span class="line">pushValue(conf.timeout)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kb.choices.redirect = REDIRECTION.YES</span><br><span class="line">kb.resendPostOnRedirect = <span class="literal">False</span></span><br><span class="line">conf.timeout = IPS_WAF_CHECK_TIMEOUT</span><br></pre></td></tr></table></figure>
+
+<p>将payload和对应value的值设置</p>
+<h3 id="判断当前页面重复度与初始页面重复度是否小于0-5"><a href="#判断当前页面重复度与初始页面重复度是否小于0-5" class="headerlink" title="判断当前页面重复度与初始页面重复度是否小于0.5"></a>判断当前页面重复度与初始页面重复度是否小于0.5</h3><figure class="highlight python"><table><tr><td class="code"><pre><span class="line">retVal = (Request.queryPage(place=place, value=value, getRatioValue=<span class="literal">True</span>, noteResponseTime=<span class="literal">False</span>, silent=<span class="literal">True</span>, raise404=<span class="literal">False</span>, disableTampering=<span class="literal">True</span>)[<span class="number">1</span>] <span class="keyword">or</span> <span class="number">0</span>) &lt; IPS_WAF_CHECK_RATIO</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>主要思想参考<a href="http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse%E3%80%82">http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse。</a><br>发送一系列脏字符，然后判断是否存在页面的不同。<br>主要的函数querypage()以后有时间再读…..</p>
+]]></content>
+      <categories>
+        <category>sqlmap源码阅读</category>
+      </categories>
+      <tags>
+        <tag>sqlmap</tag>
+        <tag>waf</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>sqlmap start()函数源码简单阅读</title>
-    <url>/2022/02/13/sqlmap-start/</url>
+    <url>/2022/02/13/sqlmap-start()%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h1 id="sqlmap-start-函数"><a href="#sqlmap-start-函数" class="headerlink" title="sqlmap start()函数"></a>sqlmap start()函数</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://www.cnblogs.com/hongfei/p/sqlmap-start.html">https://www.cnblogs.com/hongfei/p/sqlmap-start.html</a></p>
 <span id="more"></span>
 

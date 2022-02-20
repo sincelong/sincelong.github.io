@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Linux," />
+  <meta name="keywords" content="sqlmap,waf," />
 
 
 
@@ -79,17 +79,18 @@
 
 
 
-<meta name="description" content="WEB服务配置 2021年8月29日 9:26 LAMP">
+<meta name="description" content="sqlmap checkwaf()函数">
 <meta property="og:type" content="article">
-<meta property="og:title" content="WEB服务配置">
-<meta property="og:url" content="http://example.com/2021/08/29/WEB%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="sqlmap-checkwaf()函数">
+<meta property="og:url" content="http://example.com/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="WEB服务配置 2021年8月29日 9:26 LAMP">
+<meta property="og:description" content="sqlmap checkwaf()函数">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-08-29T11:57:54.000Z">
-<meta property="article:modified_time" content="2021-08-29T11:57:54.000Z">
+<meta property="article:published_time" content="2022-02-20T08:11:06.000Z">
+<meta property="article:modified_time" content="2022-02-20T08:11:06.000Z">
 <meta property="article:author" content="Laplace">
-<meta property="article:tag" content="Linux">
+<meta property="article:tag" content="sqlmap">
+<meta property="article:tag" content="waf">
 <meta name="twitter:card" content="summary">
 
 
@@ -120,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2021/08/29/WEB服务配置/"/>
+  <link rel="canonical" href="http://example.com/2022/02/20/sqlmap-checkwaf-函数/"/>
 
 
 
 
 
-  <title>WEB服务配置 | Recoder</title>
+  <title>sqlmap-checkwaf()函数 | Recoder</title>
   
 
 
@@ -287,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/08/29/WEB%E6%9C%8D%E5%8A%A1%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Laplace">
@@ -304,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">WEB服务配置</h1>
+          <h1 class="post-title" itemprop="name headline">sqlmap-checkwaf()函数</h1>
         
 
         <div class="post-meta">
@@ -316,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-29T19:57:54+08:00">
-                2021-08-29
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-20T16:11:06+08:00">
+                2022-02-20
               </time>
             
 
@@ -337,8 +338,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F/" itemprop="url" rel="index">
-                    <span itemprop="name">操作系统</span>
+                  <a href="/categories/sqlmap%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index">
+                    <span itemprop="name">sqlmap源码阅读</span>
                   </a>
                 </span>
 
@@ -374,70 +375,22 @@
       
 
       
-        <p>WEB服务配置</p>
-<p>2021年8月29日</p>
-<p>9:26</p>
-<h2 id="LAMP"><a href="#LAMP" class="headerlink" title="LAMP"></a><strong>LAMP</strong></h2><span id="more"></span>
+        <h1 id="sqlmap-checkwaf-函数"><a href="#sqlmap-checkwaf-函数" class="headerlink" title="sqlmap checkwaf()函数"></a>sqlmap checkwaf()函数</h1><span id="more"></span>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="判断是否跳过检测waf"><a href="#判断是否跳过检测waf" class="headerlink" title="判断是否跳过检测waf"></a>判断是否跳过检测waf</h3><p>代码</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否存在参数跳过checkwaf()</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">any</span>((conf.string, conf.notString, conf.regexp, conf.dummy, conf.offline, conf.skipWaf)):</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment">#判断页面是否联通</span></span><br><span class="line"><span class="keyword">if</span> kb.originalCode == _http_client.NOT_FOUND:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment"># 该位置是否已经检测存在waf</span></span><br><span class="line">_ = hashDBRetrieve(HASHDB_KEYS.CHECK_WAF_RESULT, <span class="literal">True</span>)</span><br><span class="line"><span class="keyword">if</span> _ <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="keyword">if</span> _:</span><br><span class="line">		warnMsg = <span class="string">&quot;previous heuristics detected that the target &quot;</span></span><br><span class="line">		warnMsg += <span class="string">&quot;is protected by some kind of WAF/IPS&quot;</span></span><br><span class="line">		logger.critical(warnMsg)</span><br><span class="line">	<span class="keyword">return</span> _</span><br><span class="line"><span class="comment"># 是否获得网站页面</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> kb.originalPage:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+<p>通过一系列判断，决定是否要检测waf的存在。<br>分别有:</p>
+<ol>
+<li>存在需要跳过waf的参数</li>
+<li>网站页面为404</li>
+<li>该网站已经检测过存在waf</li>
+<li>网站页面为空  </li>
+</ol>
+<h3 id="设置payload"><a href="#设置payload" class="headerlink" title="设置payload"></a>设置payload</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;%d %s&quot;</span> % (randomInt(), IPS_WAF_CHECK_PAYLOAD)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> PLACE.URI <span class="keyword">in</span> conf.parameters:</span><br><span class="line">    place = PLACE.POST</span><br><span class="line">    value = <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    place = PLACE.GET</span><br><span class="line">    value = <span class="string">&quot;&quot;</span> <span class="keyword">if</span> <span class="keyword">not</span> conf.parameters.get(PLACE.GET) <span class="keyword">else</span> conf.parameters[PLACE.GET] + DEFAULT_GET_POST_DELIMITER</span><br><span class="line">    value += <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"></span><br><span class="line">pushValue(kb.choices.redirect)</span><br><span class="line">pushValue(kb.resendPostOnRedirect)</span><br><span class="line">pushValue(conf.timeout)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kb.choices.redirect = REDIRECTION.YES</span><br><span class="line">kb.resendPostOnRedirect = <span class="literal">False</span></span><br><span class="line">conf.timeout = IPS_WAF_CHECK_TIMEOUT</span><br></pre></td></tr></table></figure>
 
-<h3 id="基本配置"><a href="#基本配置" class="headerlink" title="基本配置"></a><strong>基本配置</strong></h3><h4 id="安装apache"><a href="#安装apache" class="headerlink" title="安装apache"></a><em><strong>安装apache</strong></em></h4><ul>
-<li>安装httpd(apache) yum install httpd</li>
-<li>打开httpd 服务 service start httpd</li>
-<li>关闭防火墙 </li>
-</ul>
-<p>systemctl status firewalld.service</p>
-<p>主页位置/var/www/html</p>
-<p>主页配置文件 /etc/httpd/conf/httpd.conf</p>
-<p>程序文件</p>
-<p><code>         </code>监听端口</p>
-<p><code>         </code>启动用户启动组 </p>
-<p>User apache</p>
-<p>Group apache</p>
-<p><code>         </code>服务目录</p>
-<p><code>                  </code>DocumentRoot “/var/www/html”</p>
-<p><code>         </code>运行目录浏览</p>
-<p><code>                 </code>Options Indexes FollowSymLinks</p>
-<h3 id="访问控制设定"><a href="#访问控制设定" class="headerlink" title="访问控制设定"></a><strong>访问控制设定</strong></h3><p><code>        </code>Order allow,deny</p>
-<p><code>                </code>Allow from 192.168.1.2 白名单</p>
-<p>对页面进行加密，输入用户名密码才可进入</p>
-<p><code>        </code>htpasswd -c /etc/httpd/conf/httpuser tom 建立用户tom</p>
-<p><code>        </code>配置文件</p>
-<p><code>        </code>authtype basic</p>
-<p><code>        </code>authname “input username and password”</p>
-<p><code>        </code>authuserfile /etc/httpd/conf/httpuser</p>
-<p><code>        </code>require valid-user</p>
-<h4 id="安装mysql"><a href="#安装mysql" class="headerlink" title="安装mysql"></a><em><strong>安装mysql</strong></em></h4><p>yum install mysql-server</p>
-<p>启动</p>
-<p><code> </code>service mysqld start</p>
-<p>配置密码</p>
-<p><code>        </code>mysqladmin -u root -p password “123.com”</p>
-<p>进入</p>
-<p><code>        </code>mysql -u root -p</p>
-<h4 id="安装php"><a href="#安装php" class="headerlink" title="安装php"></a><em><strong>安装php</strong></em></h4><p>yum install php</p>
-<p>yum install php-mysql 连接数据库插件</p>
-<p>yum install php-mbstring</p>
-<p>umount /dev/cdrom                卸下当前光盘</p>
-<h5 id="配置php配置文件"><a href="#配置php配置文件" class="headerlink" title="配置php配置文件"></a><strong>配置php配置文件</strong></h5><p>目录 /etc/php.ini </p>
-<p>开启短标签 short_open_tag = On</p>
-<h2 id="LNMP"><a href="#LNMP" class="headerlink" title="LNMP"></a><strong>LNMP</strong></h2><h2 id="Nginx安装"><a href="#Nginx安装" class="headerlink" title="Nginx安装"></a><strong>Nginx安装</strong></h2><p>yum install nginx</p>
-<p>网站目录</p>
-<p>/usr/share/nginx/html</p>
-<p>配置文件</p>
-<p><code> </code>/etc/nginx/nginx.conf)</p>
-<p>关闭</p>
-<p>nginx -s stop</p>
-<h3 id="Nginx配置文件"><a href="#Nginx配置文件" class="headerlink" title="Nginx配置文件"></a><strong>Nginx配置文件</strong></h3><p>全局配置</p>
-<p>user nginx;          //运行用户</p>
-<p>worker_processes auto;     //工作进程(根据cpu核心)</p>
-<p>error_log /var/log/nginx/error.log;   // (错误文件)</p>
-<p>pid /run/nginx.pid;                               //pid文件位置</p>
-<p>I/O事件配置</p>
-<p>events {</p>
-<p><code>    </code>worker_connections 1024;     //每个进程处理连接数</p>
-<p>}</p>
-<p>HTTP配置</p>
-<p>http{</p>
-<p>***</p>
-<p>}</p>
+<p>将payload和对应value的值设置</p>
+<h3 id="判断当前页面重复度与初始页面重复度是否小于0-5"><a href="#判断当前页面重复度与初始页面重复度是否小于0-5" class="headerlink" title="判断当前页面重复度与初始页面重复度是否小于0.5"></a>判断当前页面重复度与初始页面重复度是否小于0.5</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">retVal = (Request.queryPage(place=place, value=value, getRatioValue=<span class="literal">True</span>, noteResponseTime=<span class="literal">False</span>, silent=<span class="literal">True</span>, raise404=<span class="literal">False</span>, disableTampering=<span class="literal">True</span>)[<span class="number">1</span>] <span class="keyword">or</span> <span class="number">0</span>) &lt; IPS_WAF_CHECK_RATIO</span><br></pre></td></tr></table></figure>
+
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>主要思想参考<a target="_blank" rel="noopener" href="http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse%E3%80%82">http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse。</a><br>发送一系列脏字符，然后判断是否存在页面的不同。<br>主要的函数querypage()以后有时间再读…..</p>
 
       
     </div>
@@ -455,7 +408,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Linux/" rel="tag"># Linux</a>
+            <a href="/tags/sqlmap/" rel="tag"># sqlmap</a>
+          
+            <a href="/tags/waf/" rel="tag"># waf</a>
           
         </div>
       
@@ -468,8 +423,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/08/28/Linux%E6%97%A5%E5%BF%97%E5%9F%BA%E7%A1%80/" rel="next" title="Linux日志基础">
-                <i class="fa fa-chevron-left"></i> Linux日志基础
+              <a href="/2022/02/13/sqlmap-start()%E5%87%BD%E6%95%B0/" rel="next" title="sqlmap start()函数源码简单阅读">
+                <i class="fa fa-chevron-left"></i> sqlmap start()函数源码简单阅读
               </a>
             
           </div>
@@ -477,10 +432,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/08/31/Me-and-My-girlfriend-1%E9%9D%B6%E6%9C%BA/" rel="prev" title="Me-and-My-girlfriend-1靶机">
-                Me-and-My-girlfriend-1靶机 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -612,7 +563,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#LAMP"><span class="nav-text">LAMP</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E9%85%8D%E7%BD%AE"><span class="nav-text">基本配置</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85apache"><span class="nav-text">安装apache</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BF%E9%97%AE%E6%8E%A7%E5%88%B6%E8%AE%BE%E5%AE%9A"><span class="nav-text">访问控制设定</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85mysql"><span class="nav-text">安装mysql</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%89%E8%A3%85php"><span class="nav-text">安装php</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEphp%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">配置php配置文件</span></a></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#LNMP"><span class="nav-text">LNMP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Nginx%E5%AE%89%E8%A3%85"><span class="nav-text">Nginx安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Nginx%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6"><span class="nav-text">Nginx配置文件</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqlmap-checkwaf-%E5%87%BD%E6%95%B0"><span class="nav-text">sqlmap checkwaf()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%B7%B3%E8%BF%87%E6%A3%80%E6%B5%8Bwaf"><span class="nav-text">判断是否跳过检测waf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEpayload"><span class="nav-text">设置payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%BA%A6%E4%B8%8E%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%BA%A6%E6%98%AF%E5%90%A6%E5%B0%8F%E4%BA%8E0-5"><span class="nav-text">判断当前页面重复度与初始页面重复度是否小于0.5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-text">总结</span></a></li></ol></li></ol></div>
             
 
           </div>
