@@ -1669,4 +1669,40 @@ echo 123;
         <tag>反射</tag>
       </tags>
   </entry>
+  <entry>
+    <title>XSS httponly 绕过</title>
+    <url>/2022/03/01/XSS-http-only-%E7%BB%95%E8%BF%87/</url>
+    <content><![CDATA[<h1 id="XSS-和-http-only-绕过"><a href="#XSS-和-http-only-绕过" class="headerlink" title="XSS 和 http only 绕过"></a>XSS 和 http only 绕过</h1><h3 id="文章参考"><a href="#文章参考" class="headerlink" title="文章参考"></a>文章参考</h3><p><a href="https://www.ddosi.org/bypassing-httponly/">https://www.ddosi.org/bypassing-httponly/</a></p>
+<span id="more"></span>
+
+
+<p>一个简单的密码认证场景。前端输入密码，后端判断密码后跳转到管理页面。  </p>
+<p>text.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">    session_start();</span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line"></span><br><span class="line">&lt;form action=<span class="string">&quot;aaaa/login.php&quot;</span> method=<span class="string">&quot;post&quot;</span>&gt;</span><br><span class="line">    用户名:</span><br><span class="line">    &lt;input type=<span class="string">&quot;text&quot;</span> name = <span class="string">&quot;username&quot;</span>&gt; &lt;br&gt;</span><br><span class="line">    密码</span><br><span class="line">    &lt;input type=<span class="string">&quot;password&quot;</span> name=<span class="string">&quot;password&quot;</span>&gt;</span><br><span class="line">    &lt;input type=<span class="string">&quot;submit&quot;</span>  &gt;</span><br><span class="line">&lt;/form&gt;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>login.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line"></span><br><span class="line">    <span class="keyword">if</span>(<span class="variable">$_POST</span>[<span class="string">&quot;username&quot;</span>]==<span class="string">&quot;123&quot;</span> &amp;&amp; <span class="variable">$_POST</span>[<span class="string">&quot;password&quot;</span>]==<span class="string">&quot;123&quot;</span>) &#123;</span><br><span class="line">        session_start();</span><br><span class="line">        <span class="variable">$_SESSION</span>[<span class="string">&#x27;admin&#x27;</span>]=<span class="literal">true</span>;</span><br><span class="line">        header(<span class="string">&quot;Location: admin.php&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">else</span>&#123;</span><br><span class="line">        <span class="keyword">exit</span>(<span class="string">&#x27;密码错误 , 点击此处&lt;a href =&quot;../text.php&quot;&gt;重新登录&lt;/a&gt;&#x27;</span>);</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br><span class="line">测试</span><br></pre></td></tr></table></figure>
+
+<p>admin.php</p>
+<figure class="highlight php"><table><tr><td class="code"><pre><span class="line"><span class="meta">&lt;?php</span></span><br><span class="line">session_start();</span><br><span class="line"><span class="keyword">if</span>(<span class="variable">$_SESSION</span>[<span class="string">&#x27;admin&#x27;</span>]==<span class="literal">true</span>)</span><br><span class="line">    <span class="keyword">echo</span>(<span class="string">&quot;欢迎进入系统&quot;</span>);</span><br><span class="line"><span class="keyword">else</span> &#123;</span><br><span class="line">    <span class="keyword">exit</span>(<span class="string">&#x27;未登录 , 点击此处&lt;a href =&quot;../text.php&quot;&gt;重新登录&lt;/a&gt;&#x27;</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="meta">?&gt;</span></span><br></pre></td></tr></table></figure>
+
+<p>当用户在login.php中验证成功时，php设置<code>session[&#39;admin&#39;]==true</code>。在admin.php中，php通过cookie<code>PHPSESSID=**</code>找到对应文件。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228152852.png"><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228152920.png">    </p>
+<p>通过文件中的对应属性来判断当前用户是否登录，以实现权限控制。   </p>
+<p>现在cookie的设置域名为<code>localhost</code>，路径为<code>/</code>。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228153858.png"> </p>
+<p>这意味着只要在<code>localhost</code>的域名中，http请求头中都会附带<code>PHPSESSID=**</code>的信息。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228154035.png">  </p>
+<p>此时如果使用js代码<code>document.cookie</code>同样可以获得cookie信息。</p>
+<p>通过XSS漏洞，获得cookie信息即可同样以管理员身份登录后台。</p>
+<p>如果系统设置cookie 的 http only 选项为 true。这时无法通过js文件查看cookie文件,同时在控制台输入<code>documenet.cookie</code>也无法获得cookie信息。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228160345.png"></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228160402.png">  </p>
+<h3 id="phpinfo获得cookie"><a href="#phpinfo获得cookie" class="headerlink" title="phpinfo获得cookie"></a>phpinfo获得cookie</h3><p>就算cookie设置了http only。如果phpinfo页面符合cookie对应的路径，phpinfo会显示对应的cookie信息。  </p>
+<p>  <img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220228160717.png">  </p>
+<h3 id="通过发送请求附带cookie"><a href="#通过发送请求附带cookie" class="headerlink" title="通过发送请求附带cookie"></a>通过发送请求附带cookie</h3><p>js不能直接获得cookie信息，但是可以向符合cookie路径信息的网站构造请求。如何cookie路径的请求会附带cookie信息。</p>
+]]></content>
+      <tags>
+        <tag>XSS</tag>
+        <tag>http-only</tag>
+      </tags>
+  </entry>
 </search>
