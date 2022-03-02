@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="JAVA,反射," />
+  <meta name="keywords" content="JAVA,RMI," />
 
 
 
@@ -79,21 +79,25 @@
 
 
 
-<meta name="description" content="参考文章为phith0n【代码审计】知识星球中JAVA安全漫谈的笔记。">
+<meta name="description" content="JAVA安全漫谈-RMI篇 笔记参考文章为phith0n【代码审计】知识星球中JAVA安全漫谈部分部分内容摘抄与阅读笔记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="JAVA安全漫谈-反射篇-笔记">
-<meta property="og:url" content="http://example.com/2022/02/21/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-%E5%8F%8D%E5%B0%84%E7%AF%87-%E7%AC%94%E8%AE%B0/index.html">
+<meta property="og:title" content="JAVA安全漫谈-RMI篇-笔记">
+<meta property="og:url" content="http://example.com/2022/03/02/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-RMI%E7%AF%87-%E7%AC%94%E8%AE%B0/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="参考文章为phith0n【代码审计】知识星球中JAVA安全漫谈的笔记。">
+<meta property="og:description" content="JAVA安全漫谈-RMI篇 笔记参考文章为phith0n【代码审计】知识星球中JAVA安全漫谈部分部分内容摘抄与阅读笔记。">
 <meta property="og:locale">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220220225703.png">
-<meta property="article:published_time" content="2022-02-21T02:51:04.000Z">
-<meta property="article:modified_time" content="2022-02-21T02:51:04.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302194848.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302195327.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302091635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302091450.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302201852.png">
+<meta property="article:published_time" content="2022-03-02T12:23:11.000Z">
+<meta property="article:modified_time" content="2022-03-02T12:23:11.000Z">
 <meta property="article:author" content="Laplace">
 <meta property="article:tag" content="JAVA">
-<meta property="article:tag" content="反射">
+<meta property="article:tag" content="RMI">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220220225703.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302194848.png">
 
 
 
@@ -123,13 +127,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2022/02/21/JAVA安全漫谈-反射篇-笔记/"/>
+  <link rel="canonical" href="http://example.com/2022/03/02/JAVA安全漫谈-RMI篇-笔记/"/>
 
 
 
 
 
-  <title>JAVA安全漫谈-反射篇-笔记 | Recoder</title>
+  <title>JAVA安全漫谈-RMI篇-笔记 | Recoder</title>
   
 
 
@@ -290,7 +294,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/21/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-%E5%8F%8D%E5%B0%84%E7%AF%87-%E7%AC%94%E8%AE%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-RMI%E7%AF%87-%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Laplace">
@@ -307,7 +311,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">JAVA安全漫谈-反射篇-笔记</h1>
+          <h1 class="post-title" itemprop="name headline">JAVA安全漫谈-RMI篇-笔记</h1>
         
 
         <div class="post-meta">
@@ -319,8 +323,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-21T10:51:04+08:00">
-                2022-02-21
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-02T20:23:11+08:00">
+                2022-03-02
               </time>
             
 
@@ -377,97 +381,46 @@
       
 
       
-        <h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>文章为phith0n<a target="_blank" rel="noopener" href="https://govuln.com/">【代码审计】知识星球</a>中JAVA安全漫谈的笔记。</p>
+        <h1 id="JAVA安全漫谈-RMI篇-笔记"><a href="#JAVA安全漫谈-RMI篇-笔记" class="headerlink" title="JAVA安全漫谈-RMI篇 笔记"></a>JAVA安全漫谈-RMI篇 笔记</h1><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p>文章为phith0n<a target="_blank" rel="noopener" href="https://govuln.com/">【代码审计】知识星球</a>中JAVA安全漫谈部分部分内容摘抄与阅读笔记。</p>
 <span id="more"></span>
 
-<h3 id="基本流程"><a href="#基本流程" class="headerlink" title="基本流程"></a>基本流程</h3><p>JAVA可以通过反射来获得动态特性，对于同一段代码过传递的参数不同获得不同的功能。</p>
-<p>如</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">execute</span><span class="params">(String className, String methodName)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"> Class clazz = Class.forName(className);</span><br><span class="line"> clazz.getMethod(methodName).invoke(clazz.newInstance());</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>可以发现使用的四个函数</p>
+<h3 id="RMI-基本流程"><a href="#RMI-基本流程" class="headerlink" title="RMI 基本流程"></a>RMI 基本流程</h3><p>JAVA中RMI，可以使JAVA远程调用另外的远程端中的JAVA方法。</p>
+<p>下面是一个简单的例子:</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//RMIServer.java</span></span><br><span class="line"><span class="keyword">package</span> rmi;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.*;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> <span class="keyword">static</span> java.lang.System.getProperty;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RMIServer</span> </span>&#123;</span><br><span class="line">	</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> RMIServer().start();</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="comment">//接口包含需要远程调用的函数</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">IRemoteHelloWorld</span> <span class="keyword">extends</span> <span class="title">Remote</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//实现接口的类</span></span><br><span class="line">    <span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">REmoteHelloWorld</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title">IRemoteHelloWorld</span> </span>&#123;</span><br><span class="line">        <span class="function"><span class="keyword">public</span> <span class="title">REmoteHelloWorld</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            <span class="keyword">super</span>();</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="function"><span class="keyword">public</span> String <span class="title">hello</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;call from&quot;</span>);</span><br><span class="line">            <span class="keyword">return</span> <span class="string">&quot;Hello WOrld&quot;</span>;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建Registry, 将实例化的类绑定在对应地址</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        System.out.println(getProperty(<span class="string">&quot;java.home&quot;</span>));</span><br><span class="line">        REmoteHelloWorld h = <span class="keyword">new</span> REmoteHelloWorld();</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//创建并运行RMI Registry</span></span><br><span class="line">        LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">        </span><br><span class="line">        <span class="comment">//将对象绑定在Hello这个名字上</span></span><br><span class="line">        Naming.rebind(<span class="string">&quot;rmi://127.0.0.2:1099/Hello&quot;</span>, h);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+
+<p>RMIServer 有三个部分:</p>
 <ul>
-<li>Class.forName()</li>
-<li>clazz.getMethod()</li>
-<li>.invoke()</li>
-<li>.newInstance()</li>
+<li>一个接口</li>
+<li>一个实现接口的类</li>
+<li>一个用于实现Registry并绑定类与地址</li>
 </ul>
-<h4 id="第一步为获得java-lang-Class类对象"><a href="#第一步为获得java-lang-Class类对象" class="headerlink" title="第一步为获得java.lang.Class类对象"></a>第一步为获得<code>java.lang.Class</code>类对象</h4><p> 其中获得<code>java.lang.Class</code>类对象的方法有  </p>
-<ul>
-<li><code>obj.getClass()</code> 存在类对象实例<code>obj</code>时，可以通过<code>obj.getClass()</code>获得它的类</li>
-<li><code>Test.class</code>如果已经加载了某个类，可以直接通过<code>.class</code>获得<code>java.lang.class</code>对象。</li>
-<li><code>Class.forName</code>如知道类名，可以使用<code>forName</code>获得类对象。  </li>
-</ul>
-<p>如果java普通类<code>C1</code>中含有内部类<code>C2</code>，可以通过<code>forName(&quot;C1$C2&quot;)</code>加载该内部类。</p>
-<p>forName函数有两个重载</p>
-<ul>
-<li><code>forName(String name)</code></li>
-<li><code>forName(String name , **boolean** initialize  ,ClassLoader loder)</code></li>
-</ul>
-<p>第一个其实为第二个的一种封装</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class.forName(className)</span><br><span class="line"><span class="comment">// 等于</span></span><br><span class="line">Class.forName(className, <span class="keyword">true</span>, currentLoader)</span><br></pre></td></tr></table></figure>
+<p>客户端</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//Client.java</span></span><br><span class="line"><span class="keyword">package</span> com.company;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.rmi.*;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> rmi.*;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Main</span> </span>&#123;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        RMIServer.IRemoteHelloWorld hello = (RMIServer.IRemoteHelloWorld) Naming.lookup(<span class="string">&quot;rmi://127.0.0.2:1099/Hello&quot;</span>);</span><br><span class="line">        String ret = hello.hello();</span><br><span class="line">        System.out.println(ret);</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>第一个参数为类名， 第二个参数为是否初始化，第三个参数为<code>ClassLoader</code>用于加载这个类。</p>
-<p>其中是否初始化决定在加载类的时候，是否实现类中的<code>static&#123;&#125;</code></p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">static</span> &#123;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>客户端使用<code>Naming.lookup()</code>在服务端绑定的对应地址，获得对应的接口，之后就可以正常使用。 需要注意的是你使用获得的远程接口的方法，是将对应数据序列化之后给服务端运行。本质上是在服务器上运行相应的代码。  </p>
+<p>如果我们使用Wireshark抓包可以发现RMI的连接流程 ，有两次TCP握手。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302194848.png"></p>
+<p>第一次是本地55315向远程1099端口发起连接。第二次本地55316端口向远程54762端口发起连接。</p>
+<p>选择序号996号数据包:ReturnData.可以发现在返回地址10.1.1.1后面4个字节<code>00 00 d5 ea</code>转为10进制为55316。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302195327.png"></p>
+<p>整个流程，⾸先客户端连接Registry，并在其中寻找Name是Hello的对象，这个对应数据<br>流中的Call消息；然后Registry返回⼀个序列化的数据，这个就是找到的Name=Hello的对象，这个对应数据流中的ReturnData消息；客户端反序列化该对象，发现该对象是⼀个远程对象，地址在 10.1.1.1:55316，于是再与这个地址建⽴TCP连接。在这个过程中将数据送给远程服务器，在服务器进行处理。之后服务器将数据返回客户端。</p>
+<h3 id="RMI-利用codebase执行任意代码"><a href="#RMI-利用codebase执行任意代码" class="headerlink" title="RMI 利用codebase执行任意代码"></a>RMI 利用codebase执行任意代码</h3><p>在JAVA运行过程中如果指定了<code>codebase</code>，当在RMI数据传递的过程中如果RMI服务端没用发现对应的类，而且在本地<code>CLASSPATH</code>没有，就会到远程加载对应的类。  </p>
+<p>在RMI运行的过程中，客户端是可以指定<code>codebase</code>的。如果服务端配置了<code>SevurityManager</code>并且<code>java.rmi.server.useCodebaseOnly=false</code>。那么当客户端将一个不在服务端的类作为调用远程方法的参数传递给服务端，服务端会到客户端设置的<code>codebase</code>地址去加载对应的类。</p>
+<h4 id="复现"><a href="#复现" class="headerlink" title="复现"></a>复现</h4><p>建立四个文件</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// ICalc.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">interface</span> <span class="title">ICalc</span> <span class="keyword">extends</span> <span class="title">Remote</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">sum</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// Calc.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Calc</span> <span class="keyword">extends</span> <span class="title">UnicastRemoteObject</span> <span class="keyword">implements</span> <span class="title">ICalc</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="title">Calc</span><span class="params">()</span> <span class="keyword">throws</span> RemoteException </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> Integer <span class="title">sum</span><span class="params">(List&lt;Integer&gt; params)</span> <span class="keyword">throws</span> RemoteException </span>&#123;</span><br><span class="line">Integer sum = <span class="number">0</span>;</span><br><span class="line"><span class="keyword">for</span> (Integer param : params) &#123;</span><br><span class="line">sum += param;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">return</span> sum;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// RemoteRMIServer.java</span></span><br><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.rmi.Remote;</span><br><span class="line"><span class="keyword">import</span> java.rmi.RemoteException;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.server.UnicastRemoteObject;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RemoteRMIServer</span> </span>&#123;</span><br><span class="line"><span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">start</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="keyword">if</span> (System.getSecurityManager() == <span class="keyword">null</span>) &#123;</span><br><span class="line">System.out.println(<span class="string">&quot;setup SecurityManager&quot;</span>);</span><br><span class="line">System.setSecurityManager(<span class="keyword">new</span> SecurityManager());</span><br><span class="line">&#125;</span><br><span class="line">Calc h = <span class="keyword">new</span> Calc();</span><br><span class="line">LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line">Naming.rebind(<span class="string">&quot;refObj&quot;</span>, h);</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="keyword">new</span> RemoteRMIServer().start();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">// client.policy</span></span><br><span class="line">grant &#123;</span><br><span class="line">permission java.security.AllPermission;</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
 
-<h4 id="第二步获取类的公有方法"><a href="#第二步获取类的公有方法" class="headerlink" title="第二步获取类的公有方法"></a>第二步获取类的公有方法</h4><p>通过<code>.getMethod()</code>获得类的共有方法。但是在JAVA类可以重载，因此在调用<code>getMethod()</code>时，还要传递函数所需要的参数列表。</p>
-<h4 id="第三步执行类的共有方法"><a href="#第三步执行类的共有方法" class="headerlink" title="第三步执行类的共有方法"></a>第三步执行类的共有方法</h4><p>通过<code>invoke</code>执行方法，它的第一个参数:</p>
-<ul>
-<li>如果该方法为普通方法，需要传递实例化类对象</li>
-<li>如果该方法为<code>静态</code>方法，可以传递类名，也可以传递<code>null</code>。因为是静态方法类不需要实例化。</li>
-</ul>
-<p>之后的参数传递对应方法参数即可</p>
-<h4 id="可选-第四步将类实例化"><a href="#可选-第四步将类实例化" class="headerlink" title="(可选)第四步将类实例化"></a>(可选)第四步将类实例化</h4><p>如果类中方法为普通方法，就需要将类实例化。通过对第一步的<code>java.lang.Class</code>使用<code>newInstance</code>，实例化类对象。<br><code>Class.newInstance()</code>可以调用该类的无参构造方法。</p>
-<p>正常执行方法为<code>[1].method([2], [3], [4])</code>，而在反射中为<code>method.invoke([1], [2], [3], [4])</code>。</p>
-<h4 id="无法newInstance"><a href="#无法newInstance" class="headerlink" title="无法newInstance()"></a>无法newInstance()</h4><p>但是在尝试会发现<code>newInstance</code>不成功，原因就可能有:</p>
-<ol>
-<li>使用的类没有无参构造方法</li>
-<li>使用的类的无参构造方法为私有方法</li>
-</ol>
-<p>比如在尝试命令执行的<code>newInstance()</code>无法成功</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(clazz.newInstance(), <span class="string">&quot;calc&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>会得到一个异常<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220220225703.png" alt="命令执行异常">  </p>
-<p>可以发现设置了该方法为<code>private</code> </p>
-<p>这个时候尝试通过该类的静态方法获得实例化对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">Object runtime = clazz.getMethod(<span class="string">&quot;getRuntime&quot;</span>).invoke(<span class="keyword">null</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(runtime, <span class="string">&quot;calc&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>编译并运行:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">javac *.java</span><br><span class="line">java -Djava.rmi.server.hostname=127.0.0.2 -Djava.rmi.server.useCodebaseOnly=<span class="literal">false</span> -Djava.security.policy=client.policy RemoteRMIServer</span><br></pre></td></tr></table></figure>
 
-<h3 id="使用带参构造方法实例化对象"><a href="#使用带参构造方法实例化对象" class="headerlink" title="使用带参构造方法实例化对象"></a>使用带参构造方法实例化对象</h3><p>命令执行的另一种方法<code>ProcessBuilder</code>，就需要使用带参构造函数实例化对象。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.ProcessBuilder&quot;</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;start&quot;</span>).invoke(clazz.getConstructor(List.class).newInstance(</span><br><span class="line">Arrays.asList(<span class="string">&quot;calc.exe&quot;</span>)));</span><br></pre></td></tr></table></figure>
-<p>使用<code>getConstructor().newInstance()</code>方法可以实现带参构造实例化对象。<br>与<code>getMethod</code>类似，<code>getConstructor</code>也需要传递参数列表来确定具体的构造函数。  </p>
-<p>另一种命令执行方法<code>ProcessBuider</code>有两种构造函数:</p>
-<ul>
-<li>`public ProcessBuilder(List<String> command)</li>
-<li>`public ProcessBuilder(String… command)</li>
-</ul>
-<p>如果需要使用<code>ProcessBuilder(String...command)</code>实例化对象。  </p>
-<p>首先JAVA支持可变长参数，对于函数不确定参数个数的时候可以使用<code>...</code>表示参数个数不确定。<br>对于可变长参数，JAVA在编译时会编译为一个数组，这意味着下面两种写法等价:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">(String[] para)</span> </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">method</span><span class="params">(String... para)</span> </span>&#123;&#125;</span><br></pre></td></tr></table></figure>
+<p>在另一个位置建立一个客户端，同时配置好服务端对应的接口</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> java.rmi.Naming;</span><br><span class="line"><span class="keyword">import</span> java.util.List;</span><br><span class="line"><span class="keyword">import</span> java.util.ArrayList;</span><br><span class="line"><span class="keyword">import</span> java.io.Serializable;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RMIClient</span> <span class="keyword">implements</span> <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Payload</span> <span class="keyword">extends</span> <span class="title">ArrayList</span>&lt;<span class="title">Integer</span>&gt; </span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">lookup</span><span class="params">()</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">ICalc r = (ICalc)</span><br><span class="line">Naming.lookup(<span class="string">&quot;rmi://192.168.135.142:1099/refObj&quot;</span>);</span><br><span class="line">List&lt;Integer&gt; li = <span class="keyword">new</span> Payload();</span><br><span class="line">li.add(<span class="number">3</span>);</span><br><span class="line">li.add(<span class="number">4</span>);</span><br><span class="line">System.out.println(r.sum(li));</span><br><span class="line">&#125;</span><br><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line"><span class="keyword">new</span> RMIClient().lookup();</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
-<p>因此，如果有一个数组需要传递给<code>method</code>函数直接传递即可。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">String[] para = &#123;<span class="string">&quot;hello&quot;</span> , <span class="string">&quot;world&quot;</span>&#125;;</span><br><span class="line">method(para);</span><br></pre></td></tr></table></figure>
-
-<p>同样对于反射，目标函数包含可变长变量，认为它是数组即可。<br>因此，将字符串数组的类<code>String[].class</code>传给<code>getConstructor</code>,获得<code>ProcessBuilder</code>的另一种构造函数。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = class.forName(<span class="string">&quot;java.lang.ProcessBuilder&quot;</span>);</span><br><span class="line">clazz.getConstructor(String[].class);</span><br></pre></td></tr></table></figure>
-<p>在调用<code>newInstance</code>时，因为该函数本身接收可变长参数，我们传递给<code>ProcessBuilder</code>也是一个可变长参数，二者叠加为一个二维数组，所以完整Payload为:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.ProcessBuilder&quot;</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;start&quot;</span>).invoke(clazz.getConstructor(String[].class).newInstance( <span class="keyword">new</span> String[][] &#123;&#123;<span class="string">&quot;calc.exe&quot;</span>&#125;&#125;));</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="使用私有方法"><a href="#使用私有方法" class="headerlink" title="使用私有方法"></a>使用私有方法</h3><p>需要使用<code>getDeclared</code>系列的反射，它与普通的<code>getMethod</code>、<code>getConstructor</code>方法区别如下:</p>
-<ul>
-<li><code>getMethod</code>获得当前类中的所有公共方法，包括从父类继承的方法</li>
-<li><code>getDeclaredMethod</code>获得当前类中声明的方法，包括私有方法，但是不包括父类继承方法。</li>
-</ul>
-<p><code>getDeclaredMethod</code>与<code>getMethod</code>使用方法类似，<code>getDeclaredConstructor</code>与<code>getConstructor</code>使用方法类似。</p>
-<p>举个例子使用<code>getDeclaredConstructor</code>获得<code>Runtime</code>的私有构造方法完成实例化。</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;java.lang.Runtime&quot;</span>);</span><br><span class="line">Constructor con =  clazz.getDeclaredConstructor();</span><br><span class="line">con.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">clazz.getMethod(<span class="string">&quot;exec&quot;</span>, String.class).invoke(con.newInstance(), <span class="string">&quot;calc.exe&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>需要记住使用<code>setAccessible</code>修改方法作用域，否则仍然不能使用。</p>
-<p>个人测验代码:</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">Class clazz = Class.forName(<span class="string">&quot;com.company.TestPrint&quot;</span>);</span><br><span class="line">Method me = clazz.getDeclaredMethod(<span class="string">&quot;Print&quot;</span>, String.class);</span><br><span class="line">me.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">Constructor con  =clazz.getDeclaredConstructor(String.class);</span><br><span class="line">con.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">me.invoke(con.newInstance(<span class="string">&quot;its tes private constructor&quot;</span>), <span class="string">&quot;this is private method Print&quot;</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">TestPrint</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="title">TestPrint</span> <span class="params">(String message)</span> </span>&#123;</span><br><span class="line">            System.out.println(<span class="string">&quot;this is consturct with paratemer&quot;</span>+message+<span class="string">&quot;\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span>   <span class="keyword">void</span> <span class="title">Print</span><span class="params">()</span></span>&#123;</span><br><span class="line">        System.out.println(<span class="string">&quot;this is Class Method Print\n&quot;</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">Print</span><span class="params">(String string)</span> </span>&#123;</span><br><span class="line">            System.out.printf(<span class="string">&quot;%s\n&quot;</span>, string);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
-
-
-
-
-
+<p>运行Client<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302091635.png"></p>
+<p>会发生错误找不到对应的类RMIclient$Payload</p>
+<p>这个时候我们检查服务器日志可以发现存在对RMIClient$Payload.class的请求。说明如果服务器存在恶意类，服务端会调用并运行。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302091450.png">  </p>
+<p>通过Wireshark抓包可以发现经过两次TCP连接后，客户端向服务端发送了<code>codebase</code>相关的信息。  </p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220302201852.png">  </p>
+<p>在复现的时候我用<code>powershell</code>运行<code>JAVA -D</code>，怎末都无法运行换回<code>cmd</code>就好了，搞了我一个晚上。</p>
 
       
     </div>
@@ -487,7 +440,7 @@
           
             <a href="/tags/JAVA/" rel="tag"># JAVA</a>
           
-            <a href="/tags/%E5%8F%8D%E5%B0%84/" rel="tag"># 反射</a>
+            <a href="/tags/RMI/" rel="tag"># RMI</a>
           
         </div>
       
@@ -500,8 +453,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/" rel="next" title="sqlmap-checkwaf()函数">
-                <i class="fa fa-chevron-left"></i> sqlmap-checkwaf()函数
+              <a href="/2022/03/01/XSS-http-only-%E7%BB%95%E8%BF%87/" rel="next" title="XSS httponly 绕过">
+                <i class="fa fa-chevron-left"></i> XSS httponly 绕过
               </a>
             
           </div>
@@ -509,10 +462,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/03/01/XSS-http-only-%E7%BB%95%E8%BF%87/" rel="prev" title="XSS httponly 绕过">
-                XSS httponly 绕过 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -644,7 +593,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">2.</span> <span class="nav-text">基本流程</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%80%E6%AD%A5%E4%B8%BA%E8%8E%B7%E5%BE%97java-lang-Class%E7%B1%BB%E5%AF%B9%E8%B1%A1"><span class="nav-number">2.1.</span> <span class="nav-text">第一步为获得java.lang.Class类对象</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%BA%8C%E6%AD%A5%E8%8E%B7%E5%8F%96%E7%B1%BB%E7%9A%84%E5%85%AC%E6%9C%89%E6%96%B9%E6%B3%95"><span class="nav-number">2.2.</span> <span class="nav-text">第二步获取类的公有方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%AC%AC%E4%B8%89%E6%AD%A5%E6%89%A7%E8%A1%8C%E7%B1%BB%E7%9A%84%E5%85%B1%E6%9C%89%E6%96%B9%E6%B3%95"><span class="nav-number">2.3.</span> <span class="nav-text">第三步执行类的共有方法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%8F%AF%E9%80%89-%E7%AC%AC%E5%9B%9B%E6%AD%A5%E5%B0%86%E7%B1%BB%E5%AE%9E%E4%BE%8B%E5%8C%96"><span class="nav-number">2.4.</span> <span class="nav-text">(可选)第四步将类实例化</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%97%A0%E6%B3%95newInstance"><span class="nav-number">2.5.</span> <span class="nav-text">无法newInstance()</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%B8%A6%E5%8F%82%E6%9E%84%E9%80%A0%E6%96%B9%E6%B3%95%E5%AE%9E%E4%BE%8B%E5%8C%96%E5%AF%B9%E8%B1%A1"><span class="nav-number">3.</span> <span class="nav-text">使用带参构造方法实例化对象</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E7%A7%81%E6%9C%89%E6%96%B9%E6%B3%95"><span class="nav-number">4.</span> <span class="nav-text">使用私有方法</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-RMI%E7%AF%87-%E7%AC%94%E8%AE%B0"><span class="nav-number">1.</span> <span class="nav-text">JAVA安全漫谈-RMI篇 笔记</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.0.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMI-%E5%9F%BA%E6%9C%AC%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.2.</span> <span class="nav-text">RMI 基本流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMI-%E5%88%A9%E7%94%A8codebase%E6%89%A7%E8%A1%8C%E4%BB%BB%E6%84%8F%E4%BB%A3%E7%A0%81"><span class="nav-number">1.0.3.</span> <span class="nav-text">RMI 利用codebase执行任意代码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%A4%8D%E7%8E%B0"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">复现</span></a></li></ol></li></ol></li></ol></li></ol></div>
             
 
           </div>
