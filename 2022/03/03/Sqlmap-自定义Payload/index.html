@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="sqlmap,waf," />
+  <meta name="keywords" content="Sqlmap,注入," />
 
 
 
@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="sqlmap checkwaf()函数">
+<meta name="description" content="Sqlmap 自定义 Payload参考http:&#x2F;&#x2F;www.beesfun.com&#x2F;2017&#x2F;03&#x2F;30&#x2F;sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload&#x2F; https:&#x2F;&#x2F;wooyun.js.org&#x2F;drops&#x2F;S">
 <meta property="og:type" content="article">
-<meta property="og:title" content="sqlmap-checkwaf()函数">
-<meta property="og:url" content="http://example.com/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:title" content="Sqlmap-自定义Payload">
+<meta property="og:url" content="http://example.com/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="sqlmap checkwaf()函数">
+<meta property="og:description" content="Sqlmap 自定义 Payload参考http:&#x2F;&#x2F;www.beesfun.com&#x2F;2017&#x2F;03&#x2F;30&#x2F;sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload&#x2F; https:&#x2F;&#x2F;wooyun.js.org&#x2F;drops&#x2F;S">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-02-20T08:11:06.000Z">
-<meta property="article:modified_time" content="2022-02-20T08:11:06.000Z">
+<meta property="article:published_time" content="2022-03-03T02:06:09.000Z">
+<meta property="article:modified_time" content="2022-03-03T02:06:09.000Z">
 <meta property="article:author" content="Laplace">
-<meta property="article:tag" content="sqlmap">
-<meta property="article:tag" content="waf">
+<meta property="article:tag" content="Sqlmap">
+<meta property="article:tag" content="注入">
 <meta name="twitter:card" content="summary">
 
 
@@ -121,13 +121,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2022/02/20/sqlmap-checkwaf-函数/"/>
+  <link rel="canonical" href="http://example.com/2022/03/03/Sqlmap-自定义Payload/"/>
 
 
 
 
 
-  <title>sqlmap-checkwaf()函数 | Recoder</title>
+  <title>Sqlmap-自定义Payload | Recoder</title>
   
 
 
@@ -288,7 +288,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Laplace">
@@ -305,7 +305,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">sqlmap-checkwaf()函数</h1>
+          <h1 class="post-title" itemprop="name headline">Sqlmap-自定义Payload</h1>
         
 
         <div class="post-meta">
@@ -317,8 +317,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-20T16:11:06+08:00">
-                2022-02-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-03T10:06:09+08:00">
+                2022-03-03
               </time>
             
 
@@ -338,8 +338,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/sqlmap%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index">
-                    <span itemprop="name">sqlmap源码阅读</span>
+                  <a href="/categories/%E6%B3%A8%E5%85%A5/" itemprop="url" rel="index">
+                    <span itemprop="name">注入</span>
                   </a>
                 </span>
 
@@ -375,23 +375,50 @@
       
 
       
-        <h1 id="sqlmap-checkwaf-函数"><a href="#sqlmap-checkwaf-函数" class="headerlink" title="sqlmap checkwaf()函数"></a>sqlmap checkwaf()函数</h1><span id="more"></span>
-<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="判断是否跳过检测waf"><a href="#判断是否跳过检测waf" class="headerlink" title="判断是否跳过检测waf"></a>判断是否跳过检测waf</h3><p>代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否存在参数跳过checkwaf()</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">any</span>((conf.string, conf.notString, conf.regexp, conf.dummy, conf.offline, conf.skipWaf)):</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment">#判断页面是否联通</span></span><br><span class="line"><span class="keyword">if</span> kb.originalCode == _http_client.NOT_FOUND:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment"># 该位置是否已经检测存在waf</span></span><br><span class="line">_ = hashDBRetrieve(HASHDB_KEYS.CHECK_WAF_RESULT, <span class="literal">True</span>)</span><br><span class="line"><span class="keyword">if</span> _ <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="keyword">if</span> _:</span><br><span class="line">		warnMsg = <span class="string">&quot;previous heuristics detected that the target &quot;</span></span><br><span class="line">		warnMsg += <span class="string">&quot;is protected by some kind of WAF/IPS&quot;</span></span><br><span class="line">		logger.critical(warnMsg)</span><br><span class="line">	<span class="keyword">return</span> _</span><br><span class="line"><span class="comment"># 是否获得网站页面</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> kb.originalPage:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<p>通过一系列判断，决定是否要检测waf的存在。<br>分别有:</p>
-<ol>
-<li>存在需要跳过waf的参数</li>
-<li>网站页面为404</li>
-<li>该网站已经检测过存在waf</li>
-<li>网站页面为空  </li>
-</ol>
-<h3 id="设置payload"><a href="#设置payload" class="headerlink" title="设置payload"></a>设置payload</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;%d %s&quot;</span> % (randomInt(), IPS_WAF_CHECK_PAYLOAD)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> PLACE.URI <span class="keyword">in</span> conf.parameters:</span><br><span class="line">    place = PLACE.POST</span><br><span class="line">    value = <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    place = PLACE.GET</span><br><span class="line">    value = <span class="string">&quot;&quot;</span> <span class="keyword">if</span> <span class="keyword">not</span> conf.parameters.get(PLACE.GET) <span class="keyword">else</span> conf.parameters[PLACE.GET] + DEFAULT_GET_POST_DELIMITER</span><br><span class="line">    value += <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"></span><br><span class="line">pushValue(kb.choices.redirect)</span><br><span class="line">pushValue(kb.resendPostOnRedirect)</span><br><span class="line">pushValue(conf.timeout)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kb.choices.redirect = REDIRECTION.YES</span><br><span class="line">kb.resendPostOnRedirect = <span class="literal">False</span></span><br><span class="line">conf.timeout = IPS_WAF_CHECK_TIMEOUT</span><br></pre></td></tr></table></figure>
+        <h1 id="Sqlmap-自定义-Payload"><a href="#Sqlmap-自定义-Payload" class="headerlink" title="Sqlmap 自定义 Payload"></a>Sqlmap 自定义 Payload</h1><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="http://www.beesfun.com/2017/03/30/sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload/">http://www.beesfun.com/2017/03/30/sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload/</a></p>
+<p><a target="_blank" rel="noopener" href="https://wooyun.js.org/drops/SQLMAP%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8.html">https://wooyun.js.org/drops/SQLMAP%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8.html</a></p>
+<h3 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h3><h4 id="程序调用流程"><a href="#程序调用流程" class="headerlink" title="程序调用流程"></a>程序调用流程</h4><p>Sqlmap 在  <code>sqlmap.py -&gt; main -&gt; init() -&gt; loadPayloads()</code>中读取 <code>/data/xml/payloads</code>中的六种注入方法的<code>payload</code>。然后在<code>sqlmap.py-&gt; main - &gt; start() - &gt; checkSqlInjection() -&gt; test = getSortedInjectionTests()</code>调用。然后进入<code>while tests:</code>循环每一种<code>payload</code>。</p>
+<span id="more"></span>
 
-<p>将payload和对应value的值设置</p>
-<h3 id="判断当前页面重复度与初始页面重复度是否小于0-5"><a href="#判断当前页面重复度与初始页面重复度是否小于0-5" class="headerlink" title="判断当前页面重复度与初始页面重复度是否小于0.5"></a>判断当前页面重复度与初始页面重复度是否小于0.5</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">retVal = (Request.queryPage(place=place, value=value, getRatioValue=<span class="literal">True</span>, noteResponseTime=<span class="literal">False</span>, silent=<span class="literal">True</span>, raise404=<span class="literal">False</span>, disableTampering=<span class="literal">True</span>)[<span class="number">1</span>] <span class="keyword">or</span> <span class="number">0</span>) &lt; IPS_WAF_CHECK_RATIO</span><br></pre></td></tr></table></figure>
+<h4 id="payload规则"><a href="#payload规则" class="headerlink" title="payload规则"></a>payload规则</h4><h5 id="payload结构"><a href="#payload结构" class="headerlink" title="payload结构"></a>payload结构</h5><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">test</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">stype</span>&gt;</span><span class="tag">&lt;/<span class="name">stype</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">level</span>&gt;</span><span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">risk</span>&gt;</span><span class="tag">&lt;/<span class="name">risk</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">clause</span>&gt;</span><span class="tag">&lt;/<span class="name">clause</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">where</span>&gt;</span><span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">vector</span>&gt;</span><span class="tag">&lt;/<span class="name">vector</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">request</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">payload</span>&gt;</span><span class="tag">&lt;/<span class="name">payload</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">comment</span>&gt;</span><span class="tag">&lt;/<span class="name">comment</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">char</span>&gt;</span><span class="tag">&lt;/<span class="name">char</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">columns</span>&gt;</span><span class="tag">&lt;/<span class="name">columns</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">request</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">response</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">comparison</span>&gt;</span><span class="tag">&lt;/<span class="name">comparison</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">grep</span>&gt;</span><span class="tag">&lt;/<span class="name">grep</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">time</span>&gt;</span><span class="tag">&lt;/<span class="name">time</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">union</span>&gt;</span><span class="tag">&lt;/<span class="name">union</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">response</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dbms</span>&gt;</span><span class="tag">&lt;/<span class="name">dbms</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dbms_version</span>&gt;</span><span class="tag">&lt;/<span class="name">dbms_version</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">os</span>&gt;</span><span class="tag">&lt;/<span class="name">os</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">test</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>主要思想参考<a target="_blank" rel="noopener" href="http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse%E3%80%82">http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse。</a><br>发送一系列脏字符，然后判断是否存在页面的不同。<br>主要的函数querypage()以后有时间再读…..</p>
+<h5 id="payload解释"><a href="#payload解释" class="headerlink" title="payload解释"></a>payload解释</h5><p><test>  根节点<br>    <title>(String)payload标题 </title><br>    <stype> (1- 6)<br>        Sql注入类型<br>        1:布尔盲注<br>        2: 错误注入<br>        3:内联查询<br>        4:堆叠查询<br>        5:时间盲注<br>        6:联合查询<br>    </stype><br>    <level>(1-5)当注入设置的level  &lt;该 level 时 ，不执行当前 payload<br>        1:一定测试 (小于100条测试)<br>        2:a bit harder (100-200 测试)<br>        3: 默认设置数值(200 - 500 测试)<br>        4: 大量测试 (500 - 1000 测试)<br>        5: 花费大量的时间( &gt; 1000 测试)<br>    </level><br>    <risk>(1-3)会对数据库数据完整性有影响<br>        1 : 低风险<br>        2: 中风险<br>        3: 高风险<br>    <risk><br>    <clause>payload在那里生效<br>            0: Always<br>            1: WHERE / HAVING<br>            2: GROUP BY<br>            3: ORDER BY<br>            4: LIMIT<br>            5: OFFSET<br>            6: TOP<br>            7: Table name<br>            8: Column name<br>            9: Pre-WHERE (non-query)<br>               可以是一个以逗号分隔的序列<br>    </clause><br>    <where>(1 - 3)将payload以何种方式加到参数后面<br>        1: 将paylaod添加到参数后<br>        2:将参数值替换为随机负数后，添加到负数后<br>        3:将参数替换为payload<br>    </where><br>    <vector>(STRING) 标识exp是什么，在实际注入过程无影响  </vector><br>    <request>payload主体<br>        <paylaod>(string) payload<payload><br>        <comment>(string) 注释在 <code>suffix</code>之前 </comment><br>        <char>在联合查询中用来爆破<code>columns</code>的字符</char><br>        <columns>联合查询中 <code>columns</code>的范围</columns><br>    </request><br>    <response>如何定义 是否注入成功<br>        <comparison>(String)用于判断<code>bool盲注</code>是否成功<br>            将这个作为<code>&lt;payload&gt;</code>重新发送，判断与原先的<code>response</code>是否相同。<br>        </comparison><br>        <grep>用正则判断<code>response</code>是否含有。用于判断<code>错误注入</code></grep><br>        <time>在返回<code>response</code>前等待的时间。判断<code>时间盲注``堆叠查询</code></time><br>        <union>Calls unionsTest()函数。判断<code>联合查询</code></union><br>    </response><br>    <details>细节判断注入是否成功<br>        <dbms>数据库类型</dbms><br>        <dbms_version>数据库版本</dbms_version><br>        <os>操作系统版本</os><br>    </details><br></test></p>
+<h5 id="固定参数"><a href="#固定参数" class="headerlink" title="固定参数"></a>固定参数</h5><p>[RANDNUM] [RANDNUM1] 随机整数<br>[INFERENCE]<br>[ORIGVALUE] 参数原来的值<br>[DELIMITER_START] 随机字串作为分隔符开始<br>[DELIMITER_STOP]  随机字串作为分隔符开始<br>[RANDSTR] 随机字符串</p>
+<h3 id="Boundary"><a href="#Boundary" class="headerlink" title="Boundary"></a>Boundary</h3><h4 id="程序调用流程-1"><a href="#程序调用流程-1" class="headerlink" title="程序调用流程"></a>程序调用流程</h4><p>在Payload调用流程的相邻,有函数<code>loadBoundaries</code>。XML文件位于/data/xml/boundaries.xml</p>
+<p>在payload的<code>while</code>循环中，有一个<code>for</code>循环将所有 boundary遍历，与paylaod组合。</p>
+<h4 id="boundary规则"><a href="#boundary规则" class="headerlink" title="boundary规则"></a>boundary规则</h4><h5 id="boundary解释"><a href="#boundary解释" class="headerlink" title="boundary解释"></a>boundary解释</h5><boundary>
+    <level>与`payload`相同<level>
+    <clause>与`payload`配合使用. `boundary`与`paylaod`的`clause`需要有并集</clause>
+    <where>与`payload`配合使用. `boundary`与`paylaod`的`where`需要有并集</where>
+    <ptype>(1-6)标识字符类型，注入过程 `应该` 不使用
+            1: Unescaped numeric
+            2: Single quoted string
+            3: LIKE single quoted string
+            4: Double quoted string
+            5: LIKE double quoted string
+            6: Identifier (e.g. column name)
+    </ptype>
+    <prefix>(String) 添加在 `<paylaod>`前的前缀</prefix>
+    <suffix>(String) 添加在`<comment>`后的后缀</suffix>
+</boundary>
 
+
+
+
+
+
+
+<h3 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a>调用流程</h3><ul>
+<li> 循环每一个<code>payload</code></li>
+<li>  if (payload.risk &gt; conf.risk || payload.level &gt; conf.level) cotinue</li>
+<li>  循环每一个<code>boundary</code></li>
+<li>  if ( boundary.level &gt; conf.level  ) continue</li>
+<li>  如果 <code>payload.clause</code> 和 <code>boundary.clause</code>并集为空，且 payload.clause!=0 且 boundary.clause!=0 cotinue</li>
+<li>  如果<code>paylaod.where</code> 和  <code>boundary.where</code>为空 continue</li>
+<li> payload = prefix + paylaod + comment + suffix      </li>
+</ul>
+<p>如果要使payload生效使主要需要注意:<br>paylaod.risk , payload.level , boundary.level, boundary.risk,<br>payload.clause 和 boundary.clause 有并集, payload.where 和 boundary.where 需要并集  </p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3>
       
     </div>
     
@@ -408,9 +435,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/sqlmap/" rel="tag"># sqlmap</a>
+            <a href="/tags/Sqlmap/" rel="tag"># Sqlmap</a>
           
-            <a href="/tags/waf/" rel="tag"># waf</a>
+            <a href="/tags/%E6%B3%A8%E5%85%A5/" rel="tag"># 注入</a>
           
         </div>
       
@@ -423,8 +450,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2022/02/13/sqlmap-start()%E5%87%BD%E6%95%B0/" rel="next" title="sqlmap start()函数源码简单阅读">
-                <i class="fa fa-chevron-left"></i> sqlmap start()函数源码简单阅读
+              <a href="/2022/03/02/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-RMI%E7%AF%87-%E7%AC%94%E8%AE%B0/" rel="next" title="JAVA安全漫谈-RMI篇-笔记">
+                <i class="fa fa-chevron-left"></i> JAVA安全漫谈-RMI篇-笔记
               </a>
             
           </div>
@@ -432,10 +459,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/02/21/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-%E5%8F%8D%E5%B0%84%E7%AF%87-%E7%AC%94%E8%AE%B0/" rel="prev" title="JAVA安全漫谈-反射篇-笔记">
-                JAVA安全漫谈-反射篇-笔记 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -567,7 +590,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqlmap-checkwaf-%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">sqlmap checkwaf()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%B7%B3%E8%BF%87%E6%A3%80%E6%B5%8Bwaf"><span class="nav-number">1.1.1.</span> <span class="nav-text">判断是否跳过检测waf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEpayload"><span class="nav-number">1.1.2.</span> <span class="nav-text">设置payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%BA%A6%E4%B8%8E%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%BA%A6%E6%98%AF%E5%90%A6%E5%B0%8F%E4%BA%8E0-5"><span class="nav-number">1.1.3.</span> <span class="nav-text">判断当前页面重复度与初始页面重复度是否小于0.5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89-Payload"><span class="nav-number">1.</span> <span class="nav-text">Sqlmap 自定义 Payload</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.0.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Payload"><span class="nav-number">1.0.2.</span> <span class="nav-text">Payload</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">程序调用流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#payload%E8%A7%84%E5%88%99"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">payload规则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#payload%E7%BB%93%E6%9E%84"><span class="nav-number">1.0.2.2.1.</span> <span class="nav-text">payload结构</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#payload%E8%A7%A3%E9%87%8A"><span class="nav-number">1.0.2.2.2.</span> <span class="nav-text">payload解释</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E5%9B%BA%E5%AE%9A%E5%8F%82%E6%95%B0"><span class="nav-number">1.0.2.2.3.</span> <span class="nav-text">固定参数</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Boundary"><span class="nav-number">1.0.3.</span> <span class="nav-text">Boundary</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%A8%8B%E5%BA%8F%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B-1"><span class="nav-number">1.0.3.1.</span> <span class="nav-text">程序调用流程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#boundary%E8%A7%84%E5%88%99"><span class="nav-number">1.0.3.2.</span> <span class="nav-text">boundary规则</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#boundary%E8%A7%A3%E9%87%8A"><span class="nav-number">1.0.3.2.1.</span> <span class="nav-text">boundary解释</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%B0%83%E7%94%A8%E6%B5%81%E7%A8%8B"><span class="nav-number">1.0.4.</span> <span class="nav-text">调用流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AE%9E%E4%BE%8B"><span class="nav-number">1.0.5.</span> <span class="nav-text">实例</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>

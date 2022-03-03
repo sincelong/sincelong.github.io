@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="sqlmap,waf," />
+  <meta name="keywords" content="Hexo, NexT" />
 
 
 
@@ -79,18 +79,12 @@
 
 
 
-<meta name="description" content="sqlmap checkwaf()函数">
-<meta property="og:type" content="article">
-<meta property="og:title" content="sqlmap-checkwaf()函数">
-<meta property="og:url" content="http://example.com/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/index.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Recoder">
+<meta property="og:url" content="http://example.com/tags/%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="sqlmap checkwaf()函数">
 <meta property="og:locale">
-<meta property="article:published_time" content="2022-02-20T08:11:06.000Z">
-<meta property="article:modified_time" content="2022-02-20T08:11:06.000Z">
 <meta property="article:author" content="Laplace">
-<meta property="article:tag" content="sqlmap">
-<meta property="article:tag" content="waf">
 <meta name="twitter:card" content="summary">
 
 
@@ -121,13 +115,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2022/02/20/sqlmap-checkwaf-函数/"/>
+  <link rel="canonical" href="http://example.com/tags/注入/"/>
 
 
 
 
 
-  <title>sqlmap-checkwaf()函数 | Recoder</title>
+  <title>标签: 注入 | Recoder</title>
   
 
 
@@ -146,7 +140,7 @@
     
   
 
-  <div class="container sidebar-position-left page-post-detail">
+  <div class="container sidebar-position-left ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -274,188 +268,54 @@
           <div id="content" class="content">
             
 
-  <div id="posts" class="posts-expand">
-    
+  
+  
+  
+  <div class="post-block tag">
 
-  
+    <div id="posts" class="posts-collapse">
+      <div class="collection-title">
+        <h1>注入<small>标签</small>
+        </h1>
+      </div>
 
-  
-  
-  
+      
+        
 
   <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/">
+    <header class="post-header">
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Laplace">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Recoder">
-    </span>
-
-    
-      <header class="post-header">
-
+      <h2 class="post-title">
         
+            <a class="post-title-link" href="/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/" itemprop="url">
+              
+                <span itemprop="name">Sqlmap-自定义Payload</span>
+              
+            </a>
         
-          <h1 class="post-title" itemprop="name headline">sqlmap-checkwaf()函数</h1>
-        
+      </h2>
 
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-02-20T16:11:06+08:00">
-                2022-02-20
-              </time>
-            
+      <div class="post-meta">
+        <time class="post-time" itemprop="dateCreated"
+              datetime="2022-03-03T10:06:09+08:00"
+              content="2022-03-03" >
+          03-03
+        </time>
+      </div>
 
-			
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/sqlmap%E6%BA%90%E7%A0%81%E9%98%85%E8%AF%BB/" itemprop="url" rel="index">
-                    <span itemprop="name">sqlmap源码阅读</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        <h1 id="sqlmap-checkwaf-函数"><a href="#sqlmap-checkwaf-函数" class="headerlink" title="sqlmap checkwaf()函数"></a>sqlmap checkwaf()函数</h1><span id="more"></span>
-<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="判断是否跳过检测waf"><a href="#判断是否跳过检测waf" class="headerlink" title="判断是否跳过检测waf"></a>判断是否跳过检测waf</h3><p>代码</p>
-<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 是否存在参数跳过checkwaf()</span></span><br><span class="line"><span class="keyword">if</span> <span class="built_in">any</span>((conf.string, conf.notString, conf.regexp, conf.dummy, conf.offline, conf.skipWaf)):</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment">#判断页面是否联通</span></span><br><span class="line"><span class="keyword">if</span> kb.originalCode == _http_client.NOT_FOUND:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br><span class="line"><span class="comment"># 该位置是否已经检测存在waf</span></span><br><span class="line">_ = hashDBRetrieve(HASHDB_KEYS.CHECK_WAF_RESULT, <span class="literal">True</span>)</span><br><span class="line"><span class="keyword">if</span> _ <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span>:</span><br><span class="line">	<span class="keyword">if</span> _:</span><br><span class="line">		warnMsg = <span class="string">&quot;previous heuristics detected that the target &quot;</span></span><br><span class="line">		warnMsg += <span class="string">&quot;is protected by some kind of WAF/IPS&quot;</span></span><br><span class="line">		logger.critical(warnMsg)</span><br><span class="line">	<span class="keyword">return</span> _</span><br><span class="line"><span class="comment"># 是否获得网站页面</span></span><br><span class="line"><span class="keyword">if</span> <span class="keyword">not</span> kb.originalPage:</span><br><span class="line">	<span class="keyword">return</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
-<p>通过一系列判断，决定是否要检测waf的存在。<br>分别有:</p>
-<ol>
-<li>存在需要跳过waf的参数</li>
-<li>网站页面为404</li>
-<li>该网站已经检测过存在waf</li>
-<li>网站页面为空  </li>
-</ol>
-<h3 id="设置payload"><a href="#设置payload" class="headerlink" title="设置payload"></a>设置payload</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">payload = <span class="string">&quot;%d %s&quot;</span> % (randomInt(), IPS_WAF_CHECK_PAYLOAD)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> PLACE.URI <span class="keyword">in</span> conf.parameters:</span><br><span class="line">    place = PLACE.POST</span><br><span class="line">    value = <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    place = PLACE.GET</span><br><span class="line">    value = <span class="string">&quot;&quot;</span> <span class="keyword">if</span> <span class="keyword">not</span> conf.parameters.get(PLACE.GET) <span class="keyword">else</span> conf.parameters[PLACE.GET] + DEFAULT_GET_POST_DELIMITER</span><br><span class="line">    value += <span class="string">&quot;%s=%s&quot;</span> % (randomStr(), agent.addPayloadDelimiters(payload))</span><br><span class="line"></span><br><span class="line">pushValue(kb.choices.redirect)</span><br><span class="line">pushValue(kb.resendPostOnRedirect)</span><br><span class="line">pushValue(conf.timeout)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">kb.choices.redirect = REDIRECTION.YES</span><br><span class="line">kb.resendPostOnRedirect = <span class="literal">False</span></span><br><span class="line">conf.timeout = IPS_WAF_CHECK_TIMEOUT</span><br></pre></td></tr></table></figure>
-
-<p>将payload和对应value的值设置</p>
-<h3 id="判断当前页面重复度与初始页面重复度是否小于0-5"><a href="#判断当前页面重复度与初始页面重复度是否小于0-5" class="headerlink" title="判断当前页面重复度与初始页面重复度是否小于0.5"></a>判断当前页面重复度与初始页面重复度是否小于0.5</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">retVal = (Request.queryPage(place=place, value=value, getRatioValue=<span class="literal">True</span>, noteResponseTime=<span class="literal">False</span>, silent=<span class="literal">True</span>, raise404=<span class="literal">False</span>, disableTampering=<span class="literal">True</span>)[<span class="number">1</span>] <span class="keyword">or</span> <span class="number">0</span>) &lt; IPS_WAF_CHECK_RATIO</span><br></pre></td></tr></table></figure>
-
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><p>主要思想参考<a target="_blank" rel="noopener" href="http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse%E3%80%82">http://seclists.org/nmap-dev/2011/q2/att-1005/http-waf-detect.nse。</a><br>发送一系列脏字符，然后判断是否存在页面的不同。<br>主要的函数querypage()以后有时间再读…..</p>
-
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-        <div class="post-tags">
-          
-            <a href="/tags/sqlmap/" rel="tag"># sqlmap</a>
-          
-            <a href="/tags/waf/" rel="tag"># waf</a>
-          
-        </div>
-      
-
-      
-      
-      
-
-      
-        <div class="post-nav">
-          <div class="post-nav-next post-nav-item">
-            
-              <a href="/2022/02/13/sqlmap-start()%E5%87%BD%E6%95%B0/" rel="next" title="sqlmap start()函数源码简单阅读">
-                <i class="fa fa-chevron-left"></i> sqlmap start()函数源码简单阅读
-              </a>
-            
-          </div>
-
-          <span class="post-nav-divider"></span>
-
-          <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2022/02/21/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-%E5%8F%8D%E5%B0%84%E7%AF%87-%E7%AC%94%E8%AE%B0/" rel="prev" title="JAVA安全漫谈-反射篇-笔记">
-                JAVA安全漫谈-反射篇-笔记 <i class="fa fa-chevron-right"></i>
-              </a>
-            
-          </div>
-        </div>
-      
-
-      
-      
-    </footer>
-  </div>
-  
-  
-  
+    </header>
   </article>
 
 
-
-    <div class="post-spread">
       
     </div>
+
   </div>
+  
+  
+  
+
+  
 
 
           </div>
@@ -463,10 +323,6 @@
 
 
           
-
-  
-
-
 
         </div>
         
@@ -487,17 +343,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview-wrap sidebar-panel">
+      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -557,22 +404,6 @@
         </div>
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#sqlmap-checkwaf-%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">sqlmap checkwaf()函数</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">1.1.</span> <span class="nav-text">过程</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E6%98%AF%E5%90%A6%E8%B7%B3%E8%BF%87%E6%A3%80%E6%B5%8Bwaf"><span class="nav-number">1.1.1.</span> <span class="nav-text">判断是否跳过检测waf</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%BE%E7%BD%AEpayload"><span class="nav-number">1.1.2.</span> <span class="nav-text">设置payload</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%BA%A6%E4%B8%8E%E5%88%9D%E5%A7%8B%E9%A1%B5%E9%9D%A2%E9%87%8D%E5%A4%8D%E5%BA%A6%E6%98%AF%E5%90%A6%E5%B0%8F%E4%BA%8E0-5"><span class="nav-number">1.1.3.</span> <span class="nav-text">判断当前页面重复度与初始页面重复度是否小于0.5</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%80%BB%E7%BB%93"><span class="nav-number">1.2.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
@@ -717,10 +548,6 @@
 
 
   
-  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
-<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
-
-
 
   
 

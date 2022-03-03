@@ -1757,4 +1757,59 @@ echo 123;
         <tag>RMI</tag>
       </tags>
   </entry>
+  <entry>
+    <title>Sqlmap-自定义Payload</title>
+    <url>/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/</url>
+    <content><![CDATA[<h1 id="Sqlmap-自定义-Payload"><a href="#Sqlmap-自定义-Payload" class="headerlink" title="Sqlmap 自定义 Payload"></a>Sqlmap 自定义 Payload</h1><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.beesfun.com/2017/03/30/sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload/">http://www.beesfun.com/2017/03/30/sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload/</a></p>
+<p><a href="https://wooyun.js.org/drops/SQLMAP%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8.html">https://wooyun.js.org/drops/SQLMAP%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8.html</a></p>
+<h3 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h3><h4 id="程序调用流程"><a href="#程序调用流程" class="headerlink" title="程序调用流程"></a>程序调用流程</h4><p>Sqlmap 在  <code>sqlmap.py -&gt; main -&gt; init() -&gt; loadPayloads()</code>中读取 <code>/data/xml/payloads</code>中的六种注入方法的<code>payload</code>。然后在<code>sqlmap.py-&gt; main - &gt; start() - &gt; checkSqlInjection() -&gt; test = getSortedInjectionTests()</code>调用。然后进入<code>while tests:</code>循环每一种<code>payload</code>。</p>
+<span id="more"></span>
+
+<h4 id="payload规则"><a href="#payload规则" class="headerlink" title="payload规则"></a>payload规则</h4><h5 id="payload结构"><a href="#payload结构" class="headerlink" title="payload结构"></a>payload结构</h5><figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">test</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">title</span>&gt;</span><span class="tag">&lt;/<span class="name">title</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">stype</span>&gt;</span><span class="tag">&lt;/<span class="name">stype</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">level</span>&gt;</span><span class="tag">&lt;/<span class="name">level</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">risk</span>&gt;</span><span class="tag">&lt;/<span class="name">risk</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">clause</span>&gt;</span><span class="tag">&lt;/<span class="name">clause</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">where</span>&gt;</span><span class="tag">&lt;/<span class="name">where</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">vector</span>&gt;</span><span class="tag">&lt;/<span class="name">vector</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">request</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">payload</span>&gt;</span><span class="tag">&lt;/<span class="name">payload</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">comment</span>&gt;</span><span class="tag">&lt;/<span class="name">comment</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">char</span>&gt;</span><span class="tag">&lt;/<span class="name">char</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">columns</span>&gt;</span><span class="tag">&lt;/<span class="name">columns</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">request</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">response</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">comparison</span>&gt;</span><span class="tag">&lt;/<span class="name">comparison</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">grep</span>&gt;</span><span class="tag">&lt;/<span class="name">grep</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">time</span>&gt;</span><span class="tag">&lt;/<span class="name">time</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">union</span>&gt;</span><span class="tag">&lt;/<span class="name">union</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">response</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">details</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dbms</span>&gt;</span><span class="tag">&lt;/<span class="name">dbms</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">dbms_version</span>&gt;</span><span class="tag">&lt;/<span class="name">dbms_version</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">os</span>&gt;</span><span class="tag">&lt;/<span class="name">os</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">details</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">test</span>&gt;</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<h5 id="payload解释"><a href="#payload解释" class="headerlink" title="payload解释"></a>payload解释</h5><p><test>  根节点<br>    <title>(String)payload标题 </title><br>    <stype> (1- 6)<br>        Sql注入类型<br>        1:布尔盲注<br>        2: 错误注入<br>        3:内联查询<br>        4:堆叠查询<br>        5:时间盲注<br>        6:联合查询<br>    </stype><br>    <level>(1-5)当注入设置的level  &lt;该 level 时 ，不执行当前 payload<br>        1:一定测试 (小于100条测试)<br>        2:a bit harder (100-200 测试)<br>        3: 默认设置数值(200 - 500 测试)<br>        4: 大量测试 (500 - 1000 测试)<br>        5: 花费大量的时间( &gt; 1000 测试)<br>    </level><br>    <risk>(1-3)会对数据库数据完整性有影响<br>        1 : 低风险<br>        2: 中风险<br>        3: 高风险<br>    <risk><br>    <clause>payload在那里生效<br>            0: Always<br>            1: WHERE / HAVING<br>            2: GROUP BY<br>            3: ORDER BY<br>            4: LIMIT<br>            5: OFFSET<br>            6: TOP<br>            7: Table name<br>            8: Column name<br>            9: Pre-WHERE (non-query)<br>               可以是一个以逗号分隔的序列<br>    </clause><br>    <where>(1 - 3)将payload以何种方式加到参数后面<br>        1: 将paylaod添加到参数后<br>        2:将参数值替换为随机负数后，添加到负数后<br>        3:将参数替换为payload<br>    </where><br>    <vector>(STRING) 标识exp是什么，在实际注入过程无影响  </vector><br>    <request>payload主体<br>        <paylaod>(string) payload<payload><br>        <comment>(string) 注释在 <code>suffix</code>之前 </comment><br>        <char>在联合查询中用来爆破<code>columns</code>的字符</char><br>        <columns>联合查询中 <code>columns</code>的范围</columns><br>    </request><br>    <response>如何定义 是否注入成功<br>        <comparison>(String)用于判断<code>bool盲注</code>是否成功<br>            将这个作为<code>&lt;payload&gt;</code>重新发送，判断与原先的<code>response</code>是否相同。<br>        </comparison><br>        <grep>用正则判断<code>response</code>是否含有。用于判断<code>错误注入</code></grep><br>        <time>在返回<code>response</code>前等待的时间。判断<code>时间盲注``堆叠查询</code></time><br>        <union>Calls unionsTest()函数。判断<code>联合查询</code></union><br>    </response><br>    <details>细节判断注入是否成功<br>        <dbms>数据库类型</dbms><br>        <dbms_version>数据库版本</dbms_version><br>        <os>操作系统版本</os><br>    </details><br></test></p>
+<h5 id="固定参数"><a href="#固定参数" class="headerlink" title="固定参数"></a>固定参数</h5><p>[RANDNUM] [RANDNUM1] 随机整数<br>[INFERENCE]<br>[ORIGVALUE] 参数原来的值<br>[DELIMITER_START] 随机字串作为分隔符开始<br>[DELIMITER_STOP]  随机字串作为分隔符开始<br>[RANDSTR] 随机字符串</p>
+<h3 id="Boundary"><a href="#Boundary" class="headerlink" title="Boundary"></a>Boundary</h3><h4 id="程序调用流程-1"><a href="#程序调用流程-1" class="headerlink" title="程序调用流程"></a>程序调用流程</h4><p>在Payload调用流程的相邻,有函数<code>loadBoundaries</code>。XML文件位于/data/xml/boundaries.xml</p>
+<p>在payload的<code>while</code>循环中，有一个<code>for</code>循环将所有 boundary遍历，与paylaod组合。</p>
+<h4 id="boundary规则"><a href="#boundary规则" class="headerlink" title="boundary规则"></a>boundary规则</h4><h5 id="boundary解释"><a href="#boundary解释" class="headerlink" title="boundary解释"></a>boundary解释</h5><boundary>
+    <level>与`payload`相同<level>
+    <clause>与`payload`配合使用. `boundary`与`paylaod`的`clause`需要有并集</clause>
+    <where>与`payload`配合使用. `boundary`与`paylaod`的`where`需要有并集</where>
+    <ptype>(1-6)标识字符类型，注入过程 `应该` 不使用
+            1: Unescaped numeric
+            2: Single quoted string
+            3: LIKE single quoted string
+            4: Double quoted string
+            5: LIKE double quoted string
+            6: Identifier (e.g. column name)
+    </ptype>
+    <prefix>(String) 添加在 `<paylaod>`前的前缀</prefix>
+    <suffix>(String) 添加在`<comment>`后的后缀</suffix>
+</boundary>
+
+
+
+
+
+
+
+<h3 id="调用流程"><a href="#调用流程" class="headerlink" title="调用流程"></a>调用流程</h3><ul>
+<li> 循环每一个<code>payload</code></li>
+<li>  if (payload.risk &gt; conf.risk || payload.level &gt; conf.level) cotinue</li>
+<li>  循环每一个<code>boundary</code></li>
+<li>  if ( boundary.level &gt; conf.level  ) continue</li>
+<li>  如果 <code>payload.clause</code> 和 <code>boundary.clause</code>并集为空，且 payload.clause!=0 且 boundary.clause!=0 cotinue</li>
+<li>  如果<code>paylaod.where</code> 和  <code>boundary.where</code>为空 continue</li>
+<li> payload = prefix + paylaod + comment + suffix      </li>
+</ul>
+<p>如果要使payload生效使主要需要注意:<br>paylaod.risk , payload.level , boundary.level, boundary.risk,<br>payload.clause 和 boundary.clause 有并集, payload.where 和 boundary.where 需要并集  </p>
+<h3 id="实例"><a href="#实例" class="headerlink" title="实例"></a>实例</h3>]]></content>
+      <categories>
+        <category>注入</category>
+      </categories>
+      <tags>
+        <tag>Sqlmap</tag>
+        <tag>注入</tag>
+      </tags>
+  </entry>
 </search>
