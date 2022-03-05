@@ -1890,4 +1890,36 @@ echo 123;
         <tag>URLDNS</tag>
       </tags>
   </entry>
+  <entry>
+    <title>PHP代码/命令执行函数</title>
+    <url>/2022/03/05/PHP%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h1 id="PHP-命令执行危险函数"><a href="#PHP-命令执行危险函数" class="headerlink" title="PHP 命令执行危险函数"></a>PHP 命令执行危险函数</h1><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="https://www.cnblogs.com/-qing-/p/10819069.html">https://www.cnblogs.com/-qing-/p/10819069.html</a></p>
+<h3 id="PHP-代码执行的危险函数"><a href="#PHP-代码执行的危险函数" class="headerlink" title="PHP 代码执行的危险函数"></a>PHP 代码执行的危险函数</h3><p>eval()<br>传入命令需要以分号结尾</p>
+<span id="more"></span>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200420.png">  </p>
+<p>assert()<br>传入命令不需要分号结尾<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200551.png"></p>
+<p>preg_replace()</p>
+<p>create_function()<br>需要加分号<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305201336.png"></p>
+<p>array_map()<br>array_map(func , arg)<br>func传入函数， arg传入参数数组<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305201714.png"></p>
+<p>call_user_func()<br>传入参数作为assert函数参数<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305202012.png"></p>
+<p>call_user_func_array()<br>传入参数作为数组第一个值给assert函数<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305202154.png"></p>
+<p>array_filter()<br>用回调函数过滤数组中元素:array_filter(数组， 函数)<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305203600.png"></p>
+<p>uasort()<br>php环境&gt;=&lt;5.6可以使用</p>
+<h3 id="PHP-命令执行函数"><a href="#PHP-命令执行函数" class="headerlink" title="PHP 命令执行函数"></a>PHP 命令执行函数</h3><p>system();<br>可以直接显示结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204035.png"></p>
+<p>passthru();<br>可以直接显示结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204106.png"></p>
+<p>shell_exec();<br>函数可执行，但是要加echo 回显<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204223.png"></p>
+<p> exec<br>(可以执行命令，以数组形式的保存结果，命令执行的状态码)<br>但需要加echo才能显示结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204439.png"></p>
+<p>popen<br>//popen函数：打开一个指向进程的管道，该进程由派生指定的 command 命令执行而产生。<br>//返回一个和 fopen() 所返回的相同的文件指针，只不过它是单向的（只能用于读或写）<br>//此指针可以用于 fgets()，fgetss() 和 fwrite()。并且必须用 pclose() 来关闭。<br>//若出错，则返回 false。</p>
+<p>proc_open<br>//proc_open — 执行一个命令，并且打开用来输入/输出的文件指针。</p>
+<p>``反斜杠<br>本质上是 shell_exec函数,如果shell_exec禁用，该函数同样不能使用</p>
+<p>ob_start<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305205240.png"></p>
+]]></content>
+      <categories>
+        <category>代码审计</category>
+      </categories>
+      <tags>
+        <tag>PHP</tag>
+        <tag>REC</tag>
+      </tags>
+  </entry>
 </search>

@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="PHP,REC," />
 
 
 
@@ -79,13 +79,32 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Recoder">
-<meta property="og:url" content="http://example.com/archives/index.html">
+<meta name="description" content="PHP 命令执行危险函数参考https:&#x2F;&#x2F;www.cnblogs.com&#x2F;-qing-&#x2F;p&#x2F;10819069.html PHP 代码执行的危险函数eval()传入命令需要以分号结尾">
+<meta property="og:type" content="article">
+<meta property="og:title" content="PHP代码&#x2F;命令执行函数">
+<meta property="og:url" content="http://example.com/2022/03/05/PHP%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/index.html">
 <meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="PHP 命令执行危险函数参考https:&#x2F;&#x2F;www.cnblogs.com&#x2F;-qing-&#x2F;p&#x2F;10819069.html PHP 代码执行的危险函数eval()传入命令需要以分号结尾">
 <meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200420.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200551.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305201336.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305201714.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305202012.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305202154.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305203600.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204035.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204106.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204223.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204439.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305205240.png">
+<meta property="article:published_time" content="2022-03-05T12:54:15.000Z">
+<meta property="article:modified_time" content="2022-03-05T12:54:15.000Z">
 <meta property="article:author" content="Laplace">
+<meta property="article:tag" content="PHP">
+<meta property="article:tag" content="REC">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200420.png">
 
 
 
@@ -115,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/archives/"/>
+  <link rel="canonical" href="http://example.com/2022/03/05/PHP代码命令执行函数/"/>
 
 
 
 
 
-  <title>归档 | Recoder</title>
+  <title>PHP代码/命令执行函数 | Recoder</title>
   
 
 
@@ -140,7 +159,7 @@
     
   
 
-  <div class="container sidebar-position-left page-archive">
+  <div class="container sidebar-position-left page-post-detail">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -268,410 +287,188 @@
           <div id="content" class="content">
             
 
+  <div id="posts" class="posts-expand">
+    
+
+  
+
   
   
   
-  <div class="post-block archive">
-    <div id="posts" class="posts-collapse">
-      <span class="archive-move-on"></span>
 
-      <span class="archive-page-counter">
-        
-        
-         
-        
-        OK! 目前共计 39 篇日志。 继续努力。
-      </span>
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/05/PHP%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/">
 
-      
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
 
         
         
+          <h1 class="post-title" itemprop="name headline">PHP代码/命令执行函数</h1>
         
 
-        
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-05T20:54:15+08:00">
+                2022-03-05
+              </time>
+            
+
+			
+          </span>
+
           
-          <div class="collection-title">
-            <h1 class="archive-year" id="archive-year-2022">2022</h1>
-          </div>
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/03/05/PHP%E4%BB%A3%E7%A0%81%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/" itemprop="url">
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
               
-                <span itemprop="name">PHP代码/命令执行函数</span>
+                <span class="post-meta-item-text">分类于</span>
               
-            </a>
-        
-      </h2>
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index">
+                    <span itemprop="name">代码审计</span>
+                  </a>
+                </span>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-05T20:54:15+08:00"
-              content="2022-03-05" >
-          03-05
-        </time>
-      </div>
+                
+                
+              
+            </span>
+          
 
-    </header>
-  </article>
+          
+            
+          
 
+          
+          
 
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/03/05/java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-1/" itemprop="url">
-              
-                <span itemprop="name">java漫谈笔记-反序列化篇-1</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-05T16:10:36+08:00"
-              content="2022-03-05" >
-          03-05
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
       
 
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/03/04/dnslog%E5%88%A9%E7%94%A8/" itemprop="url">
-              
-                <span itemprop="name">dnslog利用</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-04T16:47:20+08:00"
-              content="2022-03-04" >
-          03-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
+      
+        <h1 id="PHP-命令执行危险函数"><a href="#PHP-命令执行危险函数" class="headerlink" title="PHP 命令执行危险函数"></a>PHP 命令执行危险函数</h1><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/-qing-/p/10819069.html">https://www.cnblogs.com/-qing-/p/10819069.html</a></p>
+<h3 id="PHP-代码执行的危险函数"><a href="#PHP-代码执行的危险函数" class="headerlink" title="PHP 代码执行的危险函数"></a>PHP 代码执行的危险函数</h3><p>eval()<br>传入命令需要以分号结尾</p>
+<span id="more"></span>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200420.png">  </p>
+<p>assert()<br>传入命令不需要分号结尾<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305200551.png"></p>
+<p>preg_replace()</p>
+<p>create_function()<br>需要加分号<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305201336.png"></p>
+<p>array_map()<br>array_map(func , arg)<br>func传入函数， arg传入参数数组<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305201714.png"></p>
+<p>call_user_func()<br>传入参数作为assert函数参数<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305202012.png"></p>
+<p>call_user_func_array()<br>传入参数作为数组第一个值给assert函数<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305202154.png"></p>
+<p>array_filter()<br>用回调函数过滤数组中元素:array_filter(数组， 函数)<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305203600.png"></p>
+<p>uasort()<br>php环境&gt;=&lt;5.6可以使用</p>
+<h3 id="PHP-命令执行函数"><a href="#PHP-命令执行函数" class="headerlink" title="PHP 命令执行函数"></a>PHP 命令执行函数</h3><p>system();<br>可以直接显示结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204035.png"></p>
+<p>passthru();<br>可以直接显示结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204106.png"></p>
+<p>shell_exec();<br>函数可执行，但是要加echo 回显<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204223.png"></p>
+<p> exec<br>(可以执行命令，以数组形式的保存结果，命令执行的状态码)<br>但需要加echo才能显示结果<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305204439.png"></p>
+<p>popen<br>//popen函数：打开一个指向进程的管道，该进程由派生指定的 command 命令执行而产生。<br>//返回一个和 fopen() 所返回的相同的文件指针，只不过它是单向的（只能用于读或写）<br>//此指针可以用于 fgets()，fgetss() 和 fwrite()。并且必须用 pclose() 来关闭。<br>//若出错，则返回 false。</p>
+<p>proc_open<br>//proc_open — 执行一个命令，并且打开用来输入/输出的文件指针。</p>
+<p>``反斜杠<br>本质上是 shell_exec函数,如果shell_exec禁用，该函数同样不能使用</p>
+<p>ob_start<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220305205240.png"></p>
 
       
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/" itemprop="url">
-              
-                <span itemprop="name">Sqlmap-自定义Payload</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-03T10:06:09+08:00"
-              content="2022-03-03" >
-          03-03
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/03/02/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-RMI%E7%AF%87-%E7%AC%94%E8%AE%B0/" itemprop="url">
-              
-                <span itemprop="name">JAVA安全漫谈-RMI篇-笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-02T20:23:11+08:00"
-              content="2022-03-02" >
-          03-02
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/03/01/XSS-http-only-%E7%BB%95%E8%BF%87/" itemprop="url">
-              
-                <span itemprop="name">XSS httponly 绕过</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-03-01T08:06:48+08:00"
-              content="2022-03-01" >
-          03-01
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/02/21/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-%E5%8F%8D%E5%B0%84%E7%AF%87-%E7%AC%94%E8%AE%B0/" itemprop="url">
-              
-                <span itemprop="name">JAVA安全漫谈-反射篇-笔记</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-02-21T10:51:04+08:00"
-              content="2022-02-21" >
-          02-21
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/02/20/sqlmap-checkwaf-%E5%87%BD%E6%95%B0/" itemprop="url">
-              
-                <span itemprop="name">sqlmap-checkwaf()函数</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-02-20T16:11:06+08:00"
-              content="2022-02-20" >
-          02-20
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/02/13/sqlmap-start()%E5%87%BD%E6%95%B0/" itemprop="url">
-              
-                <span itemprop="name">sqlmap start()函数源码简单阅读</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-02-13T14:39:07+08:00"
-              content="2022-02-13" >
-          02-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
-        
-        
-        
-
-        
-        
-
-        
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
-        
-            <a class="post-title-link" href="/2022/01/24/DC-7%E9%9D%B6%E6%9C%BA/" itemprop="url">
-              
-                <span itemprop="name">DC-7靶机</span>
-              
-            </a>
-        
-      </h2>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2022-01-24T09:52:17+08:00"
-              content="2022-01-24" >
-          01-24
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-      
-
     </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/PHP/" rel="tag"># PHP</a>
+          
+            <a href="/tags/REC/" rel="tag"># REC</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/03/05/java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-1/" rel="next" title="java漫谈笔记-反序列化篇-1">
+                <i class="fa fa-chevron-left"></i> java漫谈笔记-反序列化篇-1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
   </div>
   
   
   
-
-  
-  <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/archives/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/2/">&gt;</a>
-  </nav>
+  </article>
 
 
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
 
 
           </div>
@@ -679,6 +476,10 @@
 
 
           
+
+  
+
+
 
         </div>
         
@@ -699,8 +500,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -760,6 +570,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#PHP-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%8D%B1%E9%99%A9%E5%87%BD%E6%95%B0"><span class="nav-number">1.</span> <span class="nav-text">PHP 命令执行危险函数</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.0.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E7%9A%84%E5%8D%B1%E9%99%A9%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.2.</span> <span class="nav-text">PHP 代码执行的危险函数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#PHP-%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0"><span class="nav-number">1.0.3.</span> <span class="nav-text">PHP 命令执行函数</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -904,6 +730,10 @@
 
 
   
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
 
   
 
