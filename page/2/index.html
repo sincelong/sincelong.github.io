@@ -283,6 +283,152 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/" itemprop="url">Sqlmap-自定义Payload</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-03-03T10:06:09+08:00">
+                2022-03-03
+              </time>
+            
+
+			
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E6%B3%A8%E5%85%A5/" itemprop="url" rel="index">
+                    <span itemprop="name">注入</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h1 id="Sqlmap-自定义-Payload"><a href="#Sqlmap-自定义-Payload" class="headerlink" title="Sqlmap 自定义 Payload"></a>Sqlmap 自定义 Payload</h1><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a target="_blank" rel="noopener" href="http://www.beesfun.com/2017/03/30/sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload/">http://www.beesfun.com/2017/03/30/sqlmap%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90%E4%B9%8Btest%E5%92%8Cboundary%E7%BB%84%E5%90%88%E7%94%9F%E6%88%90payload/</a></p>
+<p><a target="_blank" rel="noopener" href="https://wooyun.js.org/drops/SQLMAP%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8.html">https://wooyun.js.org/drops/SQLMAP%E8%BF%9B%E9%98%B6%E4%BD%BF%E7%94%A8.html</a></p>
+<h3 id="Payload"><a href="#Payload" class="headerlink" title="Payload"></a>Payload</h3><h4 id="程序调用流程"><a href="#程序调用流程" class="headerlink" title="程序调用流程"></a>程序调用流程</h4><p>Sqlmap 在  <code>sqlmap.py -&gt; main -&gt; init() -&gt; loadPayloads()</code>中读取 <code>/data/xml/payloads</code>中的六种注入方法的<code>payload</code>。然后在<code>sqlmap.py-&gt; main - &gt; start() - &gt; checkSqlInjection() -&gt; test = getSortedInjectionTests()</code>调用。然后进入<code>while tests:</code>循环每一种<code>payload</code>。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2022/03/03/Sqlmap-%E8%87%AA%E5%AE%9A%E4%B9%89Payload/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/03/02/JAVA%E5%AE%89%E5%85%A8%E6%BC%AB%E8%B0%88-RMI%E7%AF%87-%E7%AC%94%E8%AE%B0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1544,146 +1690,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/01/20/Xdebug%E9%85%8D%E5%90%88Phpstorm%E4%BD%BF%E7%94%A8/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Laplace">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Recoder">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2022/01/20/Xdebug%E9%85%8D%E5%90%88Phpstorm%E4%BD%BF%E7%94%A8/" itemprop="url">Xdebug配合Phpstorm使用</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-01-20T21:53:43+08:00">
-                2022-01-20
-              </time>
-            
-
-			
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E4%BB%A3%E7%A0%81%E5%AE%A1%E8%AE%A1/" itemprop="url" rel="index">
-                    <span itemprop="name">代码审计</span>
-                  </a>
-                </span>
-
-                
-                
-              
-            </span>
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="Xdebug的配置"><a href="#Xdebug的配置" class="headerlink" title="Xdebug的配置"></a>Xdebug的配置</h1><h3 id="所有流量在phpstorm调试"><a href="#所有流量在phpstorm调试" class="headerlink" title="所有流量在phpstorm调试"></a>所有流量在phpstorm调试</h3><p>在php.ini中添加<code>xdebug.remote_autostart=1</code>可以使所有的流量不需要浏览器安装Xdebug插件，就在phpStorm中调试。这样就可以配合BurpSuite使用。</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
@@ -1734,7 +1740,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">45</span>
+                  <span class="site-state-item-count">46</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1756,7 +1762,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">55</span>
+                  <span class="site-state-item-count">57</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
