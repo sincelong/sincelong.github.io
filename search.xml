@@ -2307,4 +2307,94 @@ echo 123;
         <tag>7u21</tag>
       </tags>
   </entry>
+  <entry>
+    <title>JNDI注入</title>
+    <url>/2022/03/31/JNDI%E6%B3%A8%E5%85%A5/</url>
+    <content><![CDATA[<h1 id="JNDI注入与Fastjson反序列化"><a href="#JNDI注入与Fastjson反序列化" class="headerlink" title="JNDI注入与Fastjson反序列化"></a>JNDI注入与Fastjson反序列化</h1><h2 id="JNDI"><a href="#JNDI" class="headerlink" title="JNDI"></a>JNDI</h2><p>JNDI全名为``Java Naming and Directory Interface<code>，</code>Java命名和目录接口<code>。通过JNDI这个接口，可以调用如LDAP, RMI, DNS, NIS，许多种服务。在JNDI中通过</code>Lookup(url)<code>去调用远程代码。如果我们可以控制</code>url`参数，更改为恶意远程服务器地址。那么JNDI</p>
+]]></content>
+      <categories>
+        <category>JAVA安全</category>
+      </categories>
+      <tags>
+        <tag>JAVA</tag>
+        <tag>JNDI</tag>
+        <tag>反序列化</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内网安全攻防笔记1</title>
+    <url>/2022/04/09/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B01/</url>
+    <content><![CDATA[<h1 id="内网攻防安全笔记1-1"><a href="#内网攻防安全笔记1-1" class="headerlink" title="内网攻防安全笔记1.1"></a>内网攻防安全笔记1.1</h1><h2 id="内网基础知识"><a href="#内网基础知识" class="headerlink" title="内网基础知识"></a>内网基础知识</h2><h3 id="工作组"><a href="#工作组" class="headerlink" title="工作组"></a>工作组</h3><p>在计算机属性选项，更改设置中更改计算机工作组名称。重启计算机后计算级会自动加入当前工作组。在工作组中所有计算机是平等的，可以互相访问对方共享的资源。工作组是相对自由的可以随意进入和退出。</p>
+<span id="more"></span>
+
+<h3 id="域"><a href="#域" class="headerlink" title="域"></a>域</h3><p>域可以理解为一个升级版的工作组，它具有更好地安全性，也更加易于管理。两个域之间无法互相访问，在域中的计算机如果想要获得域内的资源也需要使用合法的身份登录域，获取资源的数量也取决于登录身份的权利。</p>
+<h3 id="域控制器-DC"><a href="#域控制器-DC" class="headerlink" title="域控制器 / DC"></a>域控制器 / DC</h3><p>域控制器/DC，简称为域控。域控相当于这个域的门禁，域中的计算机密码和帐号相关的信息都储存在DC中。一个计算机登录域，首先需要经过域的验证。DC会检验这台计算机是否在域中存在，然后检验用户名与密码是否正确。当着三项都满足时，计算机才可以登录到域中。</p>
+<h3 id="域中环境"><a href="#域中环境" class="headerlink" title="域中环境"></a>域中环境</h3><h4 id="单域"><a href="#单域" class="headerlink" title="单域"></a>单域</h4><p>在小型公司中一 个域一般就可以满足需求。但是在一个域中一般需要两个DC。一个主DC一个备份DC,当主DC无法使用时，可以使用备份DC。不至于整个公司无法登录。</p>
+<h4 id="父域和子域"><a href="#父域和子域" class="headerlink" title="父域和子域"></a>父域和子域</h4><p>有时一个公司的各个分公司分散在不同的地点，这个时候需要使用子域。使用子域可以减低带宽的负担，在同一个域中信息交互需要占用大量的带宽且不可以压缩。但是在不同的域中交换的信息很少而且可以压缩。另一个需要使用子域的场景是需要使用不同的安全策略，比如财务部需要单独定制策略，就可以将财务部单独划一个域。</p>
+<h4 id="域树"><a href="#域树" class="headerlink" title="域树"></a>域树</h4><p>域树是多个域建立信任关系的集合。一个域管理员只能管理本域，如果需要访问其他域，域之间需要建立信任关系。父域和子域的关系类似于域名，子域名只能以父域为前缀。如<code>son.father.com</code>是<code>father.com</code>的子域。以一个父节点作为根节点的树即为域树。</p>
+<h4 id="域森林"><a href="#域森林" class="headerlink" title="域森林"></a>域森林</h4><p>域森林是指多颗域树建立信任关系的集合。当一个公司收购另外一个公司，那个两个公司的域树的根节点不同，无法合并为一颗域树。如<code>abc.com</code>和<code>abc.net</code>这个时候可以在两颗树之间建立信任关系。可以保留两颗域树本身的结构不被破坏。</p>
+<h4 id="域名服务器"><a href="#域名服务器" class="headerlink" title="域名服务器"></a>域名服务器</h4><p>可以发现域的关系和网络中域名的关系非常类似。同样在域中也可以使用域名服务器来进行域名和Ip的转换。一般在内网渗透中都是通过寻找DNS服务器位置来确认DC的位置。(一般DC和DNS配置在同一台主机上）</p>
+<h4 id="活动目录-AD"><a href="#活动目录-AD" class="headerlink" title="活动目录(AD)"></a>活动目录(AD)</h4><p>活动目录(Active Dirctory  ,AD )域环境中提供目录服务的组件。<br>AD相当于域中的目录，通过这个目录可以直接管理域中的对象，而不需要到具体的主机信息信息进行管理。域树中的所有域共享一个活动目录，活动目录中的数据分散在各个域中，且各个域都只有该域的数据。<br>活动目录可以提供一下功能:</p>
+<ul>
+<li>帐号集中管理：所有帐号都储存在AD中，可以方便的进行管理</li>
+<li>软件集中管理: 可以同一推送软件</li>
+<li>环境集中管理: 同一客户机桌面， IE, TCP/IP协议设置</li>
+<li>增强安全性: 同一部署安全杀毒软件，集中管理用户权限、用户密码</li>
+<li>更可靠，更短的设置时间:</li>
+</ul>
+<h4 id="DC和AD区别"><a href="#DC和AD区别" class="headerlink" title="DC和AD区别"></a>DC和AD区别</h4><p>域中的许多机器，打印机，以及对象如；用户，用户组，共享文件的检索信息整理好，形成一个数据库，便于查找和管理。这个数据库就是AD库。<br>当一台机器安装AD后该机器遍拥有了AD库，同时该台机器就变为了DC。</p>
+<h4 id="安全域的划分"><a href="#安全域的划分" class="headerlink" title="安全域的划分"></a>安全域的划分</h4><p>划分安全域就是将安全等级相同的计算机划分到同一个网段中。这个网段中的机器拥有相同的对内和对外的网络策略，以便将网络风险最小化。一个经典的划分如下<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220410225556.png">  </p>
+<p>分为三个区域从高到底分别为 内网， DMZ ， 外网。<br>DMZ是隔离区，为了解决外部网络无法访问内部网络而建立的一个在安全区域和非安全区域的一个缓冲区。DMZ中安防企业必须提供的对外服务器如: Web服务器， FTP服务器，论坛服务器。如果攻击者打穿了外部网络，还需要攻破DMZ才可以访问到企业内网。<br>DMZ一般需要如下策略以保证安全性:</p>
+<pre><code>- 内网可以访问外网:  防火墙执行NAT实现内网访问外网
+- 内网可以访问DMZ:  内网用户可以管理DMZ中设置
+- 外网用户无法访问内网: 外网用户不允许访问公司内部内网信息，如果必须访问需要在外网通过VPN访问内网。
+- 外网可以访问DMZ:DMZ需要对外网提供服务，需要外网用户访问DMZ，同时这也需要防火墙实现网络地址到实际地址的转换。
+- DMZ不允许访问内网: 为了保证内网安全，攻击者击穿DMZ时需要穿过防火墙限制才能访问内网
+- DMZ 不允许访问外网：DMZ只需要提供服务，一般不需要主动访问外网信息。
+</code></pre>
+<p>内网也可以分为办公区和核心区:</p>
+<ul>
+<li>办公区:公司员工日常的工作区，一般可以访问DMZ。</li>
+<li>核心区:存放企业重要数据的区域。一般有最严格的防护，只有很少的主机可以访问。</li>
+</ul>
+<h3 id="域中计算机分类"><a href="#域中计算机分类" class="headerlink" title="域中计算机分类"></a>域中计算机分类</h3><h4 id="域控-DC"><a href="#域控-DC" class="headerlink" title="域控(DC)"></a>域控(DC)</h4><p>DC用于管理所有域中计算机登录等相关信息。在网络中可以有多台计算机成为DC，共同工作以减小域中的压力，同时保证服务器稳定。</p>
+<h4 id="成员服务器"><a href="#成员服务器" class="headerlink" title="成员服务器"></a>成员服务器</h4><p>安装了服务器系统并加入了域的计算机。成员服务器并没有安装AD,但是安装了其他服务器以提供网络资源。常见的成员服务器有:文件服务器， 应用服务器， 数据库服务器， Web服务器，邮件服务器，防火墙，打印服务器等。</p>
+<h4 id="客户机"><a href="#客户机" class="headerlink" title="客户机"></a>客户机</h4><p>域中安装了其他操作系统的客户机。通过DC的安全验证后即可登录域，访问域中的各种资源。</p>
+<h4 id="独立服务器"><a href="#独立服务器" class="headerlink" title="独立服务器"></a>独立服务器</h4><p>独立服务器和域没有关系。一台服务器不加入域，也不安装AD既是独立服务器。独立服务器可以创建工作组、与网络中的其他计算机共享资源，但是无法访问域中的资源。</p>
+<h3 id="域中权限"><a href="#域中权限" class="headerlink" title="域中权限"></a>域中权限</h3><h4 id="组"><a href="#组" class="headerlink" title="组"></a>组</h4><p>组是用户帐号的集合。通过向组配置权限就可以使组中的所有成员拥有相同权限。通过配置组策略可以方便进行权限管理</p>
+<h4 id="域本地组"><a href="#域本地组" class="headerlink" title="域本地组"></a>域本地组</h4><p>域本地组的帐号可以从其他域中添加帐号到组中，但是只可以配置当前所在域中的权限。域本地组不可以嵌套在其他组中。</p>
+<h4 id="全局组"><a href="#全局组" class="headerlink" title="全局组"></a>全局组</h4><p>单域用户如果想要访问其他域的资源。需要在全局组中添加该用户。全局组可以在域林中配置权限。全局组可以 嵌套在其他组中。<br>例如: 将用户xyz添加在全局组<code>Domain Admins</code>中用户xyz这时成为域管理员。</p>
+<h4 id="通用组"><a href="#通用组" class="headerlink" title="通用组"></a>通用组</h4><p>通用组的成员来自于森林中任何域的用户。可以在森林中配置权限，也可以进行嵌套。但是通用组的信息不是保存在DC上而是保存在全局编录(GC)中，通用组的改变都会导致林复制。</p>
+<p>简单来说，域本地组来自于全林，作用于本域；全局组来自于本域，作用域全林；通用组来自于全林，作用于全林。</p>
+<h4 id="A-G-DL-P策略"><a href="#A-G-DL-P策略" class="headerlink" title="A-G-DL-P策略"></a>A-G-DL-P策略</h4><p>A-G-DL-P策略是指：将用户账户加入全局组中，将全局组添加到本地组中，然后为本地组配置权限</p>
+<ul>
+<li>A :用户帐号(Account)</li>
+<li>G:全局组(Global Group)</li>
+<li>DL:域本地组(Domain Local Group)</li>
+<li>P:资源权限(Permission)</li>
+</ul>
+<p>在A-G-DL-P策略中，如果需要为用户添加权限，只需要将用户添加到相应的本地组即可。</p>
+<h4 id="系统默认本地组"><a href="#系统默认本地组" class="headerlink" title="系统默认本地组"></a>系统默认本地组</h4><ul>
+<li>管理员组(Administrators)的成员可以不受限制的获取计算机/ 域的资源。在AD和DC中具有默认管理权限。该组成员可以更改<code>Enterprise Admin</code>, <code>Schema Admins</code>, <code>Domain Admins</code>组的成员关系</li>
+<li>远程登录组(Remote Desktop Users)的成员具有远程登录权限</li>
+<li>打印机操作组(Print Operator)的成员可以管理网络打印机，并可以在本地登录和关闭DC</li>
+<li>帐号操作员组(Account Operators)的成员可以管理域中的用户和组，也可以在本地登录DC。但是无法更改<code>Administarotrs</code>, <code>Domain Admins</code>组。默认情况下该组没有成员</li>
+<li>服务器操作员组(Server Operator)成员可以管理域服务器，包括管理任意服务器的共享目录，关闭DC等….默认情况下该组没有成员</li>
+<li>备份操作员组(Backop Operators)的成员可以在DC中执行备份和还原操作，并可以在本地登录，和关闭域控。默认情况下该组没有成员</li>
+</ul>
+<h4 id="系统默认全局组"><a href="#系统默认全局组" class="headerlink" title="系统默认全局组"></a>系统默认全局组</h4><ul>
+<li>域管理员组(Domain Admins)的成员在加入域的服务器，DC, AD中都具有管理员权限。同时会添加到所在域的<code>Adminstrator</code>组中，同时会默认添加到域中所有计算机的本地<code>Administrators</code>组中。域管理员组获得了域中所有计算机的<code>Administrator</code>权限。<br>如果希望用户成为域管理员，建议将用户添加到<code>Domain Admins</code>组中而不是<code>Administrators</code>组</li>
+<li>企业系统管理员组(Enterprise Admins)是域森林根域中的组。该组在森林的每个域内都是<code>Administrators</code>组的成员。对所有DC具有完全访问权</li>
+<li>架构管理员组(Schema Admins)是域森林根域中的一个组。可以修改AD和域森林模式。该组为AD和DC提供完整权限的组</li>
+<li>域用户组(Domain Users)组默认情况下，任何用户账户都属于<code>Domian Users</code>组。而由我们建立的计算机帐号属于<code>Domain Computers</code>组。如果想要将权限赋予所有用户，即可将权限赋予域用户组，或者将域用户组属于具有该权限的组。域用户组默认是内置域<code>Users</code>组的成员</li>
+</ul>
+]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>内网</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
