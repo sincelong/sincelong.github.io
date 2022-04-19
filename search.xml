@@ -2386,7 +2386,36 @@ echo 123;
   <entry>
     <title>内网安全攻防笔记1.2</title>
     <url>/2022/04/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B01-2/</url>
-    <content><![CDATA[]]></content>
+    <content><![CDATA[<h1 id="内网安全攻防笔记1-2"><a href="#内网安全攻防笔记1-2" class="headerlink" title="内网安全攻防笔记1.2"></a>内网安全攻防笔记1.2</h1><h2 id="PowerShell基本概念"><a href="#PowerShell基本概念" class="headerlink" title="PowerShell基本概念"></a>PowerShell基本概念</h2><h3 id="ps1文件"><a href="#ps1文件" class="headerlink" title=".ps1文件"></a>.ps1文件</h3><p>类似于.bat文件。PowerShell脚本使用.ps1作为后缀，每行一条指令。</p>
+<span id="more"></span>
+
+<h3 id="执行策略"><a href="#执行策略" class="headerlink" title="执行策略"></a>执行策略</h3><p>PowerShell设置了默认执行策略无法运行.ps1脚本。可以使用指令<code>Get-ExecutionPolicy</code>查看当前执行策略。<br>而执行策略有以下:</p>
+<ul>
+<li>Restricted(默认设置，脚本无法运行)</li>
+<li>RemoteSigned(在本地创建的脚本可以运行，但是网上下载的脚本无法运行用于数字证书签名除外)</li>
+<li>AllSigned(仅当脚本由受信任的发布者签名时才可以运行)</li>
+<li>Unrestricted(运行所有脚本运行)</li>
+</ul>
+<p>可以使用<code>Set-ExecutionPolicy &lt;Policy name&gt;</code>设置PowerShell执行策略</p>
+<h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>管道的作用是将一个命令的输出，作为另一个命令的输入使用。两个命令之间用<code>|</code>连接。<br>如以字符’p’开头的程序停止运行<code>get-process p* | stop-process</code></p>
+<h2 id="PowerShell常用命令"><a href="#PowerShell常用命令" class="headerlink" title="PowerShell常用命令"></a>PowerShell常用命令</h2><h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><p>在PowerShell中，命令叫做<code>cmdlet</code>命令。PowerShell命令不区分大小写。一下是PowerShell基本命令。</p>
+<ul>
+<li>新建目录 <code>New-item PowerShellStudy -itemtype directory</code></li>
+<li>新建文件 <code> New-Item test.txt -ItemType File</code></li>
+<li>删除目录 <code>Remove-Item xyz</code></li>
+<li>显示文本内容 <code>Get-Content .\test.txt</code></li>
+<li>设置文本内容 <code>Set-Content .\test.txt -Value &quot;Hello World&quot;</code></li>
+<li>追加文本内容 <code>Add-Content .\test.txt -Value &quot;Its a test&quot;</code></li>
+<li>删除文本内容 <code>Clear-Content .\test.txt</code></li>
+</ul>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3>]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>内网</tag>
+        <tag>笔记</tag>
+      </tags>
   </entry>
   <entry>
     <title>JNDI注入</title>
@@ -2490,6 +2519,68 @@ echo 123;
       <tags>
         <tag>Sql注入</tag>
         <tag>安全狗</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>内网安全攻防笔记2-1</title>
+    <url>/2022/04/19/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B02-1/</url>
+    <content><![CDATA[<h1 id="内网安全攻防笔记2-1-手动信息收集"><a href="#内网安全攻防笔记2-1-手动信息收集" class="headerlink" title="内网安全攻防笔记2-1 手动信息收集"></a>内网安全攻防笔记2-1 手动信息收集</h1><h2 id="查询网络配置信息"><a href="#查询网络配置信息" class="headerlink" title="查询网络配置信息"></a>查询网络配置信息</h2><p><code>ipconfig /all</code></p>
+<span id="more"></span>
+
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419192742.png"></p>
+<h2 id="查询操作系统及软件信息"><a href="#查询操作系统及软件信息" class="headerlink" title="查询操作系统及软件信息"></a>查询操作系统及软件信息</h2><h3 id="查询操作系统和版本信息"><a href="#查询操作系统和版本信息" class="headerlink" title="查询操作系统和版本信息"></a>查询操作系统和版本信息</h3><p><code>Systeminfo | findstr /B /C : &quot;OS&quot;</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419193205.png"></p>
+<h3 id="查看系统体系结构"><a href="#查看系统体系结构" class="headerlink" title="查看系统体系结构"></a>查看系统体系结构</h3><p><code>echo %PROCESSOR_ARCHITECTURE%</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419193440.png"></p>
+<h3 id="查看安装的软件版本，路径"><a href="#查看安装的软件版本，路径" class="headerlink" title="查看安装的软件版本，路径"></a>查看安装的软件版本，路径</h3><p>利用 wmic 获得软件子， 版本<br><code>wmic product get name, version</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419194200.png"><br>利用PowerShell命令，收集软件的版本信息。<br><code>powershell &quot;Get-wmiObject -class win32_product | select-object -property name,version&quot;</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195156.png"></p>
+<h2 id="查询本机服务信息"><a href="#查询本机服务信息" class="headerlink" title="查询本机服务信息"></a>查询本机服务信息</h2><p><code>wmic service list brief</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195216.png"></p>
+<h2 id="查询进程列表"><a href="#查询进程列表" class="headerlink" title="查询进程列表"></a>查询进程列表</h2><p><code>tasklist</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195324.png"><br><code>wmic process list brief</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195349.png"></p>
+<h2 id="查看启动程序信息"><a href="#查看启动程序信息" class="headerlink" title="查看启动程序信息"></a>查看启动程序信息</h2><p><code>wmic startup get command, caption</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201115.png"></p>
+<h2 id="查看计划任务"><a href="#查看计划任务" class="headerlink" title="查看计划任务"></a>查看计划任务</h2><p><code>schtasks /query /fo LIST /v</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201245.png"></p>
+<h2 id="查看主机开机时间"><a href="#查看主机开机时间" class="headerlink" title="查看主机开机时间"></a>查看主机开机时间</h2><p><code>net statistics workstation</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201410.png"></p>
+<h2 id="查询用户列表"><a href="#查询用户列表" class="headerlink" title="查询用户列表"></a>查询用户列表</h2><p><code>net user</code><br>通过获得用户列表，可以猜测在域中机器是如何命名。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201443.png"></p>
+<p>执行如下命令，获得本地管理员(通常包括域用户信息)<br><code>net localgroup administrators</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201901.png"><br>本地管理员有一个用户一个组。在Domain Admins组中的成员会成为域内机器的本地管理员。</p>
+<p>执行如下命令查看当前在线用户<br><code>query user || qwinsta</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202137.png"></p>
+<h2 id="列出本地计算机与所连接的客户端之间的会话"><a href="#列出本地计算机与所连接的客户端之间的会话" class="headerlink" title="列出本地计算机与所连接的客户端之间的会话"></a>列出本地计算机与所连接的客户端之间的会话</h2><p><code>net session</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202240.png"></p>
+<h2 id="查询端口信息"><a href="#查询端口信息" class="headerlink" title="查询端口信息"></a>查询端口信息</h2><p><code>netstat -ano</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202407.png"><br>可以查看当前计算机与那些计算机有连接，以及TCP端口，UDP端口的情况。</p>
+<h2 id="查看补丁列表"><a href="#查看补丁列表" class="headerlink" title="查看补丁列表"></a>查看补丁列表</h2><p><code>Systeminfo</code><br>查看系统详细信息。包含系统版本，域，补丁等信息。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202644.png"></p>
+<p>使用wmic命令查看系统补丁<br><code>wmic qfe get Caption,Description,HotFiexId,InstalledOn</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202825.png"></p>
+<h2 id="查询本机共享列表"><a href="#查询本机共享列表" class="headerlink" title="查询本机共享列表"></a>查询本机共享列表</h2><p>通过net查看本机共享列表和可访问的域共享列表<br><code>net share</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203032.png"><br>通过wmic命令查看共享列表<br><code>wmic share get  name, path, status</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203124.png"></p>
+<h2 id="查询路由表和可用的ARP缓存"><a href="#查询路由表和可用的ARP缓存" class="headerlink" title="查询路由表和可用的ARP缓存"></a>查询路由表和可用的ARP缓存</h2><p><code>route print</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203241.png"><br><code>arp -a</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203306.png"></p>
+<h2 id="查询防火墙信息"><a href="#查询防火墙信息" class="headerlink" title="查询防火墙信息"></a>查询防火墙信息</h2><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>Win 2003及以前版本<br><code>netsh firewall set opmod disable</code></p>
+<p>Win 2003之后的版本<br><code>netsh advfirewall set allprofiles state off</code></p>
+<h3 id="查看防火墙配置"><a href="#查看防火墙配置" class="headerlink" title="查看防火墙配置"></a>查看防火墙配置</h3><p><code>netsh firewall show config</code></p>
+<h3 id="修改防火墙配置"><a href="#修改防火墙配置" class="headerlink" title="修改防火墙配置"></a>修改防火墙配置</h3><ul>
+<li><p>允许指定程序进站</p>
+</li>
+<li><p>win 2003及之前的版本<br><code>netsh firewall add allowedprogram c:\nc.exe &quot;allow nc&quot; enable</code></p>
+</li>
+<li><p>win2003之后的版本<br><code>netsh advfirewall firewall add rule name=&quot;pass nc &quot; dir=in action=allow program=&quot;C: \nc.exe&quot;</code></p>
+</li>
+<li><p>允许指定程序出站<br><code>netsh advfirewall firewall add rule name=&quot;pass nc &quot; dir=out action=allow program=&quot;C: \nc.exe&quot;</code></p>
+</li>
+<li><p>允许3389端口进站<br><code>netsh advfirewall firewall add rule name=&quot;RDP &quot; protocol=TCP dir=in localport=3389 action=allow</code></p>
+</li>
+<li><p>自定义防火墙日志的存储位置<br><code>netsh advfirewall set currentprofile logging filename &quot;D:\firewall.log&quot;</code></p>
+</li>
+</ul>
+<h2 id="查看代理配置"><a href="#查看代理配置" class="headerlink" title="查看代理配置"></a>查看代理配置</h2><p>通过如下命令查看服务器127.0.0.1 的 1080端口代理配置信息<br><code>reg query &quot;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings&quot;</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419204854.png"></p>
+<h2 id="查询并开启远程连接服务"><a href="#查询并开启远程连接服务" class="headerlink" title="查询并开启远程连接服务"></a>查询并开启远程连接服务</h2><ol>
+<li><p>查看远程桌面连接端口<br><code>REG query &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; /V PortNumber</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419205508.png"><br>0x3d转换即为3389端口</p>
+</li>
+<li><p>在Win 2003中开始3389端口<br><code>wmic path win32_terminalservicesetting where (__CLASS != &quot;&quot;) call setallowtsconnections 1</code></p>
+</li>
+<li><p>在Win2008 和 2012中开始3389端口<br><code>wmic /namespace:\root\cimv2\terminalservices path win32_terminalservicesetting where (__CLASS !=&quot;&quot;) call set allowtsconnections 1</code><br><code>wmic /namespace:\root\cimv2\terminalservices path win32_tsgeneralsetting where (TerminalName =&#39;RDP-Tcp&#39;) call setuserauthenticationrequired1</code><br><code>reg add&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; /v fSingleSessionPerUser /t REG_DWORD /d0 /f</code></p>
+</li>
+</ol>
+]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>内网</tag>
+        <tag>笔记</tag>
       </tags>
   </entry>
 </search>

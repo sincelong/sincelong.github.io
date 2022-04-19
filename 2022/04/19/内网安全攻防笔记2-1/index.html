@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="靶场,Vulnhub,Linux提权,脏牛提权," />
+  <meta name="keywords" content="内网,笔记," />
 
 
 
@@ -79,31 +79,44 @@
 
 
 
-<meta name="description" content="Lampiao靶机基本信息下载地址目标:获得root权限">
+<meta name="description" content="内网安全攻防笔记2-1 手动信息收集查询网络配置信息ipconfig &#x2F;all">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lampiao靶机">
-<meta property="og:url" content="http://example.com/2021/12/20/Lampiao%E9%9D%B6%E6%9C%BA/index.html">
+<meta property="og:title" content="内网安全攻防笔记2-1">
+<meta property="og:url" content="http://example.com/2022/04/19/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B02-1/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="Lampiao靶机基本信息下载地址目标:获得root权限">
+<meta property="og:description" content="内网安全攻防笔记2-1 手动信息收集查询网络配置信息ipconfig &#x2F;all">
 <meta property="og:locale">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220083440.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092046.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092155.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092245.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093240.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093340.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093801.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220094023.png">
-<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220094128.png">
-<meta property="article:published_time" content="2021-12-20T00:10:23.000Z">
-<meta property="article:modified_time" content="2021-12-20T00:10:23.000Z">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419192742.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419193205.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419193440.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419194200.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195156.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195216.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195324.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195349.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201115.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201245.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201410.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201443.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201901.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202137.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202240.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202407.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202644.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202825.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203032.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203124.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203241.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203306.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419204854.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419205508.png">
+<meta property="article:published_time" content="2022-04-19T11:22:34.000Z">
+<meta property="article:modified_time" content="2022-04-19T11:22:34.000Z">
 <meta property="article:author" content="Laplace">
-<meta property="article:tag" content="靶场">
-<meta property="article:tag" content="Vulnhub">
-<meta property="article:tag" content="Linux提权">
-<meta property="article:tag" content="脏牛提权">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220083440.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419192742.png">
 
 
 
@@ -133,13 +146,13 @@
 
 
 
-  <link rel="canonical" href="http://example.com/2021/12/20/Lampiao靶机/"/>
+  <link rel="canonical" href="http://example.com/2022/04/19/内网安全攻防笔记2-1/"/>
 
 
 
 
 
-  <title>Lampiao靶机 | Recoder</title>
+  <title>内网安全攻防笔记2-1 | Recoder</title>
   
 
 
@@ -300,7 +313,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2021/12/20/Lampiao%E9%9D%B6%E6%9C%BA/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/04/19/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B02-1/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Laplace">
@@ -317,7 +330,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Lampiao靶机</h1>
+          <h1 class="post-title" itemprop="name headline">内网安全攻防笔记2-1</h1>
         
 
         <div class="post-meta">
@@ -329,8 +342,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-12-20T08:10:23+08:00">
-                2021-12-20
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-04-19T19:22:34+08:00">
+                2022-04-19
               </time>
             
 
@@ -350,8 +363,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E9%9D%B6%E5%9C%BA/" itemprop="url" rel="index">
-                    <span itemprop="name">靶场</span>
+                  <a href="/categories/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">内网安全</span>
                   </a>
                 </span>
 
@@ -387,11 +400,56 @@
       
 
       
-        <h1 id="Lampiao靶机"><a href="#Lampiao靶机" class="headerlink" title="Lampiao靶机"></a>Lampiao靶机</h1><h2 id="基本信息"><a href="#基本信息" class="headerlink" title="基本信息"></a>基本信息</h2><p><a target="_blank" rel="noopener" href="https://www.vulnhub.com/entry/lampiao-1,249/">下载地址</a><br>目标:获得root权限</p>
+        <h1 id="内网安全攻防笔记2-1-手动信息收集"><a href="#内网安全攻防笔记2-1-手动信息收集" class="headerlink" title="内网安全攻防笔记2-1 手动信息收集"></a>内网安全攻防笔记2-1 手动信息收集</h1><h2 id="查询网络配置信息"><a href="#查询网络配置信息" class="headerlink" title="查询网络配置信息"></a>查询网络配置信息</h2><p><code>ipconfig /all</code></p>
 <span id="more"></span>
 
-
-<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><p>nmap获得靶机信息<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220083440.png" alt="靶机信息"><br>除了22  80 端口还开放了一个1898端口。在80端口上只有一个静态网页，没有可用的信息。到1898端口上查看。使用dirb扫描后，发现robots.txt文件。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092046.png" alt="dirb结果"><br>进入robots.txt文件，发现禁止爬取的文件中有CHANGELOG.txt.<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092155.png"><br>进入Changelog.txt文件发现，该网站为 Drupal的cms。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220092245.png"><br>进入msf查看是否存在可以利用的exp。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093240.png"><br>使用<code>exploit/unix/webapp/drupal_drupalgeddon2 </code>，并设置参数后运行。<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093340.png" alt="msf参数"><br>成功后输入<code>shell</code>获得www-data权限。<br>在<code>/var/www/html/sites/default/settings.php</code>文件中获得数据库连接帐号:drupaluser, 密码:Virgulino.在home文件夹中发现存在用户tiago<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220093801.png"><br>使用数据库连接密码连接tiago帐号成功。<br>使用脏牛提权的条件为<img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220094023.png" alt="脏牛提权"><br>通过<code>uname -a</code>查看当前版本符合脏牛提权条件。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20211220094128.png" alt="当前系统版本"><br><code>tar -czvf dcow.tar.gz CVE-2016-5195-master</code>压缩文件夹。<br>通过nc传输文件<br>靶机<code>nc -l 4444 &gt; dcow.tar.gz</code><br>攻击机<code>nc 10.1.1.133 4444 &lt; dcow.tar.gz</code><br>靶机使用<code>tar -xzvf dcow.tar.gz</code>解压文件夹后，进入文件夹。使用<code>make</code>指令生产dcow可执行文件，运行后获得root权限。</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419192742.png"></p>
+<h2 id="查询操作系统及软件信息"><a href="#查询操作系统及软件信息" class="headerlink" title="查询操作系统及软件信息"></a>查询操作系统及软件信息</h2><h3 id="查询操作系统和版本信息"><a href="#查询操作系统和版本信息" class="headerlink" title="查询操作系统和版本信息"></a>查询操作系统和版本信息</h3><p><code>Systeminfo | findstr /B /C : &quot;OS&quot;</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419193205.png"></p>
+<h3 id="查看系统体系结构"><a href="#查看系统体系结构" class="headerlink" title="查看系统体系结构"></a>查看系统体系结构</h3><p><code>echo %PROCESSOR_ARCHITECTURE%</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419193440.png"></p>
+<h3 id="查看安装的软件版本，路径"><a href="#查看安装的软件版本，路径" class="headerlink" title="查看安装的软件版本，路径"></a>查看安装的软件版本，路径</h3><p>利用 wmic 获得软件子， 版本<br><code>wmic product get name, version</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419194200.png"><br>利用PowerShell命令，收集软件的版本信息。<br><code>powershell &quot;Get-wmiObject -class win32_product | select-object -property name,version&quot;</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195156.png"></p>
+<h2 id="查询本机服务信息"><a href="#查询本机服务信息" class="headerlink" title="查询本机服务信息"></a>查询本机服务信息</h2><p><code>wmic service list brief</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195216.png"></p>
+<h2 id="查询进程列表"><a href="#查询进程列表" class="headerlink" title="查询进程列表"></a>查询进程列表</h2><p><code>tasklist</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195324.png"><br><code>wmic process list brief</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419195349.png"></p>
+<h2 id="查看启动程序信息"><a href="#查看启动程序信息" class="headerlink" title="查看启动程序信息"></a>查看启动程序信息</h2><p><code>wmic startup get command, caption</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201115.png"></p>
+<h2 id="查看计划任务"><a href="#查看计划任务" class="headerlink" title="查看计划任务"></a>查看计划任务</h2><p><code>schtasks /query /fo LIST /v</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201245.png"></p>
+<h2 id="查看主机开机时间"><a href="#查看主机开机时间" class="headerlink" title="查看主机开机时间"></a>查看主机开机时间</h2><p><code>net statistics workstation</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201410.png"></p>
+<h2 id="查询用户列表"><a href="#查询用户列表" class="headerlink" title="查询用户列表"></a>查询用户列表</h2><p><code>net user</code><br>通过获得用户列表，可以猜测在域中机器是如何命名。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201443.png"></p>
+<p>执行如下命令，获得本地管理员(通常包括域用户信息)<br><code>net localgroup administrators</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419201901.png"><br>本地管理员有一个用户一个组。在Domain Admins组中的成员会成为域内机器的本地管理员。</p>
+<p>执行如下命令查看当前在线用户<br><code>query user || qwinsta</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202137.png"></p>
+<h2 id="列出本地计算机与所连接的客户端之间的会话"><a href="#列出本地计算机与所连接的客户端之间的会话" class="headerlink" title="列出本地计算机与所连接的客户端之间的会话"></a>列出本地计算机与所连接的客户端之间的会话</h2><p><code>net session</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202240.png"></p>
+<h2 id="查询端口信息"><a href="#查询端口信息" class="headerlink" title="查询端口信息"></a>查询端口信息</h2><p><code>netstat -ano</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202407.png"><br>可以查看当前计算机与那些计算机有连接，以及TCP端口，UDP端口的情况。</p>
+<h2 id="查看补丁列表"><a href="#查看补丁列表" class="headerlink" title="查看补丁列表"></a>查看补丁列表</h2><p><code>Systeminfo</code><br>查看系统详细信息。包含系统版本，域，补丁等信息。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202644.png"></p>
+<p>使用wmic命令查看系统补丁<br><code>wmic qfe get Caption,Description,HotFiexId,InstalledOn</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419202825.png"></p>
+<h2 id="查询本机共享列表"><a href="#查询本机共享列表" class="headerlink" title="查询本机共享列表"></a>查询本机共享列表</h2><p>通过net查看本机共享列表和可访问的域共享列表<br><code>net share</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203032.png"><br>通过wmic命令查看共享列表<br><code>wmic share get  name, path, status</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203124.png"></p>
+<h2 id="查询路由表和可用的ARP缓存"><a href="#查询路由表和可用的ARP缓存" class="headerlink" title="查询路由表和可用的ARP缓存"></a>查询路由表和可用的ARP缓存</h2><p><code>route print</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203241.png"><br><code>arp -a</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419203306.png"></p>
+<h2 id="查询防火墙信息"><a href="#查询防火墙信息" class="headerlink" title="查询防火墙信息"></a>查询防火墙信息</h2><h3 id="关闭防火墙"><a href="#关闭防火墙" class="headerlink" title="关闭防火墙"></a>关闭防火墙</h3><p>Win 2003及以前版本<br><code>netsh firewall set opmod disable</code></p>
+<p>Win 2003之后的版本<br><code>netsh advfirewall set allprofiles state off</code></p>
+<h3 id="查看防火墙配置"><a href="#查看防火墙配置" class="headerlink" title="查看防火墙配置"></a>查看防火墙配置</h3><p><code>netsh firewall show config</code></p>
+<h3 id="修改防火墙配置"><a href="#修改防火墙配置" class="headerlink" title="修改防火墙配置"></a>修改防火墙配置</h3><ul>
+<li><p>允许指定程序进站</p>
+</li>
+<li><p>win 2003及之前的版本<br><code>netsh firewall add allowedprogram c:\nc.exe &quot;allow nc&quot; enable</code></p>
+</li>
+<li><p>win2003之后的版本<br><code>netsh advfirewall firewall add rule name=&quot;pass nc &quot; dir=in action=allow program=&quot;C: \nc.exe&quot;</code></p>
+</li>
+<li><p>允许指定程序出站<br><code>netsh advfirewall firewall add rule name=&quot;pass nc &quot; dir=out action=allow program=&quot;C: \nc.exe&quot;</code></p>
+</li>
+<li><p>允许3389端口进站<br><code>netsh advfirewall firewall add rule name=&quot;RDP &quot; protocol=TCP dir=in localport=3389 action=allow</code></p>
+</li>
+<li><p>自定义防火墙日志的存储位置<br><code>netsh advfirewall set currentprofile logging filename &quot;D:\firewall.log&quot;</code></p>
+</li>
+</ul>
+<h2 id="查看代理配置"><a href="#查看代理配置" class="headerlink" title="查看代理配置"></a>查看代理配置</h2><p>通过如下命令查看服务器127.0.0.1 的 1080端口代理配置信息<br><code>reg query &quot;HKEY_CURRENT_USER\Software\Microsoft\Windows\CurrentVersion\Internet Settings&quot;</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419204854.png"></p>
+<h2 id="查询并开启远程连接服务"><a href="#查询并开启远程连接服务" class="headerlink" title="查询并开启远程连接服务"></a>查询并开启远程连接服务</h2><ol>
+<li><p>查看远程桌面连接端口<br><code>REG query &quot;HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control\Terminal Server\WinStations\RDP-Tcp&quot; /V PortNumber</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220419205508.png"><br>0x3d转换即为3389端口</p>
+</li>
+<li><p>在Win 2003中开始3389端口<br><code>wmic path win32_terminalservicesetting where (__CLASS != &quot;&quot;) call setallowtsconnections 1</code></p>
+</li>
+<li><p>在Win2008 和 2012中开始3389端口<br><code>wmic /namespace:\root\cimv2\terminalservices path win32_terminalservicesetting where (__CLASS !=&quot;&quot;) call set allowtsconnections 1</code><br><code>wmic /namespace:\root\cimv2\terminalservices path win32_tsgeneralsetting where (TerminalName =&#39;RDP-Tcp&#39;) call setuserauthenticationrequired1</code><br><code>reg add&quot;HKLM\SYSTEM\CurrentControlSet\Control\Terminal Server&quot; /v fSingleSessionPerUser /t REG_DWORD /d0 /f</code></p>
+</li>
+</ol>
 
       
     </div>
@@ -409,13 +467,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/%E9%9D%B6%E5%9C%BA/" rel="tag"># 靶场</a>
+            <a href="/tags/%E5%86%85%E7%BD%91/" rel="tag"># 内网</a>
           
-            <a href="/tags/Vulnhub/" rel="tag"># Vulnhub</a>
-          
-            <a href="/tags/Linux%E6%8F%90%E6%9D%83/" rel="tag"># Linux提权</a>
-          
-            <a href="/tags/%E8%84%8F%E7%89%9B%E6%8F%90%E6%9D%83/" rel="tag"># 脏牛提权</a>
+            <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
           
         </div>
       
@@ -428,8 +482,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2021/12/19/basic-pentesting-1%E9%9D%B6%E6%9C%BA/" rel="next" title="basic_pentesting_1靶机">
-                <i class="fa fa-chevron-left"></i> basic_pentesting_1靶机
+              <a href="/2022/04/16/SQL%E6%B3%A8%E5%85%A5%E8%BF%87%E7%8B%97V4-0-2313/" rel="next" title="SQL注入过狗V4.0.2313">
+                <i class="fa fa-chevron-left"></i> SQL注入过狗V4.0.2313
               </a>
             
           </div>
@@ -437,10 +491,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2021/12/21/mr-Robot%E9%9D%B6%E6%9C%BA/" rel="prev" title="mr-Robot靶机">
-                mr-Robot靶机 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -572,7 +622,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Lampiao%E9%9D%B6%E6%9C%BA"><span class="nav-number">1.</span> <span class="nav-text">Lampiao靶机</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.</span> <span class="nav-text">基本信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%BF%87%E7%A8%8B"><span class="nav-number">1.2.</span> <span class="nav-text">过程</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B02-1-%E6%89%8B%E5%8A%A8%E4%BF%A1%E6%81%AF%E6%94%B6%E9%9B%86"><span class="nav-number">1.</span> <span class="nav-text">内网安全攻防笔记2-1 手动信息收集</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE%E4%BF%A1%E6%81%AF"><span class="nav-number">1.1.</span> <span class="nav-text">查询网络配置信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%8F%8A%E8%BD%AF%E4%BB%B6%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.</span> <span class="nav-text">查询操作系统及软件信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%92%8C%E7%89%88%E6%9C%AC%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.1.</span> <span class="nav-text">查询操作系统和版本信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E7%B3%BB%E7%BB%9F%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84"><span class="nav-number">1.2.2.</span> <span class="nav-text">查看系统体系结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%AE%89%E8%A3%85%E7%9A%84%E8%BD%AF%E4%BB%B6%E7%89%88%E6%9C%AC%EF%BC%8C%E8%B7%AF%E5%BE%84"><span class="nav-number">1.2.3.</span> <span class="nav-text">查看安装的软件版本，路径</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%9C%AC%E6%9C%BA%E6%9C%8D%E5%8A%A1%E4%BF%A1%E6%81%AF"><span class="nav-number">1.3.</span> <span class="nav-text">查询本机服务信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E8%BF%9B%E7%A8%8B%E5%88%97%E8%A1%A8"><span class="nav-number">1.4.</span> <span class="nav-text">查询进程列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E5%90%AF%E5%8A%A8%E7%A8%8B%E5%BA%8F%E4%BF%A1%E6%81%AF"><span class="nav-number">1.5.</span> <span class="nav-text">查看启动程序信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1"><span class="nav-number">1.6.</span> <span class="nav-text">查看计划任务</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%B8%BB%E6%9C%BA%E5%BC%80%E6%9C%BA%E6%97%B6%E9%97%B4"><span class="nav-number">1.7.</span> <span class="nav-text">查看主机开机时间</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%94%A8%E6%88%B7%E5%88%97%E8%A1%A8"><span class="nav-number">1.8.</span> <span class="nav-text">查询用户列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%97%E5%87%BA%E6%9C%AC%E5%9C%B0%E8%AE%A1%E7%AE%97%E6%9C%BA%E4%B8%8E%E6%89%80%E8%BF%9E%E6%8E%A5%E7%9A%84%E5%AE%A2%E6%88%B7%E7%AB%AF%E4%B9%8B%E9%97%B4%E7%9A%84%E4%BC%9A%E8%AF%9D"><span class="nav-number">1.9.</span> <span class="nav-text">列出本地计算机与所连接的客户端之间的会话</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E7%AB%AF%E5%8F%A3%E4%BF%A1%E6%81%AF"><span class="nav-number">1.10.</span> <span class="nav-text">查询端口信息</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E8%A1%A5%E4%B8%81%E5%88%97%E8%A1%A8"><span class="nav-number">1.11.</span> <span class="nav-text">查看补丁列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E6%9C%AC%E6%9C%BA%E5%85%B1%E4%BA%AB%E5%88%97%E8%A1%A8"><span class="nav-number">1.12.</span> <span class="nav-text">查询本机共享列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E8%B7%AF%E7%94%B1%E8%A1%A8%E5%92%8C%E5%8F%AF%E7%94%A8%E7%9A%84ARP%E7%BC%93%E5%AD%98"><span class="nav-number">1.13.</span> <span class="nav-text">查询路由表和可用的ARP缓存</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E9%98%B2%E7%81%AB%E5%A2%99%E4%BF%A1%E6%81%AF"><span class="nav-number">1.14.</span> <span class="nav-text">查询防火墙信息</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="nav-number">1.14.1.</span> <span class="nav-text">关闭防火墙</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE"><span class="nav-number">1.14.2.</span> <span class="nav-text">查看防火墙配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BF%AE%E6%94%B9%E9%98%B2%E7%81%AB%E5%A2%99%E9%85%8D%E7%BD%AE"><span class="nav-number">1.14.3.</span> <span class="nav-text">修改防火墙配置</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E7%9C%8B%E4%BB%A3%E7%90%86%E9%85%8D%E7%BD%AE"><span class="nav-number">1.15.</span> <span class="nav-text">查看代理配置</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%9F%A5%E8%AF%A2%E5%B9%B6%E5%BC%80%E5%90%AF%E8%BF%9C%E7%A8%8B%E8%BF%9E%E6%8E%A5%E6%9C%8D%E5%8A%A1"><span class="nav-number">1.16.</span> <span class="nav-text">查询并开启远程连接服务</span></a></li></ol></li></ol></div>
             
 
           </div>

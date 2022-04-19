@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="内网,笔记," />
 
 
 
@@ -79,14 +79,18 @@
 
 
 
+<meta name="description" content="内网安全攻防笔记1.2PowerShell基本概念.ps1文件类似于.bat文件。PowerShell脚本使用.ps1作为后缀，每行一条指令。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="内网安全攻防笔记1.2">
 <meta property="og:url" content="http://example.com/2022/04/11/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B01-2/index.html">
 <meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="内网安全攻防笔记1.2PowerShell基本概念.ps1文件类似于.bat文件。PowerShell脚本使用.ps1作为后缀，每行一条指令。">
 <meta property="og:locale">
 <meta property="article:published_time" content="2022-04-11T12:14:31.000Z">
 <meta property="article:modified_time" content="2022-04-11T12:14:31.000Z">
 <meta property="article:author" content="Laplace">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="笔记">
 <meta name="twitter:card" content="summary">
 
 
@@ -322,6 +326,28 @@
           </span>
 
           
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">内网安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
 
           
             
@@ -349,7 +375,29 @@
       
 
       
-        
+        <h1 id="内网安全攻防笔记1-2"><a href="#内网安全攻防笔记1-2" class="headerlink" title="内网安全攻防笔记1.2"></a>内网安全攻防笔记1.2</h1><h2 id="PowerShell基本概念"><a href="#PowerShell基本概念" class="headerlink" title="PowerShell基本概念"></a>PowerShell基本概念</h2><h3 id="ps1文件"><a href="#ps1文件" class="headerlink" title=".ps1文件"></a>.ps1文件</h3><p>类似于.bat文件。PowerShell脚本使用.ps1作为后缀，每行一条指令。</p>
+<span id="more"></span>
+
+<h3 id="执行策略"><a href="#执行策略" class="headerlink" title="执行策略"></a>执行策略</h3><p>PowerShell设置了默认执行策略无法运行.ps1脚本。可以使用指令<code>Get-ExecutionPolicy</code>查看当前执行策略。<br>而执行策略有以下:</p>
+<ul>
+<li>Restricted(默认设置，脚本无法运行)</li>
+<li>RemoteSigned(在本地创建的脚本可以运行，但是网上下载的脚本无法运行用于数字证书签名除外)</li>
+<li>AllSigned(仅当脚本由受信任的发布者签名时才可以运行)</li>
+<li>Unrestricted(运行所有脚本运行)</li>
+</ul>
+<p>可以使用<code>Set-ExecutionPolicy &lt;Policy name&gt;</code>设置PowerShell执行策略</p>
+<h3 id="管道"><a href="#管道" class="headerlink" title="管道"></a>管道</h3><p>管道的作用是将一个命令的输出，作为另一个命令的输入使用。两个命令之间用<code>|</code>连接。<br>如以字符’p’开头的程序停止运行<code>get-process p* | stop-process</code></p>
+<h2 id="PowerShell常用命令"><a href="#PowerShell常用命令" class="headerlink" title="PowerShell常用命令"></a>PowerShell常用命令</h2><h3 id="基本知识"><a href="#基本知识" class="headerlink" title="基本知识"></a>基本知识</h3><p>在PowerShell中，命令叫做<code>cmdlet</code>命令。PowerShell命令不区分大小写。一下是PowerShell基本命令。</p>
+<ul>
+<li>新建目录 <code>New-item PowerShellStudy -itemtype directory</code></li>
+<li>新建文件 <code> New-Item test.txt -ItemType File</code></li>
+<li>删除目录 <code>Remove-Item xyz</code></li>
+<li>显示文本内容 <code>Get-Content .\test.txt</code></li>
+<li>设置文本内容 <code>Set-Content .\test.txt -Value &quot;Hello World&quot;</code></li>
+<li>追加文本内容 <code>Add-Content .\test.txt -Value &quot;Its a test&quot;</code></li>
+<li>删除文本内容 <code>Clear-Content .\test.txt</code></li>
+</ul>
+<h3 id="常用命令"><a href="#常用命令" class="headerlink" title="常用命令"></a>常用命令</h3>
       
     </div>
     
@@ -363,6 +411,14 @@
     
 
     <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%86%85%E7%BD%91/" rel="tag"># 内网</a>
+          
+            <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          
+        </div>
       
 
       
@@ -437,8 +493,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
+      <section class="site-overview-wrap sidebar-panel">
         <div class="site-overview">
           <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
             
@@ -453,7 +518,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">52</span>
+                  <span class="site-state-item-count">53</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -498,6 +563,22 @@
         </div>
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B01-2"><span class="nav-number">1.</span> <span class="nav-text">内网安全攻防笔记1.2</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#PowerShell%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-number">1.1.</span> <span class="nav-text">PowerShell基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ps1%E6%96%87%E4%BB%B6"><span class="nav-number">1.1.1.</span> <span class="nav-text">.ps1文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%A7%E8%A1%8C%E7%AD%96%E7%95%A5"><span class="nav-number">1.1.2.</span> <span class="nav-text">执行策略</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%A1%E9%81%93"><span class="nav-number">1.1.3.</span> <span class="nav-text">管道</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PowerShell%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.</span> <span class="nav-text">PowerShell常用命令</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E7%9F%A5%E8%AF%86"><span class="nav-number">1.2.1.</span> <span class="nav-text">基本知识</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4"><span class="nav-number">1.2.2.</span> <span class="nav-text">常用命令</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
